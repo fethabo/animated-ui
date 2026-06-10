@@ -1,0 +1,66 @@
+{
+  "name": "@fethabo/animated-ui",
+  "version": "0.1.0",
+  "description": "Lightweight animated UI components for React. Zero runtime dependencies, tree-shakeable, fully customizable via CSS custom properties (--aui-*).",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./animated-background": {
+      "types": "./dist/animated-background.d.ts",
+      "import": "./dist/animated-background.js",
+      "require": "./dist/animated-background.cjs"
+    },
+    "./pixel-background": {
+      "types": "./dist/pixel-background.d.ts",
+      "import": "./dist/pixel-background.js",
+      "require": "./dist/pixel-background.cjs"
+    },
+    "./tilt-card": {
+      "types": "./dist/tilt-card.d.ts",
+      "import": "./dist/tilt-card.js",
+      "require": "./dist/tilt-card.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "react",
+    "animation",
+    "components",
+    "background",
+    "tilt",
+    "canvas",
+    "css",
+    "tree-shakeable"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "jsdom": "^24.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
+  }
+}
