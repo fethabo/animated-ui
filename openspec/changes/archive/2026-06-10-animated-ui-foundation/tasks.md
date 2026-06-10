@@ -48,8 +48,8 @@
 ## 7. Barrel Export y Tipos Públicos
 
 - [x] 7.1 Crear `src/index.ts` exportando `AnimatedBackground`, `PixelBackground`, `TiltCard`, y sus tipos (`AnimatedBackgroundProps`, `PixelBackgroundProps`, `TiltCardProps`, `TiltState`)
-- [ ] 7.2 Verificar que el build de tsup genera `dist/index.js`, `dist/index.cjs`, `dist/index.d.ts` correctamente
-- [ ] 7.3 Verificar tree-shaking: importar solo `TiltCard` y confirmar que el bundle no incluye código de los otros componentes
+- [x] 7.2 Verificar que el build de tsup genera `dist/index.js`, `dist/index.cjs`, `dist/index.d.ts` correctamente
+- [x] 7.3 Verificar tree-shaking: importar solo `TiltCard` y confirmar que el bundle no incluye código de los otros componentes
 
 ## 8. Ejemplos Copy-Paste
 
@@ -59,6 +59,7 @@
 
 ## 9. Verificación Final
 
-- [ ] 9.1 Crear un proyecto Vite de prueba mínimo e instalar el paquete buildeado — verificar que los tres componentes funcionan
-- [ ] 9.2 Verificar que no hay errores TypeScript con `tsc --noEmit`
-- [ ] 9.3 Verificar que el paquete no tiene errores de SSR: renderizar cada componente con `renderToString` de React y confirmar que no lanza errores de `document`/`window`
+- [x] 9.1 Crear un proyecto Vite de prueba mínimo e instalar el paquete buildeado — verificar que los tres componentes funcionan
+- [x] 9.2 Verificar que no hay errores TypeScript con `tsc --noEmit`
+- [x] 9.3 Verificar que el paquete no tiene errores de SSR: renderizar cada componente con `renderToString` de React y confirmar que no lanza errores de `document`/`window`
+- [x] 9.4 Verificar que el README refleja correctamente las props de los tres componentes implementados
