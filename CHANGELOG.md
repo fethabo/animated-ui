@@ -12,3 +12,7 @@
 ## [0.3.0](@fethabo/animated-ui@0.2.0...@fethabo/animated-ui@0.3.0) (2026-06-11)
 
 * **feat:** tier 2 alcanzado, text effects implementados @fethabo ([6d150d0](6d150d01fb654bf372fa2c692a5968b951e04577))
+
+## [0.4.0](@fethabo/animated-ui@0.3.0...@fethabo/animated-ui@0.4.0) (2026-06-11)
+
+* **feat:** tier 3 parcialmente alcanzado (v0.4.0) @fethabo ([a9f9add](a9f9addb3956e2b8ec5535b3edfcb5abe2de29a2))
