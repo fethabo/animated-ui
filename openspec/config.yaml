@@ -1,5 +1,14 @@
 schema: spec-driven
 
+context: |
+  Paquete npm @fethabo/animated-ui: componentes React animados, livianos y zero-config.
+  VINCULANTE: todo change que agregue o modifique componentes debe cumplir la spec
+  openspec/specs/component-authoring/spec.md (procedimiento + definition-of-done).
+  Hoja de ruta y priorización: ROADMAP.md. Guía general para agentes: AGENTS.md.
+  Criterios no negociables: cero deps de runtime, zero-config (CSS auto-inyectado),
+  'use client' + SSR-safe (Vite/Astro/Next), ejemplo standalone en /examples,
+  respectReducedMotion default true, CSS vars con namespace --aui-*.
+
 # Project context (optional)
 # This is shown to AI when creating artifacts.
 # Add your tech stack, conventions, style guides, domain knowledge, etc.
