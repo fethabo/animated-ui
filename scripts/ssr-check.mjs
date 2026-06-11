@@ -4,7 +4,14 @@
 //   node scripts/ssr-check.mjs
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
-import { AnimatedBackground, PixelBackground, TiltCard } from '../dist/index.js'
+import {
+  AnimatedBackground,
+  GlowBorder,
+  MagneticElement,
+  PixelBackground,
+  SpotlightCard,
+  TiltCard,
+} from '../dist/index.js'
 
 const cases = [
   ['AnimatedBackground (aurora)', () => createElement(AnimatedBackground, { variant: 'aurora' })],
@@ -24,6 +31,29 @@ const cases = [
     () =>
       createElement(TiltCard, null, (state) =>
         createElement('p', null, `tilt: ${state.tiltX}, ${state.tiltY}`),
+      ),
+  ],
+  [
+    'SpotlightCard',
+    () => createElement(SpotlightCard, { color: '#fff', radius: 300 }, createElement('p', null, 'hola')),
+  ],
+  [
+    'GlowBorder (loop)',
+    () => createElement(GlowBorder, { width: 2 }, createElement('p', null, 'hola')),
+  ],
+  [
+    'GlowBorder (followCursor)',
+    () => createElement(GlowBorder, { followCursor: true }, createElement('p', null, 'hola')),
+  ],
+  [
+    'MagneticElement (children estáticos)',
+    () => createElement(MagneticElement, { strength: 0.5 }, createElement('button', null, 'hola')),
+  ],
+  [
+    'MagneticElement (render prop)',
+    () =>
+      createElement(MagneticElement, null, (state) =>
+        createElement('p', null, `offset: ${state.offsetX}, ${state.offsetY}`),
       ),
   ],
 ]

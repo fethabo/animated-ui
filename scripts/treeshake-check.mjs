@@ -31,6 +31,8 @@ const mustNotContain = [
   ['feTurbulence', 'AnimatedBackground (variante noise)'],
   ['aui-beam-spin', 'AnimatedBackground (keyframes beam)'],
   ['getContext', 'PixelBackground (canvas renderer)'],
+  ['--aui-spotlight-x', 'SpotlightCard (CSS del overlay)'],
+  ['aui-glow-spin', 'GlowBorder (keyframes del loop)'],
 ]
 const mustContain = [['--aui-tilt-perspective', 'TiltCard']]
 

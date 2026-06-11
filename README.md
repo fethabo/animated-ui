@@ -31,6 +31,15 @@ No hace falta importar ningún CSS: los estilos se inyectan automáticamente al 
 - **SSR-safe**: ningún componente accede a `document`/`window` durante el render; las animaciones arrancan tras la hidratación.
 - Todos los componentes respetan `prefers-reduced-motion` por defecto (desactivable con `respectReducedMotion={false}`).
 
+## Release Workflow
+
+Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release del repositorio.
+
+- `npm run release` es el entrypoint único del flujo de release.
+- `CHANGELOG.md` se genera a partir de los commits acumulados desde el tag anterior.
+- `package.json` se actualiza al momento de crear un nuevo tag.
+- La herramienta de release no forma parte de las dependencias de runtime del paquete publicado.
+
 ## Components
 
 | Componente | Descripción |
@@ -38,6 +47,9 @@ No hace falta importar ningún CSS: los estilos se inyectan automáticamente al 
 | [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise` y `beam`. |
 | [PixelBackground](#pixelbackground) | Grilla de píxeles sobre canvas con behaviors combinables: `hover`, `idle` y `reveal`. |
 | [TiltCard](#tiltcard) | Card con efecto 3D tilt via WAAPI, con glare opcional y render prop de estado. |
+| [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
+| [GlowBorder](#glowborder) | Borde de gradiente cónico animado, en loop autónomo o apuntando al cursor. |
+| [MagneticElement](#magneticelement) | Wrapper que atrae su contenido hacia el cursor, con retorno elástico y render prop. |
 
 ## AnimatedBackground
 
@@ -200,6 +212,140 @@ Objeto que recibe el render prop en cada actualización del tilt:
 | Variable | Default | Descripción |
 | --- | --- | --- |
 | `--aui-tilt-perspective` | valor de la prop `perspective` (`1000px`) | Profundidad de perspectiva 3D; valores más altos producen un efecto más sutil. |
+
+## SpotlightCard
+
+Contenedor con un spotlight radial que sigue al cursor, iluminando la zona bajo el mouse. El tracking escribe CSS custom properties directamente sobre el elemento (sin estado de React): mover el mouse no re-renderiza los children. El overlay tiene `pointer-events: none`, así que links y botones del contenido siguen siendo interactivos. El spotlight permanece activo con `prefers-reduced-motion` porque responde a input directo y no desplaza contenido.
+
+```jsx
+import { SpotlightCard } from '@fethabo/animated-ui'
+
+<SpotlightCard
+  color="rgba(34, 211, 238, 0.2)"
+  radius={300}
+  className="rounded-xl border bg-zinc-900 p-6"
+>
+  <h3>Mi card</h3>
+  <p>La luz sigue al cursor.</p>
+</SpotlightCard>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `color` | `string` | `rgba(255, 255, 255, 0.15)` | Color del spotlight (conviene usar alpha). |
+| `radius` | `number` | `250` | Radio del spotlight en px. |
+| `opacity` | `number` | `1` | Opacidad máxima del overlay en hover (0 a 1). |
+| `respectReducedMotion` | `boolean` | `true` | Aceptada por consistencia de API; el spotlight queda activo en ambos casos (es input directo, sin movimiento de contenido). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-spotlight-color` | `rgba(255, 255, 255, 0.15)` | Color del gradiente del spotlight. |
+| `--aui-spotlight-radius` | `250px` | Radio del spotlight. |
+| `--aui-spotlight-opacity` | `1` | Opacidad del overlay en hover. |
+
+`--aui-spotlight-x` / `--aui-spotlight-y` son variables de runtime escritas por el componente; no las setees a mano.
+
+## GlowBorder
+
+Contenedor con un anillo de borde de gradiente cónico animado. Por default el gradiente rota en loop; con `followCursor` apunta hacia el cursor con momentum (mismo patrón WAAPI de TiltCard). La animación rota una capa con `transform` (corre en el compositor, soporte universal de browsers) en vez de animar el ángulo del gradiente con `@property`.
+
+**Estructura del contenido:** el gradiente cubre todo el fondo del wrapper y el contenido lo tapa con su propio background, dejando visible solo el anillo del perímetro. Pasá el background de tu contenido via `contentStyle`/`contentClassName` — si ponés el background en el root via `className`, vas a tapar el anillo.
+
+```jsx
+import { GlowBorder } from '@fethabo/animated-ui'
+
+<GlowBorder
+  width={2}
+  radius={16}
+  colors={['#22d3ee', '#a78bfa']}
+  contentStyle={{ background: '#12121f', padding: '2rem' }}
+>
+  <h3>Mi contenido</h3>
+</GlowBorder>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `colors` | `string[]` | violeta/cyan/rosa | Colores del gradiente cónico (hasta 3); los no provistos caen al default. |
+| `speed` | `number` | `4` | Segundos por rotación completa del loop. |
+| `width` | `number` | `1` | Ancho del anillo en px. |
+| `radius` | `number` | `12` | Border-radius exterior en px (el interior se calcula solo). |
+| `opacity` | `number` | `1` | Intensidad del glow (0 a 1). |
+| `followCursor` | `boolean` | `false` | Reemplaza el loop por orientar el gradiente hacia el cursor, con momentum. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` detiene el loop (gradiente estático); `followCursor` sigue activo (input directo). |
+| `contentClassName` | `string` | — | Clases para el contenedor interno de contenido (donde va tu background). |
+| `contentStyle` | `CSSProperties` | — | Estilos inline para el contenedor interno de contenido. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-glow-color-1` | `#7c3aed` | Primer color del cónico (violeta). |
+| `--aui-glow-color-2` | `#0ea5e9` | Segundo color (cyan). |
+| `--aui-glow-color-3` | `#ec4899` | Tercer color (rosa). |
+| `--aui-glow-speed` | `4s` | Duración de una rotación del loop. |
+| `--aui-glow-width` | `1px` | Ancho del anillo de borde. |
+| `--aui-glow-radius` | `12px` | Border-radius exterior. |
+| `--aui-glow-opacity` | `1` | Intensidad del glow. |
+
+## MagneticElement
+
+Wrapper que atrae su contenido hacia el cursor cuando se acerca, con retorno elástico al salir. La traslación usa WAAPI con interpolación que preserva momentum (patrón TiltCard sobre `translate`). Expone su estado via render prop para construir efectos derivados.
+
+**Hit-area y layout:** la zona de atracción se agranda con padding transparente alrededor del contenido (`hitArea`), que **participa del layout** del wrapper. Con `hitArea={0}` el wrapper colapsa al tamaño del contenido y la atracción arranca recién al entrar en él.
+
+```jsx
+import { MagneticElement } from '@fethabo/animated-ui'
+
+<MagneticElement strength={0.5} hitArea={60}>
+  <button className="rounded-full bg-violet-600 px-8 py-3 text-white">
+    Atrapame
+  </button>
+</MagneticElement>
+```
+
+Con render prop:
+
+```jsx
+<MagneticElement>
+  {({ offsetX, offsetY, isActive }) => (
+    <div style={{ boxShadow: `${-offsetX}px ${-offsetY}px 24px rgba(124,58,237,0.4)` }}>
+      {isActive ? 'atraído' : 'reposo'}
+    </div>
+  )}
+</MagneticElement>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `strength` | `number` | `0.35` | Intensidad de la atracción (0 a 1). |
+| `hitArea` | `number` | `40` | Padding transparente en px que agranda la zona de atracción (participa del layout). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` el contenido no se mueve (offsets en 0), pero `isActive` sigue reportándose. |
+| `children` | `ReactNode \| (state: MagneticState) => ReactNode` | — | Contenido a magnetizar, o función que recibe el `MagneticState` actual. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### MagneticState
+
+Objeto que recibe el render prop en cada actualización:
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `offsetX` | `number` | Desplazamiento horizontal actual del contenido en px. |
+| `offsetY` | `number` | Desplazamiento vertical actual del contenido en px. |
+| `isActive` | `boolean` | `true` mientras el cursor está dentro de la zona de atracción. |
 
 ## License
 

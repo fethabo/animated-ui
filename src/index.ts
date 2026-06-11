@@ -17,6 +17,15 @@ export type {
 export { TiltCard } from './components/TiltCard'
 export type { TiltCardProps, TiltState } from './components/TiltCard'
 
+export { SpotlightCard } from './components/SpotlightCard'
+export type { SpotlightCardProps } from './components/SpotlightCard'
+
+export { GlowBorder } from './components/GlowBorder'
+export type { GlowBorderProps } from './components/GlowBorder'
+
+export { MagneticElement } from './components/MagneticElement'
+export type { MagneticElementProps, MagneticState } from './components/MagneticElement'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

@@ -1,6 +1,13 @@
-// Verificación 9.1: los tres componentes funcionando desde el paquete buildeado.
+// Verificación visual: todos los componentes funcionando desde el paquete buildeado.
 import { createRoot } from 'react-dom/client'
-import { AnimatedBackground, PixelBackground, TiltCard } from '@fethabo/animated-ui'
+import {
+  AnimatedBackground,
+  GlowBorder,
+  MagneticElement,
+  PixelBackground,
+  SpotlightCard,
+  TiltCard,
+} from '@fethabo/animated-ui'
 
 function Section({ title, children, height = '60vh' }) {
   return (
@@ -76,6 +83,100 @@ function App() {
             </div>
           )}
         </TiltCard>
+      </Section>
+
+      <Section title="SpotlightCard — defaults vs custom" height="50vh">
+        <div style={{ display: 'flex', gap: '2rem', position: 'relative' }}>
+          <SpotlightCard
+            style={{
+              width: 280,
+              padding: '3rem 2rem',
+              borderRadius: 16,
+              background: '#12121f',
+              border: '1px solid #333',
+            }}
+          >
+            <strong>Spotlight default</strong>
+            <p style={{ opacity: 0.7 }}>
+              Mové el mouse: la luz te sigue. <a href="#spotlight">El contenido sigue clickeable.</a>
+            </p>
+          </SpotlightCard>
+          <SpotlightCard
+            color="rgba(34, 211, 238, 0.2)"
+            radius={350}
+            style={{
+              width: 280,
+              padding: '3rem 2rem',
+              borderRadius: 16,
+              background: '#0f1a1f',
+              border: '1px solid #333',
+            }}
+          >
+            <strong>Spotlight cyan, radio 350</strong>
+            <p style={{ opacity: 0.7 }}>Color y radio via props.</p>
+          </SpotlightCard>
+        </div>
+      </Section>
+
+      <Section title="GlowBorder — loop y followCursor" height="50vh">
+        <div style={{ display: 'flex', gap: '2rem', position: 'relative' }}>
+          <GlowBorder
+            width={2}
+            radius={16}
+            contentStyle={{ background: '#12121f', padding: '3rem 2rem', width: 280 }}
+          >
+            <strong>GlowBorder loop</strong>
+            <p style={{ opacity: 0.7 }}>Rotación autónoma (se detiene con reduced motion).</p>
+          </GlowBorder>
+          <GlowBorder
+            followCursor
+            width={2}
+            radius={16}
+            colors={['#fbbf24', '#f97316']}
+            contentStyle={{ background: '#1a1410', padding: '3rem 2rem', width: 280 }}
+          >
+            <strong>GlowBorder followCursor</strong>
+            <p style={{ opacity: 0.7 }}>El brillo apunta hacia tu cursor.</p>
+          </GlowBorder>
+        </div>
+      </Section>
+
+      <Section title="MagneticElement — botón + render prop" height="50vh">
+        <div style={{ display: 'flex', gap: '3rem', position: 'relative', alignItems: 'center' }}>
+          <MagneticElement>
+            <button
+              style={{
+                padding: '1rem 2.5rem',
+                borderRadius: 999,
+                border: '1px solid #555',
+                background: '#7c3aed',
+                color: 'white',
+                fontSize: '1rem',
+                cursor: 'pointer',
+              }}
+            >
+              Atrapame
+            </button>
+          </MagneticElement>
+          <MagneticElement strength={0.6} hitArea={60}>
+            {({ offsetX, offsetY, isActive }) => (
+              <div
+                style={{
+                  padding: '1.5rem 2rem',
+                  borderRadius: 12,
+                  background: '#12121f',
+                  border: `1px solid ${isActive ? '#7c3aed' : '#333'}`,
+                  textAlign: 'center',
+                }}
+              >
+                <strong>Render prop</strong>
+                <p style={{ opacity: 0.7, margin: 0 }}>
+                  x: {offsetX.toFixed(0)} · y: {offsetY.toFixed(0)} · {isActive ? 'activo' : 'reposo'}
+                </p>
+              </div>
+            )}
+          </MagneticElement>
+        </div>
       </Section>
     </main>
   )

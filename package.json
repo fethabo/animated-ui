@@ -31,11 +31,28 @@
       "types": "./dist/tilt-card.d.ts",
       "import": "./dist/tilt-card.js",
       "require": "./dist/tilt-card.cjs"
+    },
+    "./spotlight-card": {
+      "types": "./dist/spotlight-card.d.ts",
+      "import": "./dist/spotlight-card.js",
+      "require": "./dist/spotlight-card.cjs"
+    },
+    "./glow-border": {
+      "types": "./dist/glow-border.d.ts",
+      "import": "./dist/glow-border.js",
+      "require": "./dist/glow-border.cjs"
+    },
+    "./magnetic-element": {
+      "types": "./dist/magnetic-element.d.ts",
+      "import": "./dist/magnetic-element.js",
+      "require": "./dist/magnetic-element.cjs"
     }
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "release": "node ./scripts/release.mjs",
+    "release:dry-run": "node ./scripts/release.mjs --dry-run",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
