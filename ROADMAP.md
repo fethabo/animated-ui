@@ -16,9 +16,10 @@ El costo real de cada componente lo determina el "motor" que necesita. Hoy exist
 | **CSS** | `@keyframes` inyectados via `injectStyles()`, cero JS por frame | AnimatedBackground | ✅ Existe |
 | **Canvas** | `<canvas>` + `requestAnimationFrame`, contributions componibles por frame | PixelBackground | ✅ Existe |
 | **WAAPI** | `element.animate()` con interpolación que preserva momentum | TiltCard | ✅ Existe |
-| **Scroll** | A decidir: IntersectionObserver / scroll listener + RAF / CSS scroll-driven animations | — | ⬜ Pendiente (decisión de v0.5) |
+| **Scroll (viewport)** | IntersectionObserver via hook `useInView` | ScrollReveal | ✅ Existe (v0.4) |
+| **Scroll (posición continua)** | A decidir: scroll listener + RAF / CSS scroll-driven animations | — | ⬜ Pendiente (decisión de v0.5) |
 
-Hooks reutilizables ya disponibles: `useMousePosition`, `useReducedMotion`, `useResizeObserver`.
+Hooks reutilizables ya disponibles: `useMousePosition`, `useReducedMotion`, `useResizeObserver`, `useInView`.
 
 **Criterio de priorización:** maximizar componentes nuevos por decisión arquitectónica nueva. Las primeras tandas solo aplican convenciones existentes; el motor de scroll es la única decisión técnica genuinamente nueva del roadmap.
 
@@ -32,7 +33,7 @@ Motor existente (WAAPI + `useMousePosition`). Costo bajo, valor inmediato.
 | **GlowBorder** | Borde con gradiente cónico animado, en loop autónomo o apuntando hacia el cursor. | `conic-gradient` + `@property` para animar el ángulo. CSS casi puro. |
 | **MagneticElement** | Wrapper que "atrae" su contenido hacia el cursor al acercarse, con retorno elástico. | Mismo patrón WAAPI-con-momentum de TiltCard, aplicado a `translate`. |
 | **RippleContainer** | Ondas expansivas desde el punto de click. | Keyframes inyectados + nodo efímero por click. |
-| **MouseParallax** | Contenedor con capas a distintas profundidades desplazadas según la posición del mouse — parallax creativo **sin scroll**. | Primo natural de TiltCard; su render prop ya insinúa este caso de uso. |
+| **MouseParallax** ✅ | Contenedor con capas a distintas profundidades desplazadas según la posición del mouse — parallax creativo **sin scroll**. | Primo natural de TiltCard. Hecho en v0.4: CSS vars por mousemove (patrón SpotlightCard) + `MouseParallax.Layer` con `depth`. |
 
 ## Tier 2 — Efectos de texto
 
@@ -51,7 +52,7 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
 
 | Componente | Descripción | Motor mínimo |
 | --- | --- | --- |
-| **ScrollReveal** | Entrada animada al entrar al viewport, con stagger entre hijos. | IntersectionObserver (hook nuevo `useInView`) — puede salir **antes** de decidir el motor completo. |
+| **ScrollReveal** ✅ | Entrada animada al entrar al viewport, con stagger entre hijos. | Hecho en v0.4 con el hook nuevo `useInView` (IntersectionObserver), **antes** de decidir el motor completo, como estaba previsto. |
 | **ParallaxLayers** | Capas con profundidades distintas ligadas a la posición de scroll. | Posición continua de scroll. |
 | **ScrollProgress** | Barra/indicador de progreso de lectura. | Posición continua de scroll. |
 | **StickyScenes** | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Posición continua + coreografía; el más ambicioso del tier. |
@@ -91,7 +92,7 @@ Motor existente, pero costo alto por pieza.
 | --- | --- | --- |
 | **v0.2** | SpotlightCard + GlowBorder + MagneticElement | Ninguna — motor existente |
 | **v0.3** ✅ | ShinyText + ScrambleText | Ninguna — abre categoría texto |
-| **v0.4** | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
+| **v0.4** ✅ | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
 | **v0.5** | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
 | **v0.6+** | ParticleField / ImageDissolve / StickyScenes | Según pieza |
 

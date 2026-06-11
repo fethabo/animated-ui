@@ -32,7 +32,15 @@ export type { ShinyTextProps } from './components/ShinyText'
 export { ScrambleText } from './components/ScrambleText'
 export type { ScrambleTextProps, ScrambleTrigger } from './components/ScrambleText'
 
+export { ScrollReveal } from './components/ScrollReveal'
+export type { RevealDirection, ScrollRevealProps } from './components/ScrollReveal'
+
+export { MouseParallax } from './components/MouseParallax'
+export type { MouseParallaxLayerProps, MouseParallaxProps } from './components/MouseParallax'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'
+export { useInView } from './hooks/useInView'
+export type { UseInViewOptions } from './hooks/useInView'
 export { injectStyles, styleId } from './utils/inject-styles'

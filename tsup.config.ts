@@ -14,6 +14,8 @@ export default defineConfig({
     'magnetic-element': 'src/components/MagneticElement/index.tsx',
     'shiny-text': 'src/components/ShinyText/index.tsx',
     'scramble-text': 'src/components/ScrambleText/index.tsx',
+    'scroll-reveal': 'src/components/ScrollReveal/index.tsx',
+    'mouse-parallax': 'src/components/MouseParallax/index.tsx',
   },
   format: ['esm', 'cjs'],
   dts: true,

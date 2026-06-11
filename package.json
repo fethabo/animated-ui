@@ -70,6 +70,16 @@
       "types": "./dist/scramble-text.d.ts",
       "import": "./dist/scramble-text.js",
       "require": "./dist/scramble-text.cjs"
+    },
+    "./scroll-reveal": {
+      "types": "./dist/scroll-reveal.d.ts",
+      "import": "./dist/scroll-reveal.js",
+      "require": "./dist/scroll-reveal.cjs"
+    },
+    "./mouse-parallax": {
+      "types": "./dist/mouse-parallax.d.ts",
+      "import": "./dist/mouse-parallax.js",
+      "require": "./dist/mouse-parallax.cjs"
     }
   },
   "scripts": {

@@ -52,6 +52,8 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [MagneticElement](#magneticelement) | Wrapper que atrae su contenido hacia el cursor, con retorno elástico y render prop. |
 | [ShinyText](#shinytext) | Texto con un brillo que lo barre en loop, CSS puro; sirve también como texto con gradiente. |
 | [ScrambleText](#scrambletext) | Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix), accesible. |
+| [ScrollReveal](#scrollreveal) | Revela su contenido al entrar al viewport, con dirección y stagger entre hijos. |
+| [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 
 ## AnimatedBackground
 
@@ -418,6 +420,103 @@ También acepta cualquier otra prop HTML válida de `<span>`.
 | Variable | Default | Descripción |
 | --- | --- | --- |
 | `--aui-scramble-color` | `currentColor` | Color de los caracteres mientras dura el scramble (al terminar, el texto vuelve a heredar su color). |
+
+## ScrollReveal
+
+Revela su contenido al entrar al viewport (IntersectionObserver via el hook [`useInView`](#hooks)), con fade + desplazamiento configurable y stagger entre hijos directos. La entrada es una CSS transition pura: el JavaScript solo togglea un atributo, cero JS por frame.
+
+**Layout:** cada hijo directo se envuelve en un `<div>` item (el que anima). El root acepta `className`/`style`, así puede ser él mismo tu grid o flex y los items actúan como celdas.
+
+**Pre-hidratación:** el contenido se renderiza oculto desde el primer paint (sin flash) pero presente en el DOM (SEO, crawlers, lectores). Con reduced motion o en browsers sin IntersectionObserver se muestra directo. Es el comportamiento estándar de las librerías de reveal.
+
+```jsx
+import { ScrollReveal } from '@fethabo/animated-ui'
+
+<ScrollReveal direction="up" stagger={0.15} className="grid grid-cols-3 gap-4">
+  <Card>Uno</Card>
+  <Card>Dos</Card>
+  <Card>Tres</Card>
+</ScrollReveal>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `direction` | `'up' \| 'down' \| 'left' \| 'right' \| 'none'` | `'up'` | Desde dónde entra el contenido (`'up'` aparece desde abajo; `'none'` solo fade). |
+| `distance` | `number` | `24` | Desplazamiento inicial en px. |
+| `duration` | `number` | `0.6` | Duración de la transición en segundos. |
+| `stagger` | `number` | `0.1` | Segundos de delay incremental entre hijos directos. |
+| `threshold` | `number` | `0.15` | Fracción visible del componente que dispara el reveal. |
+| `once` | `boolean` | `true` | Si es `false`, el contenido se re-oculta al salir del viewport y re-revela al entrar. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` muestra el contenido directo, sin transición. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-reveal-duration` | `0.6s` | Duración de la transición de entrada. |
+| `--aui-reveal-distance` | `24px` | Desplazamiento inicial. |
+| `--aui-reveal-stagger` | `0.1s` | Delay incremental entre hijos. |
+| `--aui-reveal-easing` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva de la transición (solo via CSS). |
+
+`--aui-reveal-i` es una variable de runtime (índice por item, escrita por el componente); no la setees a mano. Los items animan con `translate` (propiedad independiente, browsers 2022+), que no pisa el `transform` de tu contenido.
+
+## MouseParallax
+
+Contenedor con capas a distintas profundidades que se desplazan según la posición del mouse — parallax creativo **sin scroll**. El tracking escribe CSS custom properties directamente sobre el root (patrón SpotlightCard): mover el mouse no re-renderiza los children. Cada capa se traslada con `calc()` puro suavizado por una transition del compositor.
+
+Las capas se declaran con `MouseParallax.Layer`: `depth` positivo sigue al mouse, negativo se opone (profundidad invertida). Al salir el cursor, todo vuelve suavemente al centro. Es el efecto que el render prop de `TiltCard` insinuaba, como componente dedicado.
+
+```jsx
+import { MouseParallax } from '@fethabo/animated-ui'
+
+<MouseParallax style={{ minHeight: '60vh' }}>
+  <MouseParallax.Layer depth={40}>
+    <Estrellas />
+  </MouseParallax.Layer>
+  <MouseParallax.Layer depth={-15}>
+    <h1>Título en primer plano</h1>
+  </MouseParallax.Layer>
+</MouseParallax>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `ease` | `number` | `0.2` | Segundos del suavizado con que las capas siguen al mouse. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` las capas quedan estáticas (el efecto desplaza contenido real). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+**`MouseParallax.Layer`:**
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `depth` | `number` | `20` | Desplazamiento máximo en px con el cursor en el borde; negativo se opone al mouse. |
+
+Ambos aceptan cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-parallax-ease` | `0.2s` | Duración del suavizado de las capas. |
+| `--aui-parallax-depth` | `20px` | Profundidad de cada capa (la setea `Layer` desde su prop). |
+
+`--aui-parallax-x` / `--aui-parallax-y` son variables de runtime escritas por el componente; no las setees a mano.
+
+## Hooks
+
+Los hooks que usan los componentes son públicos y reutilizables:
+
+| Hook | Descripción |
+| --- | --- |
+| `useReducedMotion()` | `true` si el usuario tiene activado `prefers-reduced-motion`. SSR-safe, reactivo. |
+| `useMousePosition(ref)` | Posición del mouse relativa al elemento (`{x, y}` en px, `null` fuera). Pasa por estado de React: re-renderiza por movimiento. |
+| `useResizeObserver(ref)` | Tamaño actual del elemento, reactivo a cambios. |
+| `useInView(ref, options?)` | `true` cuando el elemento interseca el viewport (IntersectionObserver). Opciones: `threshold` (default `0.15`), `rootMargin` (`'0px'`), `once` (`true`: deja de observar tras la primera intersección). SSR-safe; si el browser no tiene IntersectionObserver retorna `true` (nunca deja contenido oculto). |
 
 ## License
 

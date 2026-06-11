@@ -4,16 +4,19 @@ import {
   AnimatedBackground,
   GlowBorder,
   MagneticElement,
+  MouseParallax,
   PixelBackground,
   ScrambleText,
+  ScrollReveal,
   ShinyText,
   SpotlightCard,
   TiltCard,
 } from '@fethabo/animated-ui'
 
-function Section({ title, children, height = '60vh' }) {
+function Section({ title, children, height = '60vh', id }) {
   return (
     <section
+      id={id}
       style={{
         position: 'relative',
         minHeight: height,
@@ -196,6 +199,59 @@ function App() {
         </div>
       </Section>
 
+      <Section id="parallax" title="MouseParallax — capas con profundidades opuestas" height="70vh">
+        <MouseParallax style={{ width: '100%', minHeight: '50vh', display: 'grid', placeItems: 'center' }}>
+          <MouseParallax.Layer depth={40}>
+            <div style={{ fontSize: '4rem', opacity: 0.25, letterSpacing: '2rem' }}>✦ ✦ ✦</div>
+          </MouseParallax.Layer>
+          <MouseParallax.Layer depth={-15} style={{ position: 'absolute' }}>
+            <div
+              style={{
+                padding: '2rem 3rem',
+                borderRadius: 16,
+                background: '#12121f',
+                border: '1px solid #333',
+                textAlign: 'center',
+              }}
+            >
+              <strong>MouseParallax</strong>
+              <p style={{ opacity: 0.7, margin: 0 }}>El fondo sigue al mouse; este card se opone.</p>
+            </div>
+          </MouseParallax.Layer>
+        </MouseParallax>
+      </Section>
+
+      <Section id="reveal" title="ScrollReveal — stagger al entrar al viewport (scrolleá hasta acá)" height="80vh">
+        <ScrollReveal
+          stagger={0.2}
+          distance={32}
+          style={{ display: 'flex', gap: '2rem', position: 'relative' }}
+        >
+          {['Uno', 'Dos', 'Tres'].map((label) => (
+            <div
+              key={label}
+              style={{
+                width: 200,
+                padding: '2.5rem 1.5rem',
+                borderRadius: 16,
+                background: '#12121f',
+                border: '1px solid #333',
+                textAlign: 'center',
+              }}
+            >
+              <strong>{label}</strong>
+              <p style={{ opacity: 0.7, margin: 0 }}>Entra en cascada.</p>
+            </div>
+          ))}
+        </ScrollReveal>
+        {/* override por cascada: este segundo reveal hereda --aui-reveal-duration del wrapper */}
+        <div style={{ '--aui-reveal-duration': '1.5s', position: 'relative' }}>
+          <ScrollReveal direction="left">
+            <p style={{ opacity: 0.7 }}>Este entra desde la derecha, lento via var en cascada.</p>
+          </ScrollReveal>
+        </div>
+      </Section>
+
       <Section title="ScrambleText — mount, hover y scrambleColor" height="50vh">
         <h1 style={{ fontFamily: 'monospace', fontSize: '2rem', margin: 0, color: '#4ade80' }}>
           <ScrambleText text="Acceso concedido: bienvenido" />
@@ -213,3 +269,9 @@ function App() {
 }
 
 createRoot(document.getElementById('root')).render(<App />)
+
+// Los anchors existen recién después del render: re-aplica el hash para
+// que los deep links (#parallax, #reveal, ...) funcionen.
+if (location.hash) {
+  setTimeout(() => document.querySelector(location.hash)?.scrollIntoView(), 150)
+}
