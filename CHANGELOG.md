@@ -16,3 +16,7 @@
 ## [0.4.0](@fethabo/animated-ui@0.3.0...@fethabo/animated-ui@0.4.0) (2026-06-11)
 
 * **feat:** tier 3 parcialmente alcanzado (v0.4.0) @fethabo ([a9f9add](a9f9addb3956e2b8ec5535b3edfcb5abe2de29a2))
+
+## [0.5.0](@fethabo/animated-ui@0.4.0...@fethabo/animated-ui@0.5.0) (2026-06-11)
+
+* **feat:** implementados paralax . v0.5.0 @fethabo ([011ce41](011ce4181ed5589b6c79d4e27124efdd88d83526))
