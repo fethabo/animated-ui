@@ -38,6 +38,12 @@ export type { RevealDirection, ScrollRevealProps } from './components/ScrollReve
 export { MouseParallax } from './components/MouseParallax'
 export type { MouseParallaxLayerProps, MouseParallaxProps } from './components/MouseParallax'
 
+export { ParallaxLayers } from './components/ParallaxLayers'
+export type { ParallaxLayersLayerProps, ParallaxLayersProps } from './components/ParallaxLayers'
+
+export { ScrollProgress } from './components/ScrollProgress'
+export type { ScrollProgressPosition, ScrollProgressProps } from './components/ScrollProgress'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

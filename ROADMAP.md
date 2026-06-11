@@ -17,7 +17,7 @@ El costo real de cada componente lo determina el "motor" que necesita. Hoy exist
 | **Canvas** | `<canvas>` + `requestAnimationFrame`, contributions componibles por frame | PixelBackground | ✅ Existe |
 | **WAAPI** | `element.animate()` con interpolación que preserva momentum | TiltCard | ✅ Existe |
 | **Scroll (viewport)** | IntersectionObserver via hook `useInView` | ScrollReveal | ✅ Existe (v0.4) |
-| **Scroll (posición continua)** | A decidir: scroll listener + RAF / CSS scroll-driven animations | — | ⬜ Pendiente (decisión de v0.5) |
+| **Scroll (posición continua)** | Listener pasivo + RAF escribiendo CSS vars (`subscribeScroll` en `src/utils/scroll-driver.ts`) | ParallaxLayers, ScrollProgress | ✅ Existe (v0.5) |
 
 Hooks reutilizables ya disponibles: `useMousePosition`, `useReducedMotion`, `useResizeObserver`, `useInView`.
 
@@ -53,11 +53,11 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
 | Componente | Descripción | Motor mínimo |
 | --- | --- | --- |
 | **ScrollReveal** ✅ | Entrada animada al entrar al viewport, con stagger entre hijos. | Hecho en v0.4 con el hook nuevo `useInView` (IntersectionObserver), **antes** de decidir el motor completo, como estaba previsto. |
-| **ParallaxLayers** | Capas con profundidades distintas ligadas a la posición de scroll. | Posición continua de scroll. |
-| **ScrollProgress** | Barra/indicador de progreso de lectura. | Posición continua de scroll. |
-| **StickyScenes** | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Posición continua + coreografía; el más ambicioso del tier. |
+| **ParallaxLayers** ✅ | Capas con profundidades distintas ligadas a la posición de scroll. | Hecho en v0.5: `Layer` con `depth` (API simétrica a MouseParallax); el tracking solo corre con el contenedor cerca del viewport (`useInView` + scroll driver). |
+| **ScrollProgress** ✅ | Barra/indicador de progreso de lectura. | Hecho en v0.5: barra fija con `scaleX` compositado, `aria-hidden`, activa bajo reduced motion. |
+| **StickyScenes** | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Posición continua + coreografía; el más ambicioso del tier. Reutiliza el motor de v0.5. |
 
-### Decisión pendiente: motor de scroll
+### Decisión resuelta (v0.5): motor de scroll
 
 ```
                     ¿Motor de scroll?
@@ -68,13 +68,14 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
  (entrar/salir de      + RAF (posición      Animations
   viewport)            continua)            (animation-timeline)
         │                 │                      │
-  Barato, soporte     JS por frame,         Cero JS por frame
-  universal.          el más flexible.      (ideal) pero soporte
-  Alcanza para        Necesario para        Safari reciente →
-  ScrollReveal.       parallax suave.       necesita fallback.
+  ✅ useInView (v0.4)  ✅ ELEGIDO (v0.5)     ⬜ Descartada por ahora:
+  Alcanza para        subscribeScroll en    soporte reciente (Safari 26+,
+  ScrollReveal.       scroll-driver.ts.     Firefox 136+) obligaría a
+                                            mantener un fallback JS
+                                            completo en paralelo.
 ```
 
-Resolver en el change que introduzca `ParallaxLayers` (v0.5), con su propio `design.md`.
+El motor elegido escribe CSS vars sobre el elemento (sin estado de React); el movimiento corre en el compositor via `calc()`. **Criterio de migración futura**: cuando el baseline de browsers incluya scroll-driven animations de forma generalizada, el motor puede migrar por dentro sin cambiar la API pública (las vars y `calc()` quedan; cambia quién las anima). Rationale completo: `openspec/changes/archive/*parallax-layers-scroll-progress/design.md`.
 
 ## Tier 4 — Canvas ambicioso
 
@@ -93,7 +94,7 @@ Motor existente, pero costo alto por pieza.
 | **v0.2** | SpotlightCard + GlowBorder + MagneticElement | Ninguna — motor existente |
 | **v0.3** ✅ | ShinyText + ScrambleText | Ninguna — abre categoría texto |
 | **v0.4** ✅ | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
-| **v0.5** | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
+| **v0.5** ✅ | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
 | **v0.6+** | ParticleField / ImageDissolve / StickyScenes | Según pieza |
 
 Una tanda = un change de OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).

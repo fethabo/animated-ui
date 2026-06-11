@@ -54,6 +54,8 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [ScrambleText](#scrambletext) | Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix), accesible. |
 | [ScrollReveal](#scrollreveal) | Revela su contenido al entrar al viewport, con dirección y stagger entre hijos. |
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
+| [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
+| [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
 
 ## AnimatedBackground
 
@@ -506,6 +508,85 @@ Ambos aceptan cualquier otra prop HTML válida de `<div>`.
 | `--aui-parallax-depth` | `20px` | Profundidad de cada capa (la setea `Layer` desde su prop). |
 
 `--aui-parallax-x` / `--aui-parallax-y` son variables de runtime escritas por el componente; no las setees a mano.
+
+## ParallaxLayers
+
+Contenedor con capas a distintas profundidades ligadas a la **posición de scroll** — el primo de scroll de [MouseParallax](#mouseparallax), con la misma API de `Layer`. Un listener pasivo de scroll (coalescido por `requestAnimationFrame`) escribe el progreso del contenedor por el viewport como CSS custom property; las capas se trasladan con `calc()` puro. Sin estado de React: scrollear no re-renderiza nada, y el tracking **solo corre mientras el contenedor está cerca del viewport** (vía IntersectionObserver) — varios contenedores fuera de pantalla cuestan cero por frame.
+
+`depth` positivo se mueve con el scroll (más lento que el contenido: sensación de fondo); negativo va contra él.
+
+**Capas de fondo:** al desplazarse pueden revelar "huecos" en los bordes del contenedor — es el comportamiento estándar del parallax. Sobredimensioná la capa de fondo (e.g. `margin: -10% 0` o `inset: -10%`) para cubrirlos.
+
+```jsx
+import { ParallaxLayers } from '@fethabo/animated-ui'
+
+<ParallaxLayers style={{ overflow: 'hidden' }}>
+  <ParallaxLayers.Layer depth={80}>
+    <Fondo style={{ margin: '-10% 0' }} />
+  </ParallaxLayers.Layer>
+  <ParallaxLayers.Layer depth={-30}>
+    <h1>Primer plano</h1>
+  </ParallaxLayers.Layer>
+</ParallaxLayers>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` las capas quedan en su posición de layout (el efecto crea movimiento relativo durante el scroll). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+**`ParallaxLayers.Layer`:**
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `depth` | `number` | `40` | Desplazamiento máximo en px a lo largo del recorrido por el viewport; negativo va contra el scroll. |
+
+Ambos aceptan cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-parallax-scroll-depth` | `40px` | Profundidad de cada capa (la setea `Layer` desde su prop). |
+
+`--aui-parallax-scroll` es una variable de runtime escrita por el componente (progreso [-1, 1] del contenedor por el viewport); no la setees a mano.
+
+## ScrollProgress
+
+Barra fija de progreso de lectura de la página. El progreso se escribe como CSS custom property por un listener pasivo coalescido por RAF, y la barra avanza con `transform: scaleX` — compositado, sin relayout ni re-renders de React. El track tiene `pointer-events: none` (no tapa clicks) y `aria-hidden` (es un reflejo decorativo de la posición de scroll; un `progressbar` actualizado por frame sería spam para lectores de pantalla). Permanece activa con `prefers-reduced-motion`: refleja 1:1 el scroll que el usuario controla, como la scrollbar nativa.
+
+**Headers fijos:** si tu sitio tiene un header `fixed`/`sticky`, ajustá `zIndex` (o `--aui-progress-z`) para definir quién queda arriba.
+
+```jsx
+import { ScrollProgress } from '@fethabo/animated-ui'
+
+<ScrollProgress color="#22d3ee" height={4} />
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `position` | `'top' \| 'bottom'` | `'top'` | Borde del viewport donde se fija la barra. |
+| `color` | `string` | `#7c3aed` | Color de la barra. |
+| `height` | `number` | `3` | Grosor en px. |
+| `trackColor` | `string` | `transparent` | Color del track (fondo de la barra). |
+| `zIndex` | `number` | `50` | z-index del elemento fijo. |
+| `respectReducedMotion` | `boolean` | `true` | Aceptada por consistencia de API; la barra queda activa en ambos casos (refleja input directo, sin movimiento de contenido). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-progress-color` | `#7c3aed` | Color de la barra. |
+| `--aui-progress-height` | `3px` | Grosor de la barra. |
+| `--aui-progress-bg` | `transparent` | Color del track. |
+| `--aui-progress-z` | `50` | z-index del elemento fijo. |
+
+`--aui-progress` es una variable de runtime escrita por el componente (progreso [0, 1] de la página); no la setees a mano.
 
 ## Hooks
 

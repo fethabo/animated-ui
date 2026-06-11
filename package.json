@@ -80,6 +80,16 @@
       "types": "./dist/mouse-parallax.d.ts",
       "import": "./dist/mouse-parallax.js",
       "require": "./dist/mouse-parallax.cjs"
+    },
+    "./parallax-layers": {
+      "types": "./dist/parallax-layers.d.ts",
+      "import": "./dist/parallax-layers.js",
+      "require": "./dist/parallax-layers.cjs"
+    },
+    "./scroll-progress": {
+      "types": "./dist/scroll-progress.d.ts",
+      "import": "./dist/scroll-progress.js",
+      "require": "./dist/scroll-progress.cjs"
     }
   },
   "scripts": {

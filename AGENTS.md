@@ -41,6 +41,7 @@ Este repo usa **OpenSpec** (schema `spec-driven`):
 
 - CSS custom properties con namespace `--aui-<componente>-*`.
 - Estructura: `src/components/<Nombre>/{index.tsx, types.ts, <partes>/}`.
-- Hooks compartidos en `src/hooks/` (`useMousePosition`, `useReducedMotion`, `useResizeObserver`) — reutilizar antes de crear nuevos.
+- Hooks compartidos en `src/hooks/` (`useMousePosition`, `useReducedMotion`, `useResizeObserver`, `useInView`) — reutilizar antes de crear nuevos.
+- Motor de scroll de posición continua: `subscribeScroll`/`viewportProgress`/`pageProgress` en `src/utils/scroll-driver.ts` (interno) — reutilizar para efectos ligados al scroll.
 - Exports en `src/index.ts` (componente + tipos públicos).
 - Documentación y comentarios en español; nombres de código en inglés.

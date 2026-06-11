@@ -5,8 +5,10 @@ import {
   GlowBorder,
   MagneticElement,
   MouseParallax,
+  ParallaxLayers,
   PixelBackground,
   ScrambleText,
+  ScrollProgress,
   ScrollReveal,
   ShinyText,
   SpotlightCard,
@@ -38,6 +40,8 @@ function Section({ title, children, height = '60vh', id }) {
 function App() {
   return (
     <main>
+      {/* Barra global de progreso de lectura (v0.5). */}
+      <ScrollProgress color="#22d3ee" height={4} />
       <Section title="AnimatedBackground — aurora (defaults)">
         <AnimatedBackground variant="aurora" />
       </Section>
@@ -219,6 +223,33 @@ function App() {
             </div>
           </MouseParallax.Layer>
         </MouseParallax>
+      </Section>
+
+      <Section id="parallax-scroll" title="ParallaxLayers — capas ligadas al scroll (mirá los bordes al scrollear)" height="90vh">
+        <ParallaxLayers
+          style={{ width: '100%', minHeight: '70vh', overflow: 'hidden', display: 'grid', placeItems: 'center' }}
+        >
+          <ParallaxLayers.Layer depth={80}>
+            {/* Fondo sobredimensionado para no dejar huecos al desplazarse. */}
+            <div style={{ margin: '-15% 0', fontSize: '5rem', opacity: 0.2, textAlign: 'center', letterSpacing: '1.5rem' }}>
+              ✦ ✦ ✦<br />✦ ✦ ✦<br />✦ ✦ ✦
+            </div>
+          </ParallaxLayers.Layer>
+          <ParallaxLayers.Layer depth={-30} style={{ position: 'absolute' }}>
+            <div
+              style={{
+                padding: '2rem 3rem',
+                borderRadius: 16,
+                background: '#12121f',
+                border: '1px solid #333',
+                textAlign: 'center',
+              }}
+            >
+              <strong>ParallaxLayers</strong>
+              <p style={{ opacity: 0.7, margin: 0 }}>El fondo acompaña al scroll; este card va en contra.</p>
+            </div>
+          </ParallaxLayers.Layer>
+        </ParallaxLayers>
       </Section>
 
       <Section id="reveal" title="ScrollReveal — stagger al entrar al viewport (scrolleá hasta acá)" height="80vh">

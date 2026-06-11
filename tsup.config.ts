@@ -16,6 +16,8 @@ export default defineConfig({
     'scramble-text': 'src/components/ScrambleText/index.tsx',
     'scroll-reveal': 'src/components/ScrollReveal/index.tsx',
     'mouse-parallax': 'src/components/MouseParallax/index.tsx',
+    'parallax-layers': 'src/components/ParallaxLayers/index.tsx',
+    'scroll-progress': 'src/components/ScrollProgress/index.tsx',
   },
   format: ['esm', 'cjs'],
   dts: true,
