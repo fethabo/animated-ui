@@ -1,4 +1,9 @@
-## ADDED Requirements
+# magnetic-element Specification
+
+## Purpose
+Componente `MagneticElement`: wrapper que atrae su contenido hacia el cursor dentro de una zona de atracción configurable (hit-area por padding), con retorno elástico (WAAPI con momentum), render prop de estado (`MagneticState`) y respeto de `prefers-reduced-motion`.
+
+## Requirements
 
 ### Requirement: MagneticElement atrae su contenido hacia el cursor con retorno elástico
 El componente SHALL trasladar su contenido hacia la posición del cursor mientras este se encuentra dentro de la zona de atracción, usando WAAPI con interpolación que preserva momentum (patrón de TiltCard aplicado a `translate`). Al salir el cursor, el contenido SHALL volver a su posición original con easing elástico (overshoot).

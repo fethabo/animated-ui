@@ -12,6 +12,8 @@ export default defineConfig({
     'spotlight-card': 'src/components/SpotlightCard/index.tsx',
     'glow-border': 'src/components/GlowBorder/index.tsx',
     'magnetic-element': 'src/components/MagneticElement/index.tsx',
+    'shiny-text': 'src/components/ShinyText/index.tsx',
+    'scramble-text': 'src/components/ScrambleText/index.tsx',
   },
   format: ['esm', 'cjs'],
   dts: true,

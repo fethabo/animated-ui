@@ -1,4 +1,9 @@
-## ADDED Requirements
+# spotlight-card Specification
+
+## Purpose
+Componente `SpotlightCard`: contenedor con un spotlight radial que sigue al cursor escribiendo CSS custom properties directamente sobre el elemento (sin re-renders de React por frame), con contenido siempre interactivo y customizable via props y `--aui-spotlight-*`.
+
+## Requirements
 
 ### Requirement: SpotlightCard ilumina la zona bajo el cursor con un gradiente radial
 El componente SHALL renderizar un overlay con `radial-gradient` centrado en la posición actual del cursor dentro del contenedor. El overlay SHALL tener `pointer-events: none` y NO SHALL interferir con la interacción del contenido.

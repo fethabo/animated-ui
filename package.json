@@ -60,6 +60,16 @@
       "types": "./dist/magnetic-element.d.ts",
       "import": "./dist/magnetic-element.js",
       "require": "./dist/magnetic-element.cjs"
+    },
+    "./shiny-text": {
+      "types": "./dist/shiny-text.d.ts",
+      "import": "./dist/shiny-text.js",
+      "require": "./dist/shiny-text.cjs"
+    },
+    "./scramble-text": {
+      "types": "./dist/scramble-text.d.ts",
+      "import": "./dist/scramble-text.js",
+      "require": "./dist/scramble-text.cjs"
     }
   },
   "scripts": {

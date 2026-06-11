@@ -26,6 +26,12 @@ export type { GlowBorderProps } from './components/GlowBorder'
 export { MagneticElement } from './components/MagneticElement'
 export type { MagneticElementProps, MagneticState } from './components/MagneticElement'
 
+export { ShinyText } from './components/ShinyText'
+export type { ShinyTextProps } from './components/ShinyText'
+
+export { ScrambleText } from './components/ScrambleText'
+export type { ScrambleTextProps, ScrambleTrigger } from './components/ScrambleText'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

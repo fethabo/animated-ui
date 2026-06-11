@@ -5,6 +5,8 @@ import {
   GlowBorder,
   MagneticElement,
   PixelBackground,
+  ScrambleText,
+  ShinyText,
   SpotlightCard,
   TiltCard,
 } from '@fethabo/animated-ui'
@@ -177,6 +179,34 @@ function App() {
             )}
           </MagneticElement>
         </div>
+      </Section>
+
+      <Section title="ShinyText — defaults, gradiente custom y override por cascada" height="50vh">
+        <h1 style={{ fontSize: '2.5rem', margin: 0 }}>
+          <ShinyText>Brillo con defaults</ShinyText>
+        </h1>
+        <h1 style={{ fontSize: '2.5rem', margin: 0 }}>
+          <ShinyText color="#155e75" highlight="#22d3ee" speed={2} angle={90}>
+            Gradiente cyan (caso GradientText)
+          </ShinyText>
+        </h1>
+        {/* La var en el padre pisa el default por cascada (sin props). */}
+        <div style={{ '--aui-shiny-speed': '8s', fontSize: '1.5rem' }}>
+          <ShinyText>Barrido lento via --aui-shiny-speed en el padre</ShinyText>
+        </div>
+      </Section>
+
+      <Section title="ScrambleText — mount, hover y scrambleColor" height="50vh">
+        <h1 style={{ fontFamily: 'monospace', fontSize: '2rem', margin: 0, color: '#4ade80' }}>
+          <ScrambleText text="Acceso concedido: bienvenido" />
+        </h1>
+        <p style={{ fontFamily: 'monospace', fontSize: '1.25rem', margin: 0 }}>
+          <ScrambleText
+            text="Pasá el mouse para re-descifrar"
+            trigger="both"
+            scrambleColor="#f472b6"
+          />
+        </p>
       </Section>
     </main>
   )

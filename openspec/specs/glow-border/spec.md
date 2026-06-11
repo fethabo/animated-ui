@@ -1,4 +1,9 @@
-## ADDED Requirements
+# glow-border Specification
+
+## Purpose
+Componente `GlowBorder`: contenedor con un anillo de borde de gradiente cónico animado, en loop autónomo o apuntando hacia el cursor con momentum (WAAPI), customizable via props y CSS custom properties (`--aui-glow-*`) y respetuoso de `prefers-reduced-motion`.
+
+## Requirements
 
 ### Requirement: GlowBorder renderiza un borde de gradiente cónico animado alrededor de su contenido
 El componente SHALL envolver su contenido con un anillo de `conic-gradient` visible en el perímetro. La animación SHALL implementarse rotando una capa sobredimensionada con `transform` (animable en el compositor, soporte universal), no con `@property`.

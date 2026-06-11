@@ -40,9 +40,9 @@ Categoría nueva, sin decisiones arquitectónicas (RAF o CSS puro).
 
 | Componente | Descripción | Notas técnicas |
 | --- | --- | --- |
-| **ShinyText** | Brillo que barre el texto en loop. | CSS puro con `background-clip: text`. |
-| **GradientText** | Texto con gradiente animado. | CSS puro; puede fusionarse con ShinyText como variantes. |
-| **ScrambleText** | El texto se "descifra" carácter por carácter (efecto decrypt/Matrix). | RAF + estado; sin DOM pesado. |
+| **ShinyText** ✅ | Brillo que barre el texto en loop. | CSS puro con `background-clip: text`. Hecho en v0.3. |
+| **GradientText** ✅ | Texto con gradiente animado. | Fusionado con ShinyText (colores de base y brillo customizables), como anticipaba el roadmap. |
+| **ScrambleText** ✅ | El texto se "descifra" carácter por carácter (efecto decrypt/Matrix). | RAF que muta `textContent` via ref; sin DOM pesado ni re-renders por frame. Hecho en v0.3. |
 | **SplitReveal** | Entrada con stagger por carácter o palabra. | ⚠️ Partir texto en spans rompe accesibilidad: requiere `aria-label` con el texto completo en el contenedor. |
 
 ## Tier 3 — Scroll y parallax
@@ -90,7 +90,7 @@ Motor existente, pero costo alto por pieza.
 | Versión | Contenido | Decisión arquitectónica nueva |
 | --- | --- | --- |
 | **v0.2** | SpotlightCard + GlowBorder + MagneticElement | Ninguna — motor existente |
-| **v0.3** | ShinyText + ScrambleText | Ninguna — abre categoría texto |
+| **v0.3** ✅ | ShinyText + ScrambleText | Ninguna — abre categoría texto |
 | **v0.4** | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
 | **v0.5** | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
 | **v0.6+** | ParticleField / ImageDissolve / StickyScenes | Según pieza |

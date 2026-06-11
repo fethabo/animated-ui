@@ -50,6 +50,8 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
 | [GlowBorder](#glowborder) | Borde de gradiente cónico animado, en loop autónomo o apuntando al cursor. |
 | [MagneticElement](#magneticelement) | Wrapper que atrae su contenido hacia el cursor, con retorno elástico y render prop. |
+| [ShinyText](#shinytext) | Texto con un brillo que lo barre en loop, CSS puro; sirve también como texto con gradiente. |
+| [ScrambleText](#scrambletext) | Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix), accesible. |
 
 ## AnimatedBackground
 
@@ -346,6 +348,76 @@ Objeto que recibe el render prop en cada actualización:
 | `offsetX` | `number` | Desplazamiento horizontal actual del contenido en px. |
 | `offsetY` | `number` | Desplazamiento vertical actual del contenido en px. |
 | `isActive` | `boolean` | `true` mientras el cursor está dentro de la zona de atracción. |
+
+## ShinyText
+
+Texto con una franja de brillo que lo barre en loop. CSS puro: el gradiente se clipea a los glifos con `background-clip: text` y se desplaza animando `background-position` — cero JS por frame. Con colores custom de base y brillo funciona también como texto con gradiente animado. El texto sigue siendo texto real (seleccionable, copiable, legible por lectores de pantalla).
+
+**Semántica:** renderiza un `<span>`; el heading o párrafo lo ponés vos envolviéndolo.
+
+```jsx
+import { ShinyText } from '@fethabo/animated-ui'
+
+<h1>
+  <ShinyText color="#71717a" highlight="#fafafa" speed={3}>
+    Texto que brilla solo
+  </ShinyText>
+</h1>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `color` | `string` | `#71717a` | Color base del texto. |
+| `highlight` | `string` | `#fafafa` | Color de la franja de brillo. |
+| `speed` | `number` | `3` | Segundos por barrido completo del loop. |
+| `angle` | `number` | `120` | Ángulo del gradiente/barrido en grados. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` detiene el barrido y queda el gradiente estático. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-shiny-color` | `#71717a` | Color base del texto. |
+| `--aui-shiny-highlight` | `#fafafa` | Color de la franja de brillo. |
+| `--aui-shiny-speed` | `3s` | Duración de un barrido del loop. |
+| `--aui-shiny-angle` | `120deg` | Dirección del gradiente/barrido. |
+
+## ScrambleText
+
+Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix). Un loop de `requestAnimationFrame` muta el texto directamente (sin re-renders de React por frame), con progresión por timestamps — misma duración en displays de 60 y 144 Hz. Es accesible durante la animación: el root expone `aria-label` con el texto final y los caracteres aleatorios intermedios están ocultos para lectores de pantalla.
+
+**Tipografía:** con fuentes proporcionales los caracteres aleatorios miden distinto que los finales y el ancho puede "vibrar" durante el scramble. Para textos sensibles a layout usá una fuente monospace o `font-variant-numeric: tabular-nums`.
+
+```jsx
+import { ScrambleText } from '@fethabo/animated-ui'
+
+<h1 style={{ fontFamily: 'monospace' }}>
+  <ScrambleText text="Acceso concedido" trigger="both" />
+</h1>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `text` | `string` | — (requerida) | Texto final a revelar. Es un string plano, no `children`: el scrambler opera carácter por carácter. |
+| `speed` | `number` | `25` | Caracteres revelados por segundo. |
+| `charset` | `string` | letras, números y símbolos | Pool de caracteres aleatorios mostrados durante el scramble. |
+| `trigger` | `'mount' \| 'hover' \| 'both'` | `'mount'` | `'mount'` anima al montar y al cambiar `text`; `'hover'` re-anima en cada `mouseenter`; `'both'` combina ambos. |
+| `scrambleColor` | `string` | `currentColor` | Color de los caracteres mientras dura el scramble. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` muestra el texto final directo; el trigger `hover` sigue activo (input directo). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-scramble-color` | `currentColor` | Color de los caracteres mientras dura el scramble (al terminar, el texto vuelve a heredar su color). |
 
 ## License
 
