@@ -91,7 +91,7 @@ Motor existente, pero costo alto por pieza.
 
 | Versión | Contenido | Decisión arquitectónica nueva |
 | --- | --- | --- |
-| **v0.2** | SpotlightCard + GlowBorder + MagneticElement | Ninguna — motor existente |
+| **v0.2** ✅ | SpotlightCard + GlowBorder + MagneticElement | Ninguna — motor existente |
 | **v0.3** ✅ | ShinyText + ScrambleText | Ninguna — abre categoría texto |
 | **v0.4** ✅ | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
 | **v0.5** ✅ | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
