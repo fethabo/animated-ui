@@ -35,10 +35,11 @@ No hace falta importar ningún CSS: los estilos se inyectan automáticamente al 
 
 Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release del repositorio.
 
-- `npm run release` es el entrypoint único del flujo de release.
-- `CHANGELOG.md` se genera a partir de los commits acumulados desde el tag anterior.
-- `package.json` se actualiza al momento de crear un nuevo tag.
-- La herramienta de release no forma parte de las dependencias de runtime del paquete publicado.
+- `npm run release` es el entrypoint único del flujo de release (`npm run release:dry-run` para previsualizar).
+- La configuración vive en [tagman.config.json](tagman.config.json): repo `npm`, tags en formato `@fethabo/animated-ui@x.y.z`.
+- `CHANGELOG.md` se genera a partir de los commits acumulados desde el tag anterior (convención de commits), sin edición manual.
+- `package.json` se actualiza al momento de crear un nuevo tag, con la versión alineada al tag generado.
+- La herramienta de release no forma parte de las dependencias de runtime del paquete publicado (`files: ["dist"]`).
 
 ## Components
 
@@ -56,6 +57,9 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 | [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
 | [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
+| [ParticleField](#particlefield) | Campo de partículas sobre canvas con repulsión/atracción configurable al cursor. |
+| [ImageDissolve](#imagedissolve) | Transición entre imágenes con dithering ordered (matriz Bayer 8×8) al cambiar `src`. |
+| [StickyScenes](#stickyscenes) | Secciones sticky que transicionan entre escenas durante el scroll, sin re-renders por frame. |
 
 ## AnimatedBackground
 
@@ -587,6 +591,114 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-progress-z` | `50` | z-index del elemento fijo. |
 
 `--aui-progress` es una variable de runtime escrita por el componente (progreso [0, 1] de la página); no la setees a mano.
+
+## ParticleField
+
+Campo de partículas autónomas sobre `<canvas>`, con repulsión/atracción configurable al cursor. Las partículas se mueven con velocidad aleatoria y rebotan en los bordes; dentro del radio del cursor reciben una fuerza proporcional a la proximidad. El cálculo es cursor-a-partícula (O(N)), no entre pares. El estado de las partículas vive en un ref que persiste entre frames: el RAF no re-renderiza React. Con `prefers-reduced-motion` el loop se detiene y el canvas muestra las partículas en su estado inicial estático.
+
+El canvas llena el contenedor — **dimensionalo vos** con `style`/`className` (ej. `height: '100vh'`); si el contenedor tiene tamaño cero, no se ve nada. En dispositivos touch (sin cursor de hover) las partículas se animan de forma autónoma, ignorando el puntero.
+
+```jsx
+import { ParticleField } from '@fethabo/animated-ui'
+
+<div style={{ height: '100vh' }}>
+  <ParticleField count={80} color="#22d3ee" cursorInteraction="repel" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `count` | `number` | `60` | Número de partículas. |
+| `speed` | `number` | `0.4` | Rango de la velocidad inicial aleatoria en px/frame. |
+| `radius` | `number` | `2` | Radio de cada partícula en px. |
+| `color` | `string` | `#7c3aed` | Color de las partículas (cualquier color CSS). |
+| `cursorInteraction` | `'repel' \| 'attract' \| 'none'` | `'repel'` | Reacción al cursor dentro del radio de influencia. |
+| `cursorRadius` | `number` | `120` | Radio de influencia del cursor en px. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, detiene el RAF y muestra el estado inicial estático. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-particle-color` | `#7c3aed` | Color de las partículas. Un override por cascada prevalece sobre la prop `color`. |
+| `--aui-particle-radius` | `2px` | Radio de cada partícula. |
+
+## ImageDissolve
+
+Transiciona entre dos imágenes con dithering ordered (matriz Bayer 8×8): al cambiar la prop `src`, la nueva imagen se materializa píxel a píxel desde los thresholds Bayer más bajos a los más altos, sobre un `<canvas>` superpuesto. Reutiliza la misma matriz Bayer que el behavior `reveal` de `PixelBackground`. SSR-safe: durante el render solo emite el `<img>` con su `alt`; el canvas y la animación arrancan tras la hidratación. Con `prefers-reduced-motion` el `src` se swapea al instante, sin dithering.
+
+> **Prerequisito de CORS:** el efecto lee píxeles con `getImageData`, que falla sobre un canvas "tainted". La imagen debe ser **same-origin** o servir headers CORS (`Access-Control-Allow-Origin`). Ante una imagen cross-origin sin CORS, `ImageDissolve` degrada mostrando la imagen destino directamente, sin animación y sin lanzar errores. Para mejor fluidez, escalá tus imágenes al tamaño renderizado: el canvas trabaja en píxeles CSS, no al tamaño natural de la imagen.
+
+```jsx
+import { ImageDissolve } from '@fethabo/animated-ui'
+
+const [src, setSrc] = useState('/foto-a.jpg')
+
+<div style={{ width: 600 }}>
+  <ImageDissolve src={src} alt="Galería" duration={1000} />
+</div>
+<button onClick={() => setSrc('/foto-b.jpg')}>Cambiar</button>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `src` | `string` | — | URL de la imagen. Cambiarla dispara la transición dithered. |
+| `alt` | `string` | — | Texto alternativo (requerido); aplicado al `<img>` en todo momento. |
+| `duration` | `number` | `800` | Duración de la transición en ms. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, swapea el `src` al instante sin animar. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+## StickyScenes
+
+Secciones sticky que transicionan entre "escenas" durante el scroll. El contenedor exterior mide `100dvh + nScenes × sceneDuration`; el inner wrapper es `position: sticky; top: 0; height: 100dvh`, así queda fijo mientras se scrollea el rango. El progreso se descompone en escena activa + progreso dentro de ella y se escribe como `--aui-scene-index` y `--aui-scene-progress` directamente sobre el inner wrapper — **sin React state en el hot path**: scrollear no re-renderiza nada (mismo principio que `ParallaxLayers`). Con `prefers-reduced-motion` el tracking de scroll sigue activo, pero las transitions de las escenas se anulan (cada escena aparece de inmediato).
+
+Las escenas se declaran con `StickyScenes.Scene`. Cada una recibe `data-aui-active="true"` cuando es la escena en curso, y por defecto se apilan (`position: absolute; inset: 0`): **el consumer engancha ahí sus propias transitions CSS**, y puede usar `--aui-scene-progress` con `calc()` para efectos interpolados. La primera escena está activa al inicio.
+
+```jsx
+import { StickyScenes } from '@fethabo/animated-ui'
+
+<StickyScenes sceneDuration={800}>
+  <StickyScenes.Scene className="scene">
+    <h1>Primera escena</h1>
+  </StickyScenes.Scene>
+  <StickyScenes.Scene className="scene">
+    {/* interpola con el progreso dentro de la escena */}
+    <h1 style={{ opacity: 'var(--aui-scene-progress, 0)' }}>Segunda escena</h1>
+  </StickyScenes.Scene>
+</StickyScenes>
+```
+
+```css
+/* El consumer activa sus transiciones via data-aui-active. */
+.scene { opacity: 0; transition: opacity 0.5s ease; }
+.scene[data-aui-active] { opacity: 1; }
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `sceneDuration` | `number` | `600` | Píxeles de scroll dedicados a cada escena antes de transicionar. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, mantiene el scroll activo pero anula las transitions de las escenas. |
+| `children` | `ReactNode` | — | Escenas declaradas con `StickyScenes.Scene`. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+`StickyScenes.Scene` acepta `children`, `className`, `style` y cualquier prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-scene-index` | `0` | Índice entero de la escena activa. Variable de runtime escrita por el motor. |
+| `--aui-scene-progress` | `0` | Progreso [0, 1] dentro de la escena activa, usable con `calc()`. Variable de runtime. |
+
+Ambas son escritas por el componente en cada frame; no las setees a mano.
 
 ## Hooks
 

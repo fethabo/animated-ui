@@ -90,6 +90,21 @@
       "types": "./dist/scroll-progress.d.ts",
       "import": "./dist/scroll-progress.js",
       "require": "./dist/scroll-progress.cjs"
+    },
+    "./particle-field": {
+      "types": "./dist/particle-field.d.ts",
+      "import": "./dist/particle-field.js",
+      "require": "./dist/particle-field.cjs"
+    },
+    "./image-dissolve": {
+      "types": "./dist/image-dissolve.d.ts",
+      "import": "./dist/image-dissolve.js",
+      "require": "./dist/image-dissolve.cjs"
+    },
+    "./sticky-scenes": {
+      "types": "./dist/sticky-scenes.d.ts",
+      "import": "./dist/sticky-scenes.js",
+      "require": "./dist/sticky-scenes.cjs"
     }
   },
   "scripts": {

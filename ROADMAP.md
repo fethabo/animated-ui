@@ -55,7 +55,7 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
 | **ScrollReveal** ✅ | Entrada animada al entrar al viewport, con stagger entre hijos. | Hecho en v0.4 con el hook nuevo `useInView` (IntersectionObserver), **antes** de decidir el motor completo, como estaba previsto. |
 | **ParallaxLayers** ✅ | Capas con profundidades distintas ligadas a la posición de scroll. | Hecho en v0.5: `Layer` con `depth` (API simétrica a MouseParallax); el tracking solo corre con el contenedor cerca del viewport (`useInView` + scroll driver). |
 | **ScrollProgress** ✅ | Barra/indicador de progreso de lectura. | Hecho en v0.5: barra fija con `scaleX` compositado, `aria-hidden`, activa bajo reduced motion. |
-| **StickyScenes** | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Posición continua + coreografía; el más ambicioso del tier. Reutiliza el motor de v0.5. |
+| **StickyScenes** ✅ | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Hecho en v0.6: inner wrapper `position: sticky` + altura `100dvh + nScenes × sceneDuration`; progreso como `--aui-scene-index`/`--aui-scene-progress` y activación via `data-aui-active`, sin React state en el hot path. Reutiliza el motor de v0.5. |
 
 ### Decisión resuelta (v0.5): motor de scroll
 
@@ -83,9 +83,9 @@ Motor existente, pero costo alto por pieza.
 
 | Componente | Descripción | Notas técnicas |
 | --- | --- | --- |
-| **ParticleField** | Partículas con repulsión/atracción al cursor. | Canvas + RAF; reutiliza el patrón de contributions de PixelBackground. |
+| **ParticleField** ✅ | Partículas con repulsión/atracción al cursor. | Hecho en v0.6: canvas + RAF propio con física en módulo puro (`physics.ts`); fuerza cursor-a-partícula (O(N)), rebote en bordes, estado en ref (sin re-renders por frame). |
 | **WaveCanvas / GooeyBlobs** | Blobs orgánicos que respiran y reaccionan al mouse. | Canvas; evaluar costo de blur por frame. |
-| **ImageDissolve** | Transición de imagen con dithering ordenado. | ♻️ Reutiliza la matriz Bayer del behavior `reveal` de PixelBackground — joya escondida del roadmap. |
+| **ImageDissolve** ✅ | Transición de imagen con dithering ordenado. | Hecho en v0.6: ♻️ reutiliza la matriz Bayer (extraída a `src/utils/bayer-matrix.ts`, compartida con el behavior `reveal` de PixelBackground); `drawImage` + `getImageData` sobre canvas superpuesto, con degradación ante CORS. |
 
 ## Secuencia de releases
 
@@ -95,7 +95,7 @@ Motor existente, pero costo alto por pieza.
 | **v0.3** ✅ | ShinyText + ScrambleText | Ninguna — abre categoría texto |
 | **v0.4** ✅ | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
 | **v0.5** ✅ | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
-| **v0.6+** | ParticleField / ImageDissolve / StickyScenes | Según pieza |
+| **v0.6+** ✅ | ParticleField + ImageDissolve + StickyScenes | Ninguna nueva — reutiliza canvas+RAF, la matriz Bayer y el motor de scroll de v0.5; cierra Tier 4 (canvas) y Tier 3 (scroll). |
 
 Una tanda = un change de OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
 

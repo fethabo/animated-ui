@@ -7,9 +7,12 @@ import { createElement } from 'react'
 import {
   AnimatedBackground,
   GlowBorder,
+  ImageDissolve,
   MagneticElement,
+  ParticleField,
   PixelBackground,
   SpotlightCard,
+  StickyScenes,
   TiltCard,
 } from '../dist/index.js'
 
@@ -54,6 +57,22 @@ const cases = [
     () =>
       createElement(MagneticElement, null, (state) =>
         createElement('p', null, `offset: ${state.offsetX}, ${state.offsetY}`),
+      ),
+  ],
+  ['ParticleField (defaults)', () => createElement(ParticleField, { count: 40 })],
+  [
+    'ImageDissolve',
+    () => createElement(ImageDissolve, { src: '/foto.jpg', alt: 'foto de prueba' }),
+  ],
+  [
+    'StickyScenes (tres escenas)',
+    () =>
+      createElement(
+        StickyScenes,
+        null,
+        createElement(StickyScenes.Scene, null, 'uno'),
+        createElement(StickyScenes.Scene, null, 'dos'),
+        createElement(StickyScenes.Scene, null, 'tres'),
       ),
   ],
 ]

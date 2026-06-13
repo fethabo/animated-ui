@@ -44,6 +44,15 @@ export type { ParallaxLayersLayerProps, ParallaxLayersProps } from './components
 export { ScrollProgress } from './components/ScrollProgress'
 export type { ScrollProgressPosition, ScrollProgressProps } from './components/ScrollProgress'
 
+export { ParticleField } from './components/ParticleField'
+export type { CursorInteraction, ParticleFieldProps } from './components/ParticleField'
+
+export { ImageDissolve } from './components/ImageDissolve'
+export type { ImageDissolveProps } from './components/ImageDissolve'
+
+export { StickyScenes } from './components/StickyScenes'
+export type { StickySceneProps, StickyScenesProps } from './components/StickyScenes'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

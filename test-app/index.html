@@ -6,6 +6,15 @@
     <title>@fethabo/animated-ui — test app</title>
     <style>
       body { margin: 0; font-family: system-ui, sans-serif; background: #020208; color: white; }
+      /* Demo de StickyScenes: el consumer engancha sus transitions via data-aui-active. */
+      .ss-demo-scene {
+        display: grid;
+        place-items: center;
+        opacity: 0;
+        transform: scale(0.96);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .ss-demo-scene[data-aui-active] { opacity: 1; transform: scale(1); }
     </style>
   </head>
   <body>
