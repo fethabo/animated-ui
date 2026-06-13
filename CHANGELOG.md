@@ -26,3 +26,9 @@
 * Add ParticleField, ImageDissolve, StickyScenes @fethabo ([b8d8c58](b8d8c5813f62b766174f0fa79221746d156bd33a))
 * **propose:** particle-field-image-dissolve-sticky-scenes @Claude ([d546807](d546807b2f10d1ae872c62d8ee45913d517bf6e7))
 * **docs:** marcar v0.2 como completado en ROADMAP @Claude ([c75ca8b](c75ca8bc7f85c75fc963539c3b63abe097f5f2d0))
+
+## [0.6.0](@fethabo/animated-ui@0.6.0-particles.0...@fethabo/animated-ui@0.6.0) (2026-06-13)
+
+* Add ParticleField, ImageDissolve, StickyScenes @fethabo ([b8d8c58](b8d8c5813f62b766174f0fa79221746d156bd33a))
+* **propose:** particle-field-image-dissolve-sticky-scenes @Claude ([d546807](d546807b2f10d1ae872c62d8ee45913d517bf6e7))
+* **docs:** marcar v0.2 como completado en ROADMAP @Claude ([c75ca8b](c75ca8bc7f85c75fc963539c3b63abe097f5f2d0))
