@@ -33,6 +33,9 @@ const mustNotContain = [
   ['getContext', 'PixelBackground (canvas renderer)'],
   ['--aui-spotlight-x', 'SpotlightCard (CSS del overlay)'],
   ['aui-glow-spin', 'GlowBorder (keyframes del loop)'],
+  ['--aui-particle-color', 'ParticleField (CSS var de partículas)'],
+  ['aui-image-dissolve', 'ImageDissolve (clase del wrapper)'],
+  ['--aui-scene-progress', 'StickyScenes (CSS var de progreso)'],
 ]
 const mustContain = [['--aui-tilt-perspective', 'TiltCard']]
 

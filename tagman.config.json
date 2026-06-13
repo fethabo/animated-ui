@@ -1,0 +1,15 @@
+{
+  "tagName": "full",
+  "workspace": "npm",
+  "requireRemoteSync": true,
+  "annotationMessage": "@fethabo/animated-ui",
+  "github": {
+    "createRelease": false,
+    "prerelease": false
+  },
+  "npm": {
+    "publish": false,
+    "access": "public"
+  },
+  "plugins": []
+}

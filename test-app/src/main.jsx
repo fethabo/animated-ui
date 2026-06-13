@@ -1,17 +1,21 @@
 // Verificación visual: todos los componentes funcionando desde el paquete buildeado.
 import { createRoot } from 'react-dom/client'
+import { useState } from 'react'
 import {
   AnimatedBackground,
   GlowBorder,
+  ImageDissolve,
   MagneticElement,
   MouseParallax,
   ParallaxLayers,
+  ParticleField,
   PixelBackground,
   ScrambleText,
   ScrollProgress,
   ScrollReveal,
   ShinyText,
   SpotlightCard,
+  StickyScenes,
   TiltCard,
 } from '@fethabo/animated-ui'
 
@@ -295,7 +299,106 @@ function App() {
           />
         </p>
       </Section>
+
+      <Section id="particle-field" title="ParticleField — repulsión al cursor (mové el mouse)" height="80vh">
+        {/* El canvas llena el contenedor: la Section es position:relative. */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <ParticleField count={90} color="#22d3ee" cursorInteraction="repel" />
+        </div>
+        <p style={{ position: 'relative', opacity: 0.7 }}>Las partículas huyen del cursor.</p>
+      </Section>
+
+      <Section id="image-dissolve" title="ImageDissolve — transición Bayer (clic en los números)" height="80vh">
+        <ImageDissolveDemo />
+      </Section>
+
+      <StickyScenesDemo />
+
+      <Section title="Fin de la demo" height="40vh">
+        <p style={{ opacity: 0.6 }}>Eso es todo.</p>
+      </Section>
     </main>
+  )
+}
+
+// Genera una imagen same-origin (data URL PNG) con un gradiente y un número.
+// Los data URLs PNG NO "taintean" el canvas, así que getImageData funciona y
+// la transición dithered se ve de verdad (sin depender de archivos externos).
+function makeImage(label, from, to) {
+  const c = document.createElement('canvas')
+  c.width = 480
+  c.height = 320
+  const ctx = c.getContext('2d')
+  const grad = ctx.createLinearGradient(0, 0, 480, 320)
+  grad.addColorStop(0, from)
+  grad.addColorStop(1, to)
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, 480, 320)
+  ctx.fillStyle = 'rgba(255,255,255,0.92)'
+  ctx.font = 'bold 160px system-ui'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(label, 240, 170)
+  return c.toDataURL('image/png')
+}
+
+function ImageDissolveDemo() {
+  const [index, setIndex] = useState(0)
+  const [images] = useState(() => [
+    makeImage('1', '#7c3aed', '#22d3ee'),
+    makeImage('2', '#f59e0b', '#ef4444'),
+    makeImage('3', '#10b981', '#3b82f6'),
+  ])
+  return (
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+      <div style={{ width: 480, maxWidth: '90vw' }}>
+        <ImageDissolve src={images[index]} alt={`Imagen ${index + 1}`} duration={1000} />
+      </div>
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            style={{
+              padding: '0.5rem 1rem',
+              borderRadius: 8,
+              border: '1px solid #444',
+              background: i === index ? '#7c3aed' : '#12121f',
+              color: '#eee',
+              cursor: 'pointer',
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function StickyScenesDemo() {
+  return (
+    <StickyScenes sceneDuration={700}>
+      <StickyScenes.Scene className="ss-demo-scene">
+        <h1 style={{ fontSize: '4rem', margin: 0 }}>Escena uno</h1>
+      </StickyScenes.Scene>
+      <StickyScenes.Scene className="ss-demo-scene">
+        {/* Interpola con --aui-scene-progress via calc() puro. */}
+        <h1
+          style={{
+            fontSize: '4rem',
+            margin: 0,
+            transform: 'translateY(calc((1 - var(--aui-scene-progress, 0)) * 60px))',
+            color: 'hsl(calc(var(--aui-scene-progress, 0) * 280), 80%, 70%)',
+          }}
+        >
+          Escena dos (interpolada)
+        </h1>
+      </StickyScenes.Scene>
+      <StickyScenes.Scene className="ss-demo-scene">
+        <h1 style={{ fontSize: '4rem', margin: 0 }}>Escena tres</h1>
+      </StickyScenes.Scene>
+    </StickyScenes>
   )
 }
 
