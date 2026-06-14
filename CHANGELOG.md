@@ -39,3 +39,7 @@
 * **feat:** agregados controles a cada componente en test-app. @fethabo ([887be94](887be947b477ddca82c8a813fe961e43dfbccc0c))
 * Add Wave C canvas effects & specs @fethabo ([9007675](90076752f2e75ffd9721badaf5738b4604e8fda5))
 * Amend previous commit @fethabo ([3be50e4](3be50e48274da701e7c074c8348c7ab80b652351))
+
+## [0.6.2](@fethabo/animated-ui@0.6.1...@fethabo/animated-ui@0.6.2) (2026-06-14)
+
+* Add SplitReveal, Typewriter, StackedCards, Lava (wave A) @fethabo ([28b9156](28b91561b1101b18992099b4c2dea45a9bd6c5b5))
