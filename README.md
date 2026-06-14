@@ -59,7 +59,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 | [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
 | [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
-| [ParticleField](#particlefield) | Campo de partículas sobre canvas con repulsión/atracción configurable al cursor. |
+| [ParticleField](#particlefield) | Campo de partículas sobre canvas con repulsión/atracción al cursor, modos de deriva y líneas de conexión (constellation). |
 | [ImageDissolve](#imagedissolve) | Transición entre imágenes con dithering ordered (matriz Bayer 8×8) al cambiar `src`. |
 | [StickyScenes](#stickyscenes) | Secciones sticky que transicionan entre escenas durante el scroll, sin re-renders por frame. |
 | [StackedCards](#stackedcards) | Cards que se fijan y se apilan una sobre otra al scrollear; las de abajo se encogen/oscurecen, sin re-renders por frame. |
@@ -689,15 +689,26 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 
 ## ParticleField
 
-Campo de partículas autónomas sobre `<canvas>`, con repulsión/atracción configurable al cursor. Las partículas se mueven con velocidad aleatoria y rebotan en los bordes; dentro del radio del cursor reciben una fuerza proporcional a la proximidad. El cálculo es cursor-a-partícula (O(N)), no entre pares. El estado de las partículas vive en un ref que persiste entre frames: el RAF no re-renderiza React. Con `prefers-reduced-motion` el loop se detiene y el canvas muestra las partículas en su estado inicial estático.
+Campo de partículas autónomas sobre `<canvas>`, con repulsión/atracción configurable al cursor. Por default las partículas se mueven con velocidad aleatoria y rebotan en los bordes; dentro del radio del cursor reciben una fuerza proporcional a la proximidad. El cálculo es cursor-a-partícula (O(N)), no entre pares. El estado de las partículas vive en un ref que persiste entre frames: el RAF no re-renderiza React. Con `prefers-reduced-motion` el loop se detiene y el canvas muestra las partículas en su estado inicial estático.
 
-El canvas llena el contenedor — **dimensionalo vos** con `style`/`className` (ej. `height: '100vh'`); si el contenedor tiene tamaño cero, no se ve nada. En dispositivos touch (sin cursor de hover) las partículas se animan de forma autónoma, ignorando el puntero.
+Dos ejes opcionales extienden el campo sin cambiar el default:
+
+- **`drift`** cambia el carácter del movimiento: `'snow'` (cae con deriva horizontal), `'embers'` (sube desvaneciéndose), `'bubbles'` (sube con bamboleo), `'warp'` (campo de estrellas: nacen a lo ancho del borde superior, caen acelerando en perspectiva y se abren hacia los costados). Los modos direccionales reingresan las partículas por el borde opuesto (wrap) en vez de rebotar; `'warp'` reingresa por el borde superior. `'bounce'` (default) es el comportamiento original.
+- **`links`** activa el efecto *constellation*: líneas entre partículas cercanas (opacidad proporcional a la cercanía) y, con `linkCursor`, hacia el cursor. Esto introduce un cálculo entre pares **O(N²) opt-in** (apagado por default). Mantené `count` moderado (~80–120) y una `linkDistance` acotada al activarlo.
+
+El canvas llena el contenedor — **dimensionalo vos** con `style`/`className` (ej. `height: '100vh'`); si el contenedor tiene tamaño cero, no se ve nada. En dispositivos touch (sin cursor de hover) las partículas se animan de forma autónoma según el `drift` configurado, ignorando el puntero.
 
 ```jsx
 import { ParticleField } from '@fethabo/animated-ui'
 
+// Constellation clásico
 <div style={{ height: '100vh' }}>
-  <ParticleField count={80} color="#22d3ee" cursorInteraction="repel" />
+  <ParticleField count={100} color="#22d3ee" links linkDistance={120} />
+</div>
+
+// Nieve cayendo
+<div style={{ height: '100vh' }}>
+  <ParticleField count={120} drift="snow" cursorInteraction="repel" />
 </div>
 ```
 
@@ -709,11 +720,19 @@ import { ParticleField } from '@fethabo/animated-ui'
 | `color` | `string` | `#7c3aed` | Color de las partículas (cualquier color CSS). |
 | `cursorInteraction` | `'repel' \| 'attract' \| 'none'` | `'repel'` | Reacción al cursor dentro del radio de influencia. |
 | `cursorRadius` | `number` | `120` | Radio de influencia del cursor en px. |
-| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, detiene el RAF y muestra el estado inicial estático. |
+| `drift` | `'bounce' \| 'snow' \| 'embers' \| 'bubbles' \| 'warp'` | `'bounce'` | Modo de deriva del movimiento. Los modos direccionales hacen wrap por el borde opuesto; `'warp'` es un campo de estrellas que nace en el borde superior y reingresa por arriba. |
+| `links` | `boolean` | `false` | Dibuja líneas entre partículas cercanas (constellation). **Opt-in O(N²)**. |
+| `linkDistance` | `number` | `120` | Distancia máxima en px para conectar dos partículas. |
+| `linkColor` | `string` | — | Color de las líneas. Default: deriva del `color` de partícula. |
+| `linkWidth` | `number` | `1` | Grosor de las líneas en px. |
+| `linkCursor` | `boolean` | `true` | Conecta también las partículas cercanas al cursor con él (cuando `links` está activo). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, detiene el RAF y muestra el estado inicial estático (con las líneas dibujadas una vez si `links` está activo). |
 | `className` | `string` | — | Clases adicionales para el elemento root. |
 | `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
 
 También acepta cualquier otra prop HTML válida de `<div>`.
+
+> **Performance:** con `links={false}` (default) no se ejecuta ningún cálculo entre pares y el costo permanece O(N). Activar `links` introduce un doble loop O(N²) por frame (acotado con un descarte temprano por bounding box antes de la raíz cuadrada). Es tolerable para `count` típico de fondos; con `count` alto, reducí `linkDistance` o el `count`.
 
 ### CSS Custom Properties
 
@@ -721,6 +740,9 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | --- | --- | --- |
 | `--aui-particle-color` | `#7c3aed` | Color de las partículas. Un override por cascada prevalece sobre la prop `color`. |
 | `--aui-particle-radius` | `2px` | Radio de cada partícula. |
+| `--aui-particle-link-color` | = `color` | Color de las líneas de conexión. Prevalece sobre la prop `linkColor`. |
+| `--aui-particle-link-width` | `1px` | Grosor de las líneas de conexión. |
+| `--aui-particle-link-distance` | `120px` | Distancia máxima para conectar partículas. |
 
 ## ImageDissolve
 

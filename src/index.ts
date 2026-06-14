@@ -59,7 +59,7 @@ export { ScrollProgress } from './components/ScrollProgress'
 export type { ScrollProgressPosition, ScrollProgressProps } from './components/ScrollProgress'
 
 export { ParticleField } from './components/ParticleField'
-export type { CursorInteraction, ParticleFieldProps } from './components/ParticleField'
+export type { CursorInteraction, DriftMode, ParticleFieldProps } from './components/ParticleField'
 
 export { ImageDissolve } from './components/ImageDissolve'
 export type { ImageDissolveProps } from './components/ImageDissolve'

@@ -35,7 +35,7 @@
 
 ### Requirement: ParticleField soporta modos de deriva del movimiento
 
-`ParticleField` SHALL aceptar la prop `drift` (`'bounce' | 'snow' | 'embers' | 'bubbles'`, default `'bounce'`). `bounce` SHALL reproducir el comportamiento actual (velocidad aleatoria, rebote en bordes). `snow` SHALL hacer caer las partículas hacia abajo con deriva horizontal suave. `embers` SHALL hacerlas ascender desvaneciéndose. `bubbles` SHALL hacerlas ascender con un leve bamboleo lateral. Los modos con dirección dominante (`snow`, `embers`, `bubbles`) SHALL reingresar las partículas por el borde opuesto (wrap) al salir, en lugar de rebotar.
+`ParticleField` SHALL aceptar la prop `drift` (`'bounce' | 'snow' | 'embers' | 'bubbles' | 'warp'`, default `'bounce'`). `bounce` SHALL reproducir el comportamiento actual (velocidad aleatoria, rebote en bordes). `snow` SHALL hacer caer las partículas hacia abajo con deriva horizontal suave. `embers` SHALL hacerlas ascender desvaneciéndose. `bubbles` SHALL hacerlas ascender con un leve bamboleo lateral. `warp` SHALL hacer nacer las partículas a lo ancho del borde superior y caer acelerando en perspectiva, abriéndose hacia los costados a medida que descienden (campo de estrellas). Los modos con dirección dominante (`snow`, `embers`, `bubbles`) SHALL reingresar las partículas por el borde opuesto (wrap) al salir, en lugar de rebotar; `warp` SHALL reingresarlas por el borde superior, distribuidas a lo ancho.
 
 #### Scenario: Default reproduce el comportamiento actual
 
@@ -56,6 +56,11 @@
 
 - **WHEN** una partícula en modo `snow`/`embers`/`bubbles` sale por un borde
 - **THEN** SHALL reaparecer por el borde opuesto en lugar de invertir su velocidad
+
+#### Scenario: Campo de estrellas (warp)
+
+- **WHEN** el consumer pasa `drift="warp"`
+- **THEN** las partículas SHALL nacer a lo ancho del borde superior, caer acelerando en perspectiva y abrirse hacia los costados; al salir SHALL reingresar por arriba distribuidas a lo ancho
 
 ### Requirement: Los modos de deriva e interacción con cursor coexisten
 

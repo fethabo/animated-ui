@@ -7,10 +7,15 @@ export default {
   controls: [
     { prop: 'count', type: 'number', min: 10, max: 300, step: 10, default: 90 },
     { prop: 'color', type: 'color', default: '#22d3ee' },
+    { prop: 'drift', type: 'enum', options: ['bounce', 'snow', 'embers', 'bubbles', 'warp'], default: 'bounce' },
     { prop: 'cursorInteraction', type: 'enum', options: ['repel', 'attract', 'none'], default: 'repel' },
     { prop: 'speed', type: 'number', min: 0.1, max: 3, step: 0.1, default: 0.4 },
     { prop: 'radius', type: 'number', min: 1, max: 8, step: 1, default: 2 },
     { prop: 'cursorRadius', type: 'number', min: 40, max: 300, step: 10, default: 120 },
+    { prop: 'links', type: 'boolean', default: false },
+    { prop: 'linkDistance', type: 'number', min: 40, max: 300, step: 10, default: 120 },
+    { prop: 'linkColor', type: 'color', default: '#22d3ee' },
+    { prop: 'linkCursor', type: 'boolean', default: true },
   ],
   // El canvas llena el contenedor (la Section es position:relative).
   render: (props) => (
