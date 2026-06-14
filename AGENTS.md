@@ -37,6 +37,8 @@ Este repo usa **OpenSpec** (schema `spec-driven`):
 - Verificación: `npm test` (vitest) + verificación visual en `test-app/`.
 - Build: `npm run build` (tsup → ESM + CJS + `.d.ts`).
 
+**Harness del `test-app`**: la verificación visual se hace con un panel de controles por componente que varía sus props en runtime (`test-app/src/harness/ControlPanel.jsx` + un módulo por componente en `test-app/src/demos/`). Todo componente nuevo SHALL llegar con su demo + descriptor de controles (es parte del definition-of-done de [component-authoring](openspec/specs/component-authoring/spec.md)): basta declarar el array de controles (`number`/`color`/`enum`/`boolean`/`text`/`multi`) y agregarlo a `demos/index.js`.
+
 ## Convenciones rápidas
 
 - CSS custom properties con namespace `--aui-<componente>-*`.
