@@ -44,7 +44,8 @@ Categoría nueva, sin decisiones arquitectónicas (RAF o CSS puro).
 | **ShinyText** ✅ | Brillo que barre el texto en loop. | CSS puro con `background-clip: text`. Hecho en v0.3. |
 | **GradientText** ✅ | Texto con gradiente animado. | Fusionado con ShinyText (colores de base y brillo customizables), como anticipaba el roadmap. |
 | **ScrambleText** ✅ | El texto se "descifra" carácter por carácter (efecto decrypt/Matrix). | RAF que muta `textContent` via ref; sin DOM pesado ni re-renders por frame. Hecho en v0.3. |
-| **SplitReveal** | Entrada con stagger por carácter o palabra. | ⚠️ Partir texto en spans rompe accesibilidad: requiere `aria-label` con el texto completo en el contenedor. |
+| **SplitReveal** 🔜 | Entrada con stagger por carácter, palabra o **línea**; presets `fade`/`slide-up`/`blur`; dispara al montar o en viewport. | ⚠️ Partir texto en spans rompe accesibilidad: requiere `aria-label` con el texto completo en el contenedor. CSS puro + `useInView`. Wave A — change [`text-reveal-stacked-cards-lava`](openspec/changes/text-reveal-stacked-cards-lava/). |
+| **TypewriterText** 🔜 | Revelado tipo máquina de escribir, con cursor parpadeante y modo loop multi-string (escribe→borra→siguiente). | RAF que muta `textContent` por ref (patrón ScrambleText), accesible via `aria-label`. Wave A. |
 
 ## Tier 3 — Scroll y parallax
 
@@ -56,6 +57,7 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
 | **ParallaxLayers** ✅ | Capas con profundidades distintas ligadas a la posición de scroll. | Hecho en v0.5: `Layer` con `depth` (API simétrica a MouseParallax); el tracking solo corre con el contenedor cerca del viewport (`useInView` + scroll driver). |
 | **ScrollProgress** ✅ | Barra/indicador de progreso de lectura. | Hecho en v0.5: barra fija con `scaleX` compositado, `aria-hidden`, activa bajo reduced motion. |
 | **StickyScenes** ✅ | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Hecho en v0.6: inner wrapper `position: sticky` + altura `100dvh + nScenes × sceneDuration`; progreso como `--aui-scene-index`/`--aui-scene-progress` y activación via `data-aui-active`, sin React state en el hot path. Reutiliza el motor de v0.5. |
+| **StackedCards** 🔜 | Cards que se fijan y se **apilan** una sobre otra al scrollear; las de abajo se encogen y oscurecen. | `position: sticky` nativo + scroll-driver para profundidad (`--aui-stack-depth`), sin React state en el hot path. Distinto de StickyScenes (que hace cross-fade en un viewport fijo). Wave A. |
 
 ### Decisión resuelta (v0.5): motor de scroll
 
@@ -84,8 +86,20 @@ Motor existente, pero costo alto por pieza.
 | Componente | Descripción | Notas técnicas |
 | --- | --- | --- |
 | **ParticleField** ✅ | Partículas con repulsión/atracción al cursor. | Hecho en v0.6: canvas + RAF propio con física en módulo puro (`physics.ts`); fuerza cursor-a-partícula (O(N)), rebote en bordes, estado en ref (sin re-renders por frame). |
-| **WaveCanvas / GooeyBlobs** | Blobs orgánicos que respiran y reaccionan al mouse. | Canvas; evaluar costo de blur por frame. |
+| **ParticleField: constellation + drift** 🔜 | Extensión: líneas entre partículas cercanas y al cursor (opt-in O(N²)) + modos de deriva (`snow`/`embers`/`bubbles`). | Extiende `physics.ts`; defaults preservan el comportamiento actual. Wave B — change [`particle-field-constellation-drift`](openspec/changes/particle-field-constellation-drift/). |
+| **WaveCanvas / GooeyBlobs** | Blobs orgánicos que respiran y reaccionan al mouse. | Canvas; evaluar costo de blur por frame. La estética "lava lamp" se cubre antes como variante CSS `lava` de AnimatedBackground (Wave A). |
 | **ImageDissolve** ✅ | Transición de imagen con dithering ordenado. | Hecho en v0.6: ♻️ reutiliza la matriz Bayer (extraída a `src/utils/bayer-matrix.ts`, compartida con el behavior `reveal` de PixelBackground); `drawImage` + `getImageData` sobre canvas superpuesto, con degradación ante CORS. |
+| **CircuitBackground** 🔜 | Fondo de circuito PCB generado proceduralmente (seedable), con pulsos de luz recorriendo las pistas. | Canvas + RAF + **PRNG seedable** nuevo (`src/utils/prng.ts`) y `polyline-pulse`. Ruteo = random walk ortogonal con pads (no autorouter). Wave C — change [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
+| **TeslaCoil** 🔜 | Nodo central que arroja rayos jagged hacia afuera; en hover dirige rayos al cursor. | Canvas + RAF + helper `jagged-bolt` (midpoint-displacement seedado). `pointer-events:none` sobre `children`. Wave C. |
+
+## Tier 5 — Cursor / Idle (director de atención)
+
+Categoría nueva. Efectos que reaccionan a la **inactividad** del puntero para guiar la atención del usuario hacia un elemento. Canvas overlay `pointer-events:none`. Se desactivan bajo `prefers-reduced-motion` (son autónomos, no input directo).
+
+| Componente | Descripción | Notas técnicas |
+| --- | --- | --- |
+| **AttentionCue** 🔜 | Tras inactividad del mouse, dibuja un trazo dirigido hacia un elemento referenciado ("mostrar el camino" a un botón). Modos ambient/directed. | Idea #6 · **paso 1 (cue simple)**. idle-watcher + geometría cursor→`target` (`RefObject`/`Element`/selector). Customizable: `idleDelay`, `color`, `duration`, `speed`, `maxDistance`. Wave C. |
+| **GuidingBranches** 🔜 | Igual idea pero con **ramas orgánicas** que crecen desde el puntero; ambient (todas direcciones) o directed (sesgadas al target). | Idea #6 · **paso final**. Estéticas **intercambiables y extensibles** (`roots`/`lightning`/…) como módulos en `aesthetics/`; reutiliza PRNG, `jagged-bolt` e idle-watcher. Customizable: color, duración, velocidad, distancia máxima, densidad. Wave C. |
 
 ## Secuencia de releases
 
@@ -96,6 +110,9 @@ Motor existente, pero costo alto por pieza.
 | **v0.4** ✅ | ScrollReveal + MouseParallax | Hook `useInView` (IntersectionObserver) |
 | **v0.5** ✅ | ParallaxLayers + ScrollProgress | **Motor de scroll** (design.md propio) |
 | **v0.6+** ✅ | ParticleField + ImageDissolve + StickyScenes | Ninguna nueva — reutiliza canvas+RAF, la matriz Bayer y el motor de scroll de v0.5; cierra Tier 4 (canvas) y Tier 3 (scroll). |
+| **Wave A** ⬜ | TypewriterText + SplitReveal + StackedCards + variante `lava` | Ninguna — reutiliza RAF de texto, CSS puro + `useInView`, scroll-driver y variantes CSS. Change: [`text-reveal-stacked-cards-lava`](openspec/changes/text-reveal-stacked-cards-lava/). |
+| **Wave B** ⬜ | ParticleField: constellation/links + modos de deriva | Ninguna — extiende el motor canvas existente (líneas O(N²) opt-in). Change: [`particle-field-constellation-drift`](openspec/changes/particle-field-constellation-drift/). |
+| **Wave C** ⬜ | CircuitBackground + TeslaCoil + AttentionCue + GuidingBranches | **Primitivas generativas nuevas**: PRNG seedable + helpers de trazo/pulso/rayo (design.md propio). Change: [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
 
 Una tanda = un change de OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
 
