@@ -43,3 +43,7 @@
 ## [0.6.2](@fethabo/animated-ui@0.6.1...@fethabo/animated-ui@0.6.2) (2026-06-14)
 
 * Add SplitReveal, Typewriter, StackedCards, Lava (wave A) @fethabo ([28b9156](28b91561b1101b18992099b4c2dea45a9bd6c5b5))
+
+## [0.6.3](@fethabo/animated-ui@0.6.2...@fethabo/animated-ui@0.6.3) (2026-06-14)
+
+* **feat:** ParticleField: add drift modes & links (wave b) @fethabo ([f40940f](f40940f72cb75e0e7c67b17a1af89f93f2f40e00))
