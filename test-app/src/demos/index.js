@@ -12,9 +12,12 @@ import mouseParallax from './MouseParallax.jsx'
 import parallaxLayers from './ParallaxLayers.jsx'
 import scrollReveal from './ScrollReveal.jsx'
 import scrambleText from './ScrambleText.jsx'
+import typewriterText from './TypewriterText.jsx'
+import splitReveal from './SplitReveal.jsx'
 import particleField from './ParticleField.jsx'
 import imageDissolve from './ImageDissolve.jsx'
 import stickyScenes from './StickyScenes.jsx'
+import stackedCards from './StackedCards.jsx'
 
 export const demos = [
   scrollProgress,
@@ -29,7 +32,10 @@ export const demos = [
   parallaxLayers,
   scrollReveal,
   scrambleText,
+  typewriterText,
+  splitReveal,
   particleField,
   imageDissolve,
   stickyScenes,
+  stackedCards,
 ]

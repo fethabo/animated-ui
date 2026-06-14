@@ -1,3 +1,8 @@
+## RENAMED Requirements
+
+- FROM: `### Requirement: El componente soporta cuatro variantes de animación`
+- TO: `### Requirement: El componente soporta cinco variantes de animación`
+
 ## MODIFIED Requirements
 
 ### Requirement: El componente soporta cinco variantes de animación

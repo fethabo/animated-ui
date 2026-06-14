@@ -6,6 +6,7 @@ import { aurora } from './variants/aurora'
 import { mesh } from './variants/mesh'
 import { noise } from './variants/noise'
 import { beam } from './variants/beam'
+import { lava } from './variants/lava'
 import type {
   AnimatedBackgroundProps,
   AnimatedBackgroundVariant,
@@ -19,6 +20,7 @@ const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant>
   mesh,
   noise,
   beam,
+  lava,
 }
 
 // CSS base compartido por todas las variantes. La regla [data-aui-static]

@@ -76,6 +76,21 @@
       "import": "./dist/scroll-reveal.js",
       "require": "./dist/scroll-reveal.cjs"
     },
+    "./typewriter-text": {
+      "types": "./dist/typewriter-text.d.ts",
+      "import": "./dist/typewriter-text.js",
+      "require": "./dist/typewriter-text.cjs"
+    },
+    "./split-reveal": {
+      "types": "./dist/split-reveal.d.ts",
+      "import": "./dist/split-reveal.js",
+      "require": "./dist/split-reveal.cjs"
+    },
+    "./stacked-cards": {
+      "types": "./dist/stacked-cards.d.ts",
+      "import": "./dist/stacked-cards.js",
+      "require": "./dist/stacked-cards.cjs"
+    },
     "./mouse-parallax": {
       "types": "./dist/mouse-parallax.d.ts",
       "import": "./dist/mouse-parallax.js",

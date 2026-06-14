@@ -45,7 +45,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 
 | Componente | Descripción |
 | --- | --- |
-| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise` y `beam`. |
+| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise`, `beam` y `lava`. |
 | [PixelBackground](#pixelbackground) | Grilla de píxeles sobre canvas con behaviors combinables: `hover`, `idle` y `reveal`. |
 | [TiltCard](#tiltcard) | Card con efecto 3D tilt via WAAPI, con glare opcional y render prop de estado. |
 | [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
@@ -53,17 +53,22 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [MagneticElement](#magneticelement) | Wrapper que atrae su contenido hacia el cursor, con retorno elástico y render prop. |
 | [ShinyText](#shinytext) | Texto con un brillo que lo barre en loop, CSS puro; sirve también como texto con gradiente. |
 | [ScrambleText](#scrambletext) | Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix), accesible. |
+| [TypewriterText](#typewritertext) | Revela texto carácter por carácter (máquina de escribir) con cursor parpadeante y modo loop multi-string, accesible. |
 | [ScrollReveal](#scrollreveal) | Revela su contenido al entrar al viewport, con dirección y stagger entre hijos. |
+| [SplitReveal](#splitreveal) | Parte el texto en char/word/line y revela cada unidad con stagger (presets `fade`/`slide-up`/`blur`), CSS puro y accesible. |
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 | [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
 | [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
 | [ParticleField](#particlefield) | Campo de partículas sobre canvas con repulsión/atracción configurable al cursor. |
 | [ImageDissolve](#imagedissolve) | Transición entre imágenes con dithering ordered (matriz Bayer 8×8) al cambiar `src`. |
 | [StickyScenes](#stickyscenes) | Secciones sticky que transicionan entre escenas durante el scroll, sin re-renders por frame. |
+| [StackedCards](#stackedcards) | Cards que se fijan y se apilan una sobre otra al scrollear; las de abajo se encogen/oscurecen, sin re-renders por frame. |
 
 ## AnimatedBackground
 
 Background animado renderizado con CSS puro (sin JS por frame). Se posiciona `absolute, inset: 0` para cubrir su contenedor `position: relative`, o el viewport completo con `fixed`. Cada variante tiene defaults visualmente atractivos y expone sus colores, velocidad e intensidad tanto por props como por CSS custom properties.
+
+**Variante `lava`:** blobs opacos que ascienden y descienden fundiéndose con el truco "gooey" (`filter: blur() + contrast()`), evocando una lámpara de lava. El `filter` sobre áreas grandes tiene costo de pintado: rinde mejor en contenedores acotados que a pantalla completa en gama baja. Con `prefers-reduced-motion` degrada a una composición estática de los blobs fundidos.
 
 ```jsx
 import { AnimatedBackground } from '@fethabo/animated-ui'
@@ -79,7 +84,7 @@ import { AnimatedBackground } from '@fethabo/animated-ui'
 
 | Prop | Tipo | Default | Descripción |
 | --- | --- | --- | --- |
-| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam'` | `'aurora'` | Variante visual de la animación. |
+| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam' \| 'lava'` | `'aurora'` | Variante visual de la animación. |
 | `colors` | `string[]` | colores de la variante | Paleta de la animación (hasta 4 colores); los no provistos caen al default de la variante. |
 | `speed` | `number` | según variante | Segundos que tarda un ciclo completo de la animación. |
 | `intensity` | `number` | `1` | Intensidad/opacidad global del efecto, de 0 a 1. |
@@ -120,6 +125,14 @@ Todas se pueden pisar desde tu CSS en cascada, e.g. `.mi-bg { --aui-aurora-speed
 | `--aui-beam-speed` | `16s` | Duración de una rotación completa. |
 | `--aui-beam-blur` | `24px` | Desenfoque que suaviza los bordes de los rayos. |
 | `--aui-beam-opacity` | `1` | Intensidad global del efecto. |
+| `--aui-lava-base` | `#160a2b` | Color de fondo opaco detrás de los blobs. |
+| `--aui-lava-color-1` | `#ff4d6d` | Primer color de blob. |
+| `--aui-lava-color-2` | `#ff924d` | Segundo color de blob. |
+| `--aui-lava-speed` | `16s` | Duración de un ascenso/descenso completo. |
+| `--aui-lava-blur` | `16px` | Desenfoque del truco gooey. |
+| `--aui-lava-contrast` | `16` | Contraste que "endurece" los bordes del blur (fusión gooey). |
+| `--aui-lava-size` | `280px` | Diámetro base de los blobs. |
+| `--aui-lava-opacity` | `1` | Intensidad global del efecto. |
 
 ## PixelBackground
 
@@ -427,6 +440,43 @@ También acepta cualquier otra prop HTML válida de `<span>`.
 | --- | --- | --- |
 | `--aui-scramble-color` | `currentColor` | Color de los caracteres mientras dura el scramble (al terminar, el texto vuelve a heredar su color). |
 
+## TypewriterText
+
+Revela texto carácter por carácter (efecto máquina de escribir). Mismo motor que `ScrambleText`: un loop de `requestAnimationFrame` muta el texto via ref (sin re-renders por frame), con progresión por timestamps — misma velocidad en displays de 60 y 144 Hz. Pasando un `string[]` con `loop`, cicla escribiendo → pausando → borrando → siguiente. El cursor parpadea con una animación CSS (sin JS por frame). Es accesible: el root expone `aria-label` con el texto completo y los caracteres intermedios están ocultos para lectores de pantalla.
+
+**Tipografía:** el cursor es un elemento inline; con fuentes proporcionales el texto puede "saltar" al escribir. Para textos sensibles a layout usá monospace (mismo caveat que `ScrambleText`).
+
+```jsx
+import { TypewriterText } from '@fethabo/animated-ui'
+
+// Un solo string
+<TypewriterText text="Hola, soy Claude." speed={30} />
+
+// Modo loop multi-string
+<TypewriterText text={['Diseño', 'Código', 'Arte']} loop cursor="_" />
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `text` | `string \| string[]` | — (requerida) | Texto a escribir. Un `string[]` con `loop` cicla entre los strings. Es texto plano, no `children`. |
+| `speed` | `number` | `30` | Caracteres escritos por segundo. |
+| `startDelay` | `number` | `0` | Milisegundos antes de comenzar a escribir. |
+| `cursor` | `boolean \| string` | `true` | Cursor al final: `true` usa `|`, un string usa ese glifo, `false` lo desactiva. |
+| `deleteSpeed` | `number` | `30` | Caracteres borrados por segundo en modo loop. |
+| `pauseDuration` | `number` | `1500` | Milisegundos de pausa con el string completo antes de borrar. |
+| `loop` | `boolean` | `false` | Con un `string[]`, cicla indefinidamente (escribe→pausa→borra→siguiente). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` muestra el texto final completo de inmediato, sin escritura ni parpadeo. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-typewriter-cursor-speed` | `1s` | Velocidad de parpadeo del cursor (solo via CSS). |
+
 ## ScrollReveal
 
 Revela su contenido al entrar al viewport (IntersectionObserver via el hook [`useInView`](#hooks)), con fade + desplazamiento configurable y stagger entre hijos directos. La entrada es una CSS transition pura: el JavaScript solo togglea un atributo, cero JS por frame.
@@ -469,6 +519,51 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-reveal-easing` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva de la transición (solo via CSS). |
 
 `--aui-reveal-i` es una variable de runtime (índice por item, escrita por el componente); no la setees a mano. Los items animan con `translate` (propiedad independiente, browsers 2022+), que no pisa el `transform` de tu contenido.
+
+## SplitReveal
+
+Parte un texto en unidades (`char`, `word` o `line`) y revela cada una con stagger. La entrada es una CSS transition pura (cero JS por frame): el JavaScript solo togglea un atributo. Dispara al montar (`trigger="mount"`) o al entrar al viewport (`trigger="in-view"`, vía [`useInView`](#hooks)).
+
+**Pre-hidratación y accesibilidad:** el texto se renderiza completo y visible desde el primer paint (SSR/SEO) y se parte en spans recién tras la hidratación. El root porta el texto completo en `aria-label` y las unidades partidas son `aria-hidden`, así los lectores de pantalla anuncian el texto original, no los fragmentos. Con reduced motion (o sin IntersectionObserver) se muestra el texto completo de inmediato.
+
+**Modo `line`:** partir por línea depende del wrapping real (ancho del contenedor, fuente cargada). Se mide tras el montaje y se re-mide en resize (vía `useResizeObserver`); todas las palabras de una misma línea revelan juntas.
+
+```jsx
+import { SplitReveal } from '@fethabo/animated-ui'
+
+<h1>
+  <SplitReveal text="Animación con stagger" split="word" preset="slide-up" />
+</h1>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `text` | `string` | — (requerida) | Texto a revelar. Es un string plano, no `children`. |
+| `split` | `'char' \| 'word' \| 'line'` | `'word'` | Unidad de partición. |
+| `preset` | `'fade' \| 'slide-up' \| 'blur'` | `'slide-up'` | Animación de entrada de cada unidad. |
+| `trigger` | `'mount' \| 'in-view'` | `'in-view'` | Qué dispara el revelado. |
+| `stagger` | `number` | `0.05` | Segundos de delay incremental entre unidades. |
+| `duration` | `number` | `0.6` | Duración de la transición de cada unidad, en segundos. |
+| `distance` | `number` | `16` | Desplazamiento inicial en px para `slide-up`. |
+| `threshold` | `number` | `0.15` | Fracción visible que dispara el revelado con `trigger="in-view"`. |
+| `once` | `boolean` | `true` | Si es `false`, se re-oculta al salir del viewport y re-revela al re-entrar. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` muestra el texto completo de inmediato, sin stagger ni animación. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-split-duration` | `0.6s` | Duración de la transición de cada unidad. |
+| `--aui-split-stagger` | `0.05s` | Delay incremental entre unidades. |
+| `--aui-split-distance` | `16px` | Desplazamiento inicial del preset `slide-up`. |
+| `--aui-split-blur` | `8px` | Desenfoque inicial del preset `blur`. |
+| `--aui-split-easing` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva de la transición (solo via CSS). |
+
+`--aui-split-i` es una variable de runtime (índice por unidad, o índice de línea medido en modo `line`); no la setees a mano.
 
 ## MouseParallax
 
@@ -699,6 +794,46 @@ import { StickyScenes } from '@fethabo/animated-ui'
 | `--aui-scene-progress` | `0` | Progreso [0, 1] dentro de la escena activa, usable con `calc()`. Variable de runtime. |
 
 Ambas son escritas por el componente en cada frame; no las setees a mano.
+
+## StackedCards
+
+Apila sus hijos directos durante el scroll: cada card se envuelve en un wrapper `position: sticky` que se fija a `offsetTop` y se va apilando sobre la anterior (la más reciente queda arriba). Las cards tapadas se encogen y/o oscurecen según cuántas tienen encima, creando profundidad. El apilado físico lo da el `sticky` nativo (el navegador hace el pin gratis); el scroll-driver (`subscribeScroll` + RAF) solo calcula la profundidad por card y la escribe como `--aui-stack-depth` — **sin React state en el hot path**. El tracking corre solo cuando el contenedor está cerca del viewport (vía [`useInView`](#hooks)).
+
+**Recorrido:** cada wrapper reserva `cardTravel` px de scroll (también es su altura). Funciona mejor con cards de altura similar; con alturas muy dispares el recorrido reservado puede no calzar perfecto. Con `prefers-reduced-motion` el tracking se apaga y las cards quedan en un layout sticky estático y legible.
+
+```jsx
+import { StackedCards } from '@fethabo/animated-ui'
+
+<StackedCards offsetTop={80} scaleStep={0.05} opacityStep={0.1} cardTravel={500}>
+  <div className="card">Uno</div>
+  <div className="card">Dos</div>
+  <div className="card">Tres</div>
+</StackedCards>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `offsetTop` | `number` | `0` | Píxeles desde el top del viewport donde se fija el stack (e.g. para un header fijo). |
+| `scaleStep` | `number` | `0.05` | Cuánto se encoge cada card por nivel de profundidad (0–1). |
+| `opacityStep` | `number` | `0` | Cuánto se oscurece cada card por nivel de profundidad (0–1). `0` desactiva el oscurecimiento. |
+| `cardTravel` | `number` | `400` | Píxeles de scroll dedicados a cada card (define el recorrido y la altura del wrapper). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` deja las cards sticky estáticas, sin escala/opacidad ligadas al scroll. |
+| `children` | `ReactNode` | — | Cada hijo directo se envuelve en un wrapper sticky. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-stack-offset` | `0px` | Offset superior donde se fija el stack. |
+| `--aui-stack-scale-step` | `0.05` | Reducción de escala por nivel de profundidad. |
+| `--aui-stack-opacity-step` | `0` | Oscurecimiento por nivel de profundidad. |
+| `--aui-stack-travel` | `400px` | Recorrido de scroll / altura de cada wrapper. |
+
+`--aui-stack-depth` (profundidad por card) y `--aui-stack-i` (índice por card) son variables de runtime escritas por el componente; podés usarlas con `calc()` para efectos derivados, pero no las setees a mano.
 
 ## Hooks
 

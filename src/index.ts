@@ -35,6 +35,20 @@ export type { ScrambleTextProps, ScrambleTrigger } from './components/ScrambleTe
 export { ScrollReveal } from './components/ScrollReveal'
 export type { RevealDirection, ScrollRevealProps } from './components/ScrollReveal'
 
+export { TypewriterText } from './components/TypewriterText'
+export type { TypewriterTextProps } from './components/TypewriterText'
+
+export { SplitReveal } from './components/SplitReveal'
+export type {
+  SplitMode,
+  SplitPreset,
+  SplitRevealProps,
+  SplitTrigger,
+} from './components/SplitReveal'
+
+export { StackedCards } from './components/StackedCards'
+export type { StackedCardsProps } from './components/StackedCards'
+
 export { MouseParallax } from './components/MouseParallax'
 export type { MouseParallaxLayerProps, MouseParallaxProps } from './components/MouseParallax'
 
