@@ -47,3 +47,7 @@
 ## [0.6.3](@fethabo/animated-ui@0.6.2...@fethabo/animated-ui@0.6.3) (2026-06-14)
 
 * **feat:** ParticleField: add drift modes & links (wave b) @fethabo ([f40940f](f40940f72cb75e0e7c67b17a1af89f93f2f40e00))
+
+## [0.6.4](@fethabo/animated-ui@0.6.3...@fethabo/animated-ui@0.6.4) (2026-06-15)
+
+* Add Circuit, Tesla, Attention and Branches @fethabo ([a593efc](a593efcff5090804c8851fa5af76e9482e0b554b))
