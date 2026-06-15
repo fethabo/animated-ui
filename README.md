@@ -63,6 +63,10 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [ImageDissolve](#imagedissolve) | Transición entre imágenes con dithering ordered (matriz Bayer 8×8) al cambiar `src`. |
 | [StickyScenes](#stickyscenes) | Secciones sticky que transicionan entre escenas durante el scroll, sin re-renders por frame. |
 | [StackedCards](#stackedcards) | Cards que se fijan y se apilan una sobre otra al scrollear; las de abajo se encogen/oscurecen, sin re-renders por frame. |
+| [CircuitBackground](#circuitbackground) | Fondo de circuito PCB generado proceduralmente (seedable y determinista), con pulsos de luz recorriendo las pistas. |
+| [TeslaCoil](#teslacoil) | Nodo central que arroja rayos jagged hacia afuera; en hover dirige un rayo al cursor. `children` interactivo. |
+| [AttentionCue](#attentioncue) | Tras inactividad del mouse, dibuja un trazo dirigido a un elemento (modo directed) o ambiental. *Idle / Attention.* |
+| [GuidingBranches](#guidingbranches) | Tras inactividad, ramas orgánicas generativas que crecen desde el puntero, con estéticas intercambiables. *Idle / Attention.* |
 
 ## AnimatedBackground
 
@@ -856,6 +860,195 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-stack-travel` | `400px` | Recorrido de scroll / altura de cada wrapper. |
 
 `--aui-stack-depth` (profundidad por card) y `--aui-stack-i` (índice por card) son variables de runtime escritas por el componente; podés usarlas con `calc()` para efectos derivados, pero no las setees a mano.
+
+## CircuitBackground
+
+Fondo de circuito estilo PCB sobre `<canvas>`: las pistas (trazos ortogonales con giros a 90° y pads en uniones/terminaciones) se generan proceduralmente con un random walk sobre una grilla, y pulsos de luz (cabeza con glow + estela que decae) viajan por ellas. El ruteo favorece **tramos largos y continuos** —al toparse con otra pista o el borde, gira para rodear el obstáculo en vez de cortarse—, y la cantidad de pistas escala con `density`. La generación es **determinista por `seed`**: la misma `seed` + tamaño + `density` produce exactamente el mismo trazado, estable entre el render del servidor y la hidratación (sin saltos visuales). Toda la aleatoriedad pasa por un PRNG seedable interno — nunca `Math.random()`. Las pistas/pads se dibujan una sola vez en un canvas offscreen y se componen cada frame; solo los pulsos se recalculan por frame.
+
+El canvas llena el contenedor — **dimensionalo vos** con `style`/`className`. Con `prefers-reduced-motion` el circuito se dibuja estático y los pulsos no se animan.
+
+```jsx
+import { CircuitBackground } from '@fethabo/animated-ui'
+
+<div style={{ height: '100vh' }}>
+  <CircuitBackground seed="hero" trackColor="#1e3a5f" pulseColor="#22d3ee" pulseCount={10} />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `seed` | `string \| number` | `'aui'` | Semilla del trazado. Misma seed + tamaño + `density` ⇒ mismo circuito. |
+| `density` | `number` | `1` | Densidad de pistas por área: escala (lineal) la cantidad de trazos generados. |
+| `trackColor` | `string` | `#1e3a5f` | Color de pistas y pads (cualquier color CSS). |
+| `pulseColor` | `string` | `#22d3ee` | Color de los pulsos de luz. |
+| `pulseSpeed` | `number` | `90` | Velocidad de los pulsos en px/s. |
+| `pulseCount` | `number` | `8` | Cantidad de pulsos simultáneos. |
+| `lineWidth` | `number` | `2` | Grosor de las pistas en px. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, dibuja el circuito estático sin animar los pulsos. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-circuit-track-color` | `#1e3a5f` | Color de las pistas. Prevalece sobre la prop `trackColor`. |
+| `--aui-circuit-pulse-color` | `#22d3ee` | Color de los pulsos. Prevalece sobre `pulseColor`. |
+| `--aui-circuit-pulse-speed` | `90` | Velocidad de los pulsos en px/s (numérico, sin unidad). |
+| `--aui-circuit-line-width` | `2px` | Grosor de las pistas. |
+
+## TeslaCoil
+
+Una bobina de Tesla sobre `<canvas>`: un nodo central del que emanan rayos (arcos eléctricos jagged) hacia afuera en todas direcciones, regenerándose para dar sensación de descarga continua. Con `followCursor` (default) y el cursor sobre el contenedor, dirige `cursorBolts` rayos hacia el puntero — más **gruesos, brillantes y con núcleo blanco** que los ambientales (como un arco que salta hacia la mano), todos convergiendo en el punto del cursor, y regenerados cada frame para que crepiten siguiéndolo. Con `cursorTrigger="click"` esos rayos salen **solo mientras se mantiene presionado**. El tracking es por ref, **sin re-renders por frame**. El trazo quebrado se genera con subdivisión midpoint-displacement seedada por el PRNG interno.
+
+El canvas tiene `pointer-events: none`: los `children` superpuestos (un botón, un título) siguen siendo interactivos. En dispositivos touch (sin hover) se emiten solo los rayos ambientales. Con `prefers-reduced-motion` los rayos ambientales se dibujan una vez sin regenerarse.
+
+```jsx
+import { TeslaCoil } from '@fethabo/animated-ui'
+
+<div style={{ height: 400 }}>
+  <TeslaCoil color="#7dd3fc" boltCount={9} reach={200}>
+    <button>Cargar</button>
+  </TeslaCoil>
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `color` | `string` | `#7dd3fc` | Color de los rayos y el glow. |
+| `boltCount` | `number` | `7` | Cantidad de rayos ambientales. |
+| `lineWidth` | `number` | `2` | Grosor de los rayos en px. |
+| `frequency` | `number` | `12` | Regeneraciones por segundo de los rayos ambientales. |
+| `reach` | `number` | `160` | Alcance/longitud máxima de los rayos en px. |
+| `jitter` | `number` | `18` | Magnitud de la desviación jagged del trazo en px. |
+| `followCursor` | `boolean` | `true` | Dirige rayos al cursor (ignorado en touch). |
+| `cursorBolts` | `number` | `3` | Cantidad de rayos dirigidos al cursor (más intensos que los ambientales). |
+| `cursorTrigger` | `'hover' \| 'click'` | `'hover'` | Cuándo salen los rayos al cursor: con el cursor encima, o solo mientras se mantiene presionado. |
+| `origin` | `{ x: number; y: number }` | `{ x: 0.5, y: 0.5 }` | Posición del nodo central como fracción del contenedor. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, no regenera los rayos (cuadro estático). |
+| `children` | `ReactNode` | — | Contenido superpuesto e interactivo. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-tesla-color` | `#7dd3fc` | Color de los rayos. Prevalece sobre la prop `color`. |
+| `--aui-tesla-line-width` | `2px` | Grosor de los rayos. |
+| `--aui-tesla-reach` | `160` | Alcance de los rayos en px (numérico, sin unidad). |
+| `--aui-tesla-jitter` | `18` | Magnitud del jitter en px (numérico, sin unidad). |
+| `--aui-tesla-frequency` | `12` | Regeneraciones por segundo (numérico, sin unidad). |
+
+## Idle / Attention
+
+`AttentionCue` y `GuidingBranches` son **directores de atención**: reaccionan a la **inactividad** del puntero para guiar la mirada del usuario hacia un elemento (un CTA, un botón). Tras `idleDelay` ms sin movimiento dibujan un cue dirigido hacia un `target` (modo *directed*) o ambiental (sin `target`); cualquier movimiento lo retrae y reinicia el temporizador. Ambos usan un overlay `pointer-events: none` (nunca bloquean clicks) y, por ser efectos **autónomos disparados por temporizador**, se **desactivan por completo** con `prefers-reduced-motion`. `AttentionCue` es el cue simple (un trazo); `GuidingBranches` es la versión orgánica (ramas generativas con estéticas intercambiables).
+
+> **UX:** usalos con mesura. Un `idleDelay` corto que dispare animaciones agresivas se siente intrusivo; el default es conservador. Son ayudas de atención, no dark patterns.
+
+## AttentionCue
+
+Director de atención simple. Tras `idleDelay` ms sin mover el puntero dentro de su área, dispara un **destello de luz** que viaja desde el cursor hacia un elemento `target` (modo **directed**, "mostrando el camino") o irradiando en varias direcciones alrededor del cursor (modo **ambient**, sin `target`). Por default se muestra **solo la luz** —un cometa con glow que aparece y se desvanece como un flash—, sin línea sólida debajo; `showGuide` agrega una línea-guía tenue. El recorrido puede cambiarse con `marker`: `'beam'` (haz de luz, default) o `'footprints'` (huellas que avanzan hacia el destino, alternando izquierda/derecha). El trazo puede arquearse (`curve`) y la punta cambiarse (`head`: flecha, punto o ninguna). El `target` acepta un `RefObject`, un `Element` o un selector CSS, y se resuelve al activarse el cue (si no matchea, degrada a ambient sin error). Cualquier movimiento del puntero lo desvanece y reinicia el temporizador. Todo el timing y el tracking operan por ref/handlers, sin re-renders por frame.
+
+El overlay tiene `pointer-events: none`: los clicks pasan al contenido. Con `prefers-reduced-motion` el cue no se dibuja.
+
+```jsx
+import { useRef } from 'react'
+import { AttentionCue } from '@fethabo/animated-ui'
+
+const ctaRef = useRef(null)
+
+<AttentionCue target={ctaRef} idleDelay={2500} color="#fbbf24" head="arrow" curve={0.3} maxDistance={240}>
+  <div style={{ height: 400 }}>
+    {/* ...contenido... */}
+    <button ref={ctaRef}>Empezá acá</button>
+  </div>
+</AttentionCue>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `target` | `RefObject \| Element \| string` | — | Elemento hacia el que dirigir el cue. Sin él ⇒ modo ambient. |
+| `idleDelay` | `number` | `2000` | Ms de inactividad antes de dibujar el cue. |
+| `color` | `string` | `#fbbf24` | Color del trazo. |
+| `duration` | `number` | `700` | Ms que el cometa permanece antes de re-barrer. |
+| `speed` | `number` | `420` | Velocidad de avance del trazo en px/s. |
+| `maxDistance` | `number` | `220` | Distancia máxima en px que el cue alcanza desde el puntero. |
+| `lineWidth` | `number` | `3` | Grosor del trazo en px. |
+| `head` | `'arrow' \| 'dot' \| 'none'` | `'arrow'` | Estilo de la punta del cue. |
+| `marker` | `'beam' \| 'footprints'` | `'beam'` | Qué recorre el camino: el haz de luz o una hilera de huellas. |
+| `curve` | `number` | `0` | Curvatura del trazo (0 = recto, 1 = muy curvo). |
+| `showGuide` | `boolean` | `false` | Dibuja una línea-guía tenue bajo la luz; por default solo se ve la luz. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, no dibuja el cue (efecto autónomo). |
+| `children` | `ReactNode` | — | Área monitoreada / contenido. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-cue-color` | `#fbbf24` | Color del trazo. Prevalece sobre la prop `color`. |
+| `--aui-cue-duration` | `700` | Permanencia del cometa en ms (numérico, sin unidad). |
+| `--aui-cue-speed` | `420` | Velocidad de avance en px/s (numérico, sin unidad). |
+| `--aui-cue-max-distance` | `220` | Distancia máxima desde el puntero en px (numérico, sin unidad). |
+| `--aui-cue-line-width` | `3px` | Grosor del trazo. |
+| `--aui-cue-curve` | `0` | Curvatura del trazo (numérico, sin unidad). Prevalece sobre `curve`. |
+
+## GuidingBranches
+
+Interacción del puntero pausado con su entorno. Tras `idleDelay` ms de inactividad, hace **crecer un trazo generativo** desde la posición del puntero, dibujándose progresivamente con sub-ramificaciones. El uso principal es **ambient** (sin `target`): el trazo se expande en los **360°** alrededor del puntero hasta la frontera (`maxDistance`). Opcionalmente, con `target`, la rama dominante se sesga hacia ese elemento (modo directed). Por default crece una vez y **queda estático** mientras el puntero siga quieto; con `loop` re-crece en ciclo. La aleatoriedad viene del PRNG seedable interno; cualquier movimiento lo retrae y reinicia el temporizador.
+
+Las estéticas son **enchufables** y definen el carácter del trazo: `roots` (default, orgánico), `lightning` (relámpago, reutiliza el generador de rayo jagged) y `circuit` (ortogonal, pistas que se expanden a 90°). Se seleccionan con `aesthetic`; agregar una estética nueva es agregar un módulo en `aesthetics/` sin cambiar la API. La prop `curl` controla cuánto se **arquean** las raíces (subila para que `roots` parezca raíces sinuosas en vez de rayos rectos); las ramas se afinan hacia las puntas. El overlay es `pointer-events: none` (no bloquea clicks). Con `prefers-reduced-motion` el trazo no se dibuja.
+
+```jsx
+import { GuidingBranches } from '@fethabo/animated-ui'
+
+// Ambient: el trazo se expande 360° donde el mouse queda quieto.
+<GuidingBranches aesthetic="circuit" color="#34d399" maxDistance={280}>
+  <div style={{ height: 500 }}>{/* ...contenido... */}</div>
+</GuidingBranches>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `target` | `RefObject \| Element \| string` | — | Opcional. Elemento hacia el que sesgar la rama dominante (directed). Sin él ⇒ ambient 360°. |
+| `aesthetic` | `'roots' \| 'lightning' \| 'circuit'` | `'roots'` | Estética del trazo: orgánico, rayo u ortogonal. |
+| `idleDelay` | `number` | `2000` | Ms de inactividad antes de crecer las ramas. |
+| `color` | `string` | `#34d399` | Color de las ramas. |
+| `loop` | `boolean` | `false` | Con `true` el trazo re-crece en ciclo; con `false` crece una vez y queda estático hasta que el puntero se mueve. |
+| `duration` | `number` | `1400` | Ms que las ramas permanecen completas antes de re-crecer (solo con `loop`). |
+| `speed` | `number` | `320` | Velocidad de dibujado del crecimiento en px/s. |
+| `maxDistance` | `number` | `260` | Distancia máxima en px que cualquier rama alcanza desde el puntero. |
+| `density` | `number` | `4` | Densidad de ramificación (troncos / probabilidad de hijos). |
+| `depth` | `number` | `3` | Profundidad máxima de sub-ramificación. |
+| `lineWidth` | `number` | `2` | Grosor del trazo en px (las ramas finas se afinan). |
+| `curl` | `number` | `0.6` | Curvatura de las raíces (0 = casi recto, 1 = muy sinuoso). Ortogonales lo ignoran. |
+| `jitter` | `number` | `0` | Jitter del trazo para estéticas tipo relámpago (`0` ⇒ auto). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, no dibuja las ramas (efecto autónomo). |
+| `children` | `ReactNode` | — | Área monitoreada / contenido. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-branches-color` | `#34d399` | Color de las ramas. Prevalece sobre la prop `color`. |
+| `--aui-branches-duration` | `1400` | Permanencia antes de re-crecer en ms (numérico, sin unidad). |
+| `--aui-branches-speed` | `320` | Velocidad de dibujado en px/s (numérico, sin unidad). |
+| `--aui-branches-max-distance` | `260` | Distancia máxima desde el puntero en px (numérico, sin unidad). |
+| `--aui-branches-line-width` | `2px` | Grosor del trazo. |
+| `--aui-branches-curl` | `0.6` | Curvatura de las raíces (numérico, sin unidad). Prevalece sobre `curl`. |
+| `--aui-branches-jitter` | `0` | Jitter del trazo en px (numérico, sin unidad). |
 
 ## Hooks
 

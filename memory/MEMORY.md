@@ -1,0 +1,1 @@
+- [Wave C aesthetic prefs](wave-c-aesthetic-prefs.md) — cómo le gustan al usuario los efectos de canvas generativo (continuidad, interacción física, solo-luz, ambient 360°)

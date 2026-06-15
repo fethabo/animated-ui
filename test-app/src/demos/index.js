@@ -18,6 +18,10 @@ import particleField from './ParticleField.jsx'
 import imageDissolve from './ImageDissolve.jsx'
 import stickyScenes from './StickyScenes.jsx'
 import stackedCards from './StackedCards.jsx'
+import circuitBackground from './CircuitBackground.jsx'
+import teslaCoil from './TeslaCoil.jsx'
+import attentionCue from './AttentionCue.jsx'
+import guidingBranches from './GuidingBranches.jsx'
 
 export const demos = [
   scrollProgress,
@@ -38,4 +42,8 @@ export const demos = [
   imageDissolve,
   stickyScenes,
   stackedCards,
+  circuitBackground,
+  teslaCoil,
+  attentionCue,
+  guidingBranches,
 ]

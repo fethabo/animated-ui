@@ -23,6 +23,11 @@
 - **WHEN** `followCursor` está activo y el cursor está sobre el contenedor
 - **THEN** al menos un rayo SHALL apuntar desde el centro hacia la posición del cursor, actualizándose al moverse
 
+#### Scenario: Los rayos al cursor son más intensos que los ambientales
+
+- **WHEN** el cursor está sobre el contenedor con `followCursor` activo
+- **THEN** los rayos dirigidos al cursor (`cursorBolts`) SHALL dibujarse más prominentes que los ambientales (más gruesos/brillantes), notándose claramente la interacción con el puntero
+
 #### Scenario: Sin seguimiento en touch
 
 - **WHEN** el dispositivo es touch-only
@@ -33,9 +38,19 @@
 - **WHEN** el consumer pasa `followCursor={false}`
 - **THEN** los rayos SHALL emanar solo de forma ambiental, ignorando el cursor
 
+#### Scenario: Rayos al cursor solo con click
+
+- **WHEN** el consumer pasa `cursorTrigger="click"`
+- **THEN** los rayos dirigidos al cursor SHALL aparecer únicamente mientras se mantiene presionado el puntero (no con el simple hover)
+
+#### Scenario: Convergencia en el puntero
+
+- **WHEN** se dirigen varios rayos al cursor (`cursorBolts > 1`)
+- **THEN** todos SHALL converger en el mismo punto del puntero (no terminar dispersos en una línea), aunque sus trazos diverjan en el camino
+
 ### Requirement: TeslaCoil es customizable via props y CSS custom properties
 
-`TeslaCoil` SHALL exponer props para `color` (color de los rayos/glow), `boltCount` (cantidad de rayos ambientales), `lineWidth` (grosor), `frequency` (frecuencia de regeneración), `reach` (alcance/longitud de los rayos) y `jitter` (magnitud de la desviación jagged). Los parámetros estéticos SHALL materializarse como CSS custom properties con namespace `--aui-tesla-*` en el root, pisables desde CSS en cascada.
+`TeslaCoil` SHALL exponer props para `color` (color de los rayos/glow), `boltCount` (cantidad de rayos ambientales), `cursorBolts` (cantidad de rayos dirigidos al cursor), `cursorTrigger` (`'hover'`/`'click'`), `lineWidth` (grosor), `frequency` (frecuencia de regeneración), `reach` (alcance/longitud de los rayos) y `jitter` (magnitud de la desviación jagged). Los parámetros estéticos SHALL materializarse como CSS custom properties con namespace `--aui-tesla-*` en el root, pisables desde CSS en cascada.
 
 #### Scenario: Override del color via CSS
 

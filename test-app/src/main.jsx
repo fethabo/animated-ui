@@ -21,7 +21,28 @@ function Section({ title, children, height = '60vh', id }) {
       }}
     >
       {children}
-      <h2 style={{ position: 'relative', margin: 0 }}>{title}</h2>
+      {/* Título como overlay superior: no intercepta el mouse ni se superpone
+          con el contenido centrado de un demo (e.g. la tarjeta de TeslaCoil). */}
+      <h2
+        style={{
+          position: 'absolute',
+          top: 12,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          margin: 0,
+          zIndex: 20,
+          pointerEvents: 'none',
+          maxWidth: '90%',
+          textAlign: 'center',
+          fontSize: '1.05rem',
+          padding: '4px 14px',
+          borderRadius: 8,
+          background: 'rgba(10,10,18,0.6)',
+          backdropFilter: 'blur(4px)',
+        }}
+      >
+        {title}
+      </h2>
     </section>
   )
 }

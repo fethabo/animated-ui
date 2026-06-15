@@ -67,6 +67,18 @@ export type { ImageDissolveProps } from './components/ImageDissolve'
 export { StickyScenes } from './components/StickyScenes'
 export type { StickySceneProps, StickyScenesProps } from './components/StickyScenes'
 
+export { CircuitBackground } from './components/CircuitBackground'
+export type { CircuitBackgroundProps } from './components/CircuitBackground'
+
+export { TeslaCoil } from './components/TeslaCoil'
+export type { CoilOrigin, TeslaCoilProps } from './components/TeslaCoil'
+
+export { AttentionCue } from './components/AttentionCue'
+export type { AttentionCueProps } from './components/AttentionCue'
+
+export { GuidingBranches } from './components/GuidingBranches'
+export type { AestheticName, GuidingBranchesProps } from './components/GuidingBranches'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

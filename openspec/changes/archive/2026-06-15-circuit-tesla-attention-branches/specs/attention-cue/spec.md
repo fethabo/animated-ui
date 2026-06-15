@@ -49,7 +49,7 @@
 
 ### Requirement: AttentionCue es customizable via props y CSS custom properties
 
-`AttentionCue` SHALL exponer props para `idleDelay` (ms de inactividad), `color`, `duration` (duración del dibujado del trazo), `speed` (velocidad de avance del trazo), y `maxDistance` (distancia máxima desde el puntero que el cue puede alcanzar/dibujar). Los parámetros estéticos SHALL materializarse como CSS custom properties con namespace `--aui-cue-*` en el root, pisables desde CSS en cascada.
+`AttentionCue` SHALL exponer props para `idleDelay` (ms de inactividad), `color`, `duration` (duración del dibujado del trazo), `speed` (velocidad de avance del trazo), `maxDistance` (distancia máxima desde el puntero que el cue puede alcanzar/dibujar), `lineWidth` (grosor), `head` (estilo de la punta), `marker` (haz de luz o huellas), `curve` (curvatura del trazo) y `showGuide` (mostrar u ocultar la línea-guía sólida). Los parámetros estéticos SHALL materializarse como CSS custom properties con namespace `--aui-cue-*` en el root, pisables desde CSS en cascada.
 
 #### Scenario: Override del color via CSS
 
@@ -60,6 +60,35 @@
 
 - **WHEN** el consumer pasa `maxDistance={240}`
 - **THEN** el cue NO SHALL extenderse más de 240 px desde la posición del puntero
+
+#### Scenario: Punta configurable
+
+- **WHEN** el consumer pasa `head="dot"` (o `"none"`)
+- **THEN** la punta del cue SHALL dibujarse con ese estilo (un punto, o sin punta) en vez de la flecha default
+
+#### Scenario: Trazo curvable
+
+- **WHEN** el consumer pasa `curve={0.5}`
+- **THEN** el trazo SHALL arquearse hacia un costado en vez de ir en línea recta
+
+#### Scenario: Recorrido por huellas
+
+- **WHEN** el consumer pasa `marker="footprints"`
+- **THEN** el recorrido SHALL dibujarse como una hilera de huellas que avanzan hacia el destino (alternando lados) en vez del haz de luz
+
+### Requirement: AttentionCue se muestra como un destello de luz por defecto
+
+`AttentionCue` SHALL dibujar el cue por default como **solo luz**: un cometa/destello con glow que aparece y se desvanece, sin una línea sólida de guía debajo. El consumer MAY activar la línea-guía tenue con `showGuide`. El destello SHALL aparecer y desvanecerse cíclicamente mientras el puntero permanezca inactivo.
+
+#### Scenario: Solo luz por default
+
+- **WHEN** el cue se activa sin `showGuide`
+- **THEN** SHALL verse únicamente la luz (cometa con glow), sin una línea sólida bajo ella
+
+#### Scenario: Guía opcional
+
+- **WHEN** el consumer pasa `showGuide`
+- **THEN** SHALL dibujarse además una línea-guía tenue a lo largo del recorrido del cue
 
 ### Requirement: AttentionCue respeta prefers-reduced-motion
 

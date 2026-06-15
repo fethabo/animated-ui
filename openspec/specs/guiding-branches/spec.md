@@ -1,4 +1,9 @@
-## ADDED Requirements
+# guiding-branches Specification
+
+## Purpose
+Componente `GuidingBranches`: tras la inactividad del puntero (`idleDelay`), hace crecer ramas orgánicas (raíces/relámpago/circuito) que parten desde la posición del cursor y se retraen al moverse. Soporta modo ambient (ramas en 360° alrededor del puntero) y modo directed (sesgadas hacia un `target`). Admite estéticas intercambiables y personalizables sin cambiar la API pública, expone su personalización via props y CSS custom properties (`--aui-branches-*`), respeta `prefers-reduced-motion`, es SSR-safe y no bloquea la interacción.
+
+## Requirements
 
 ### Requirement: GuidingBranches dibuja ramas orgánicas desde el puntero tras la inactividad
 
@@ -16,7 +21,7 @@
 
 ### Requirement: GuidingBranches soporta modo ambient y modo directed hacia un target
 
-`GuidingBranches` SHALL soportar dos modos según la presencia de `target` (un `RefObject`, elemento o selector CSS). En modo **ambient** (sin target) las ramas SHALL crecer en todas las direcciones alrededor del puntero. En modo **directed** (con target) el crecimiento de las ramas SHALL sesgarse hacia el elemento objetivo, de modo que la rama dominante "muestre el camino" hacia él (por ejemplo, hacia un botón a destacar), aunque las ramas secundarias puedan dispersarse.
+`GuidingBranches` SHALL soportar dos modos según la presencia de `target` (un `RefObject`, elemento o selector CSS). El modo **ambient** (sin target) es el uso principal: las ramas SHALL crecer en **todas las direcciones (360°)** alrededor del puntero hasta la frontera (`maxDistance`), como interacción del puntero pausado con su entorno. El `target` SHALL ser **opcional**; en modo **directed** (con target) el crecimiento de las ramas SHALL sesgarse hacia el elemento objetivo, de modo que la rama dominante se oriente hacia él, aunque las ramas secundarias puedan dispersarse.
 
 #### Scenario: Ramas en todas direcciones (ambient)
 
@@ -30,7 +35,7 @@
 
 ### Requirement: GuidingBranches admite estéticas intercambiables y personalizables
 
-`GuidingBranches` SHALL estar diseñado para soportar múltiples estéticas de rama intercambiables (por ejemplo `'roots'`, `'lightning'`, `'vines'`), seleccionables via prop `aesthetic` (o equivalente), con una arquitectura que permita **agregar nuevas estéticas sin cambiar la API pública** (cada estética encapsulada como módulo de generación/dibujo, siguiendo el patrón de `variants/`/`behaviors/` del paquete). Cada estética SHALL respetar los mismos parámetros de personalización: `color`, `duration` (duración del crecimiento), `speed` (velocidad de dibujado), `maxDistance` (distancia máxima desde el puntero) y la densidad/profundidad de ramificación.
+`GuidingBranches` SHALL estar diseñado para soportar múltiples estéticas de trazo intercambiables (incluidas `'roots'`, `'lightning'` y `'circuit'`; otras como `'vines'` quedan como extensión), seleccionables via prop `aesthetic` (o equivalente), con una arquitectura que permita **agregar nuevas estéticas sin cambiar la API pública** (cada estética encapsulada como módulo de generación/dibujo, siguiendo el patrón de `variants/`/`behaviors/` del paquete). Cada estética SHALL respetar los mismos parámetros de personalización: `color`, `duration` (duración del crecimiento), `speed` (velocidad de dibujado), `maxDistance` (distancia máxima desde el puntero), `curl` (curvatura del trazo; las estéticas ortogonales MAY ignorarlo) y la densidad/profundidad de ramificación.
 
 #### Scenario: Cambiar de estética
 
@@ -51,6 +56,21 @@
 
 - **WHEN** el consumer pasa `speed` y `duration`
 - **THEN** las ramas SHALL dibujarse a esa velocidad y completar su crecimiento en esa duración
+
+#### Scenario: Curvatura de las raíces configurable
+
+- **WHEN** el consumer sube `curl` en la estética `roots`
+- **THEN** las raíces SHALL arquearse más (trazo sinuoso, orgánico) en vez de crecer casi rectas
+
+#### Scenario: Trazo estático por default (sin bucle)
+
+- **WHEN** el puntero queda inactivo y `loop` no está activado
+- **THEN** el trazo SHALL crecer una vez y quedar **estático** mientras el puntero no se mueva (sin re-crecer en bucle)
+
+#### Scenario: Re-crecimiento en bucle opt-in
+
+- **WHEN** el consumer pasa `loop`
+- **THEN** el trazo SHALL re-crecer cíclicamente (completar, esperar `duration`, volver a crecer) mientras el puntero siga quieto
 
 ### Requirement: GuidingBranches expone su personalización via CSS custom properties
 

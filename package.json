@@ -120,6 +120,26 @@
       "types": "./dist/sticky-scenes.d.ts",
       "import": "./dist/sticky-scenes.js",
       "require": "./dist/sticky-scenes.cjs"
+    },
+    "./circuit-background": {
+      "types": "./dist/circuit-background.d.ts",
+      "import": "./dist/circuit-background.js",
+      "require": "./dist/circuit-background.cjs"
+    },
+    "./tesla-coil": {
+      "types": "./dist/tesla-coil.d.ts",
+      "import": "./dist/tesla-coil.js",
+      "require": "./dist/tesla-coil.cjs"
+    },
+    "./attention-cue": {
+      "types": "./dist/attention-cue.d.ts",
+      "import": "./dist/attention-cue.js",
+      "require": "./dist/attention-cue.cjs"
+    },
+    "./guiding-branches": {
+      "types": "./dist/guiding-branches.d.ts",
+      "import": "./dist/guiding-branches.js",
+      "require": "./dist/guiding-branches.cjs"
     }
   },
   "scripts": {
