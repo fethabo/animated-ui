@@ -51,3 +51,10 @@
 ## [0.6.4](@fethabo/animated-ui@0.6.3...@fethabo/animated-ui@0.6.4) (2026-06-15)
 
 * Add Circuit, Tesla, Attention and Branches @fethabo ([a593efc](a593efcff5090804c8851fa5af76e9482e0b554b))
+
+## [0.6.5](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.6.4...@fethabo/animated-ui@0.6.5) (2026-06-16)
+
+* agregada info de repo en package.json @fethabo a2a0cbe
+* agregado lock pnpm @fethabo 620a8fe
+* agregada configuracion de publish @fethabo 1f326f7
+* Agregada action para publish en NPM @fethabo ec9ce34
