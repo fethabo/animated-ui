@@ -7,9 +7,9 @@
     "jsdom": "^24.0.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "tsup": "^8.0.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.4.0",
-    "vitest": "^1.6.0"
+    "vitest": "^4.1.9"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -149,6 +149,10 @@
     "release:dry-run": "node ./scripts/release.mjs --dry-run",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "keywords": [
     "react",
