@@ -154,6 +154,14 @@
     "access": "public",
     "provenance": true
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fethabo/animated-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fethabo/animated-ui/issues"
+  },
+  "homepage": "https://github.com/fethabo/animated-ui#readme",
   "keywords": [
     "react",
     "animation",
