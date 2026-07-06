@@ -32,7 +32,9 @@ Motor existente (WAAPI + `useMousePosition`). Costo bajo, valor inmediato.
 | **SpotlightCard** | Gradiente radial que sigue al cursor dentro del card, iluminando la zona bajo el mouse. | CSS custom property actualizada por `mousemove`; casi cero JS por frame. Componible con TiltCard. |
 | **GlowBorder** | Borde con gradiente cónico animado, en loop autónomo o apuntando hacia el cursor. | `conic-gradient` + `@property` para animar el ángulo. CSS casi puro. |
 | **MagneticElement** | Wrapper que "atrae" su contenido hacia el cursor al acercarse, con retorno elástico. | Mismo patrón WAAPI-con-momentum de TiltCard, aplicado a `translate`. |
-| **RippleContainer** | Ondas expansivas desde el punto de click. | Keyframes inyectados + nodo efímero por click. |
+| **RippleContainer** 🔜 | Ondas expansivas desde el punto de click. | Keyframes inyectados + nodo efímero por click. Única deuda del Tier 1. **Wave E**. |
+| **Dock** 🔜 | Ítems que se magnifican según la proximidad del cursor (dock de macOS). | Generalización de MagneticElement a N hijos: `useMousePosition` + scale/translate por ítem en función de la distancia al cursor. **Wave G**. |
+| **BorderBeam** 🔜 | Punto/cometa de luz que recorre el perímetro del borde en loop. | CSS casi puro (`offset-path: border-box` animado; fallback conic). Hermano estético de GlowBorder. **Wave G**. |
 | **MouseParallax** ✅ | Contenedor con capas a distintas profundidades desplazadas según la posición del mouse — parallax creativo **sin scroll**. | Primo natural de TiltCard. Hecho en v0.4: CSS vars por mousemove (patrón SpotlightCard) + `MouseParallax.Layer` con `depth`. |
 
 ## Tier 2 — Efectos de texto
@@ -46,6 +48,10 @@ Categoría nueva, sin decisiones arquitectónicas (RAF o CSS puro).
 | **ScrambleText** ✅ | El texto se "descifra" carácter por carácter (efecto decrypt/Matrix). | RAF que muta `textContent` via ref; sin DOM pesado ni re-renders por frame. Hecho en v0.3. |
 | **SplitReveal** ✅ | Entrada con stagger por carácter, palabra o **línea**; presets `fade`/`slide-up`/`blur`; dispara al montar o en viewport. | Hecho en Wave A: CSS puro + `useInView`; texto completo en `aria-label` y unidades `aria-hidden`; split por línea medido en cliente (`useResizeObserver`). Change [`text-reveal-stacked-cards-lava`](openspec/changes/text-reveal-stacked-cards-lava/). |
 | **TypewriterText** ✅ | Revelado tipo máquina de escribir, con cursor parpadeante y modo loop multi-string (escribe→borra→siguiente). | Hecho en Wave A: RAF que muta `textContent` por ref (patrón ScrambleText), progresión por timestamp, accesible via `aria-label`. Change [`text-reveal-stacked-cards-lava`](openspec/changes/text-reveal-stacked-cards-lava/). |
+| **CountUp** 🔜 | Número que cuenta hasta su valor al entrar al viewport (stats de landing). | RAF + `useInView`, muta `textContent` por ref (patrón exacto de ScrambleText); easing de salida, formato configurable (separadores, decimales, prefijo/sufijo). **Wave E**. |
+| **RotatingText** 🔜 | Rota entre palabras con transición (fade / slide-up / flip): "Hacemos *webs* / *apps* / *magia*". | Timer + CSS transitions inyectadas; complementa a TypewriterText para el mismo caso de uso con otra estética. **Wave F**. |
+| **GlitchText** 🔜 | Glitch RGB-split con jitter intermitente. | CSS puro con pseudo-elementos y `clip-path` (mismo espíritu que ShinyText). **Wave F**. |
+| **WavyText** 🔜 | Caracteres ondulando en loop continuo. | Reutiliza el split por unidad de SplitReveal + `animation-delay` escalonado; CSS puro. **Wave F**. |
 
 ## Tier 3 — Scroll y parallax
 
@@ -58,6 +64,9 @@ Requiere decidir el motor de scroll (ver decisión pendiente abajo).
 | **ScrollProgress** ✅ | Barra/indicador de progreso de lectura. | Hecho en v0.5: barra fija con `scaleX` compositado, `aria-hidden`, activa bajo reduced motion. |
 | **StickyScenes** ✅ | Secciones sticky que transicionan entre "escenas" durante el scroll (storytelling). | Hecho en v0.6: inner wrapper `position: sticky` + altura `100dvh + nScenes × sceneDuration`; progreso como `--aui-scene-index`/`--aui-scene-progress` y activación via `data-aui-active`, sin React state en el hot path. Reutiliza el motor de v0.5. |
 | **StackedCards** ✅ | Cards que se fijan y se **apilan** una sobre otra al scrollear; las de abajo se encogen y oscurecen. | Hecho en Wave A: `position: sticky` nativo + scroll-driver para la profundidad (`--aui-stack-depth`), sin React state en el hot path. Distinto de StickyScenes (que hace cross-fade en un viewport fijo). Change [`text-reveal-stacked-cards-lava`](openspec/changes/text-reveal-stacked-cards-lava/). |
+| **TextScrollReveal** 🔜 | Párrafo cuyas palabras pasan de apagadas a "encendidas" a medida que se scrollea (highlight progresivo, el efecto de landing de moda). | Split por palabra (patrón SplitReveal) + scroll-driver escribiendo `--aui-scroll-progress`; opacidad/color por palabra via `calc()` con índice, sin React state en el hot path. **Wave E**. |
+| **HorizontalScrollSection** 🔜 | Sección sticky cuyo contenido se desplaza **horizontalmente** conducido por el scroll vertical. | `position: sticky` + scroll-driver → `translateX` compositado (patrón calcado de StickyScenes). **Wave G**. |
+| **Marquee** 🔜 | Cinta infinita de logos/contenido, pausable en hover; modo opcional `scrollVelocity` donde la velocidad y el skew responden a la velocidad de scroll. | Base CSS pura (duplicación de contenido + keyframes de translate). El modo velocity deriva la velocidad en el RAF del scroll-driver existente. **Wave G**. |
 
 ### Decisión resuelta (v0.5): motor de scroll
 
@@ -91,6 +100,18 @@ Motor existente, pero costo alto por pieza.
 | **ImageDissolve** ✅ | Transición de imagen con dithering ordenado. | Hecho en v0.6: ♻️ reutiliza la matriz Bayer (extraída a `src/utils/bayer-matrix.ts`, compartida con el behavior `reveal` de PixelBackground); `drawImage` + `getImageData` sobre canvas superpuesto, con degradación ante CORS. |
 | **CircuitBackground** ✅ | Fondo de circuito PCB generado proceduralmente (seedable), con pulsos de luz recorriendo las pistas. | Hecho en Wave C: canvas + RAF + **PRNG seedable** nuevo (`src/utils/prng.ts`) y `polyline-pulse`. Ruteo = random walk ortogonal con pads (`router.ts`, no autorouter). Capa estática offscreen + pulsos por frame. Change [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
 | **TeslaCoil** ✅ | Nodo central que arroja rayos jagged hacia afuera; en hover dirige rayos al cursor. | Hecho en Wave C: canvas + RAF + helper `jagged-bolt` (midpoint-displacement seedado). `pointer-events:none` sobre `children`; tracking del cursor por ref. Change [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
+| **WavesBackground** 🔜 | Líneas fluidas que ondulan orgánicamente (flow lines) generadas con ruido coherente. | Canvas + RAF + **`noise.ts`** (simplex 2D seedable, módulo puro nuevo — la decisión arquitectónica de **Wave H**, análoga a lo que fue `prng.ts` en Wave C). |
+| **FlowField** 🔜 | Partículas que siguen un campo vectorial de ruido dejando trazos orgánicos. | Reutiliza el patrón física-en-módulo-puro de ParticleField + `noise.ts` como campo de dirección. **Wave H**. |
+| **TopographicBackground** 🔜 | Curvas de nivel animadas (mapa topográfico vivo), seedable. | Marching squares sobre el campo de ruido; capa estática offscreen + evolución lenta del parámetro temporal (patrón de capa offscreen de CircuitBackground). **Wave H**. |
+| **ConfettiBurst** 🔜 | Ráfaga de confetti one-shot para celebración/feedback (submit exitoso, logro), disparable imperativamente. | Motor canvas existente (física simple + gravedad). **Decisión nueva: patrón de efecto one-shot imperativo** (handle por ref con `fire(opts)`, en vez de efecto continuo declarativo) → design.md propio. **Wave I**. |
+
+### Post-Wave D (requieren el motor WebGL)
+
+Cuando exista el esqueleto WebGL de GooeyBlobs (Wave D), se vuelven baratos y se evalúan como tanda propia — **no se planifican antes**:
+
+- **ShaderGradient** — fondos tipo seda/líquido por fragment shader.
+- **ImageDistortion** — distorsión de imagen en hover (efecto agency-style).
+- **AuroraGL** — variante rica en shader de la aurora CSS.
 
 ## Tier 5 — Cursor / Idle (director de atención)
 
@@ -100,6 +121,15 @@ Categoría nueva. Efectos que reaccionan a la **inactividad** del puntero para g
 | --- | --- | --- |
 | **AttentionCue** ✅ | Tras inactividad del mouse, dibuja un trazo dirigido hacia un elemento referenciado ("mostrar el camino" a un botón). Modos ambient/directed. | Hecho en Wave C (idea #6 · **paso 1, cue simple**): idle-watcher + geometría cursor→`target` (`RefObject`/`Element`/selector) en `src/utils/idle-target.ts`. Overlay `pointer-events:none`; desactivado bajo reduced motion. Change [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
 | **GuidingBranches** ✅ | Igual idea pero con **ramas orgánicas** que crecen desde el puntero; ambient (todas direcciones) o directed (sesgadas al target). | Hecho en Wave C (idea #6 · **paso final**): estéticas **intercambiables y extensibles** (`roots`/`lightning`) como módulos en `aesthetics/` (contrato común + esqueleto compartido); reutiliza PRNG, `jagged-bolt` e idle-watcher. Change [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
+
+## Extensiones de componentes existentes
+
+No suman entry points nuevos; extienden componentes ya publicados aplicando sus convenciones.
+
+| Extensión | Descripción | Notas técnicas |
+| --- | --- | --- |
+| **AnimatedBackground: variantes `grid` / `rays` / `dots`** 🔜 | Grilla retro-synthwave con perspectiva, rayos de luz rotando lentamente, y patrón de dots con pulso. | CSS puro con keyframes inyectados, mismo contrato de `colors`/`speed`/`intensity` y vars `--aui-*` que las variantes existentes. **Wave G**. |
+| **GuidingBranches: estética `circuit`** ✅ | Ramas ortogonales tipo pista PCB. | Hecha en Wave C como módulo enchufable en `aesthetics/`. |
 
 ## Secuencia de releases
 
@@ -114,6 +144,13 @@ Categoría nueva. Efectos que reaccionan a la **inactividad** del puntero para g
 | **Wave B** ✅ | ParticleField: constellation/links + modos de deriva | Ninguna — extiende el motor canvas existente (líneas O(N²) opt-in). Change: [`particle-field-constellation-drift`](openspec/changes/particle-field-constellation-drift/). |
 | **Wave C** ✅ | CircuitBackground + TeslaCoil + AttentionCue + GuidingBranches | **Primitivas generativas nuevas**: PRNG seedable (`prng.ts`) + helpers de trazo/pulso/rayo (`polyline-pulse`, `jagged-bolt`) + modelo idle/target (`idle-target.ts`); abre Tier 5 (cursor/idle). Change: [`circuit-tesla-attention-branches`](openspec/changes/circuit-tesla-attention-branches/). |
 | **Wave D** ⬜ | GooeyBlobs / LavaLamp (metaball lava lamp con luz) | **Primer motor WebGL** (fragment shader de metaballs + sim de flotación; design.md propio). Sustituye al placeholder CSS `lava` para el caso rico; la variante CSS queda como fallback. Se planifica una vez avanzados los propose de Wave B y C. |
+| **Wave E** ⬜ | RippleContainer + CountUp + TextScrollReveal | Ninguna — keyframes inyectados, RAF-por-ref (`useInView`) y scroll-driver existentes. Los tres de mayor demanda/costo. Change: [`ripple-countup-text-scroll`](openspec/changes/ripple-countup-text-scroll/). |
+| **Wave F** ⬜ | RotatingText + GlitchText + WavyText | Ninguna — CSS puro + split de SplitReveal + timers. Cierra la categoría texto expresivo. Change: [`rotating-glitch-wavy-text`](openspec/changes/rotating-glitch-wavy-text/). |
+| **Wave G** ⬜ | Dock + BorderBeam + Marquee + HorizontalScrollSection + variantes `grid`/`rays`/`dots` | Ninguna — WAAPI/`useMousePosition`, CSS puro y scroll-driver existentes. Change: [`dock-beam-marquee-horizontal`](openspec/changes/dock-beam-marquee-horizontal/). |
+| **Wave H** ⬜ | WavesBackground + FlowField + TopographicBackground | **Ruido coherente seedable** (`noise.ts`, simplex 2D en módulo puro; design.md propio). Una primitiva → tres fondos. Change: [`noise-waves-flow-topographic`](openspec/changes/noise-waves-flow-topographic/). |
+| **Wave I** ⬜ | ConfettiBurst | **Patrón one-shot imperativo** (handle `fire()` via ref; design.md propio). Abre la categoría celebración/feedback. Change: [`confetti-burst-one-shot`](openspec/changes/confetti-burst-one-shot/). |
+
+Wave D es independiente de E–I: puede intercalarse en cualquier punto (E–G no dependen de nada nuevo; H e I solo de sus propias primitivas). Las piezas post-WebGL (ShaderGradient, ImageDistortion, AuroraGL) se proponen recién después de D.
 
 Una tanda = un change de OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
 
