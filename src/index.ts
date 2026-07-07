@@ -79,6 +79,45 @@ export type { AttentionCueProps } from './components/AttentionCue'
 export { GuidingBranches } from './components/GuidingBranches'
 export type { AestheticName, GuidingBranchesProps } from './components/GuidingBranches'
 
+export { RotatingText } from './components/RotatingText'
+export type { RotatingTextProps, RotatingTransition } from './components/RotatingText'
+
+export { GlitchText } from './components/GlitchText'
+export type { GlitchTextProps, GlitchTrigger } from './components/GlitchText'
+
+export { WavyText } from './components/WavyText'
+export type { WavyTextProps } from './components/WavyText'
+
+export { Dock } from './components/Dock'
+export type { DockItemProps, DockOrientation, DockProps } from './components/Dock'
+
+export { BorderBeam } from './components/BorderBeam'
+export type { BorderBeamProps } from './components/BorderBeam'
+
+export { Marquee } from './components/Marquee'
+export type { MarqueeDirection, MarqueeProps } from './components/Marquee'
+
+export { HorizontalScrollSection } from './components/HorizontalScrollSection'
+export type { HorizontalScrollSectionProps } from './components/HorizontalScrollSection'
+
+export { WavesBackground } from './components/WavesBackground'
+export type { WavesBackgroundProps } from './components/WavesBackground'
+
+export { FlowField } from './components/FlowField'
+export type { FlowFieldProps } from './components/FlowField'
+
+export { TopographicBackground } from './components/TopographicBackground'
+export type { TopographicBackgroundProps } from './components/TopographicBackground'
+
+export { ConfettiBurst } from './components/ConfettiBurst'
+export type {
+  ConfettiBurstHandle,
+  ConfettiBurstProps,
+  ConfettiOrigin,
+  ConfettiShape,
+  FireOptions,
+} from './components/ConfettiBurst'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

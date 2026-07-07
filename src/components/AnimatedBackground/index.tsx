@@ -7,6 +7,9 @@ import { mesh } from './variants/mesh'
 import { noise } from './variants/noise'
 import { beam } from './variants/beam'
 import { lava } from './variants/lava'
+import { grid } from './variants/grid'
+import { rays } from './variants/rays'
+import { dots } from './variants/dots'
 import type {
   AnimatedBackgroundProps,
   AnimatedBackgroundVariant,
@@ -21,6 +24,9 @@ const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant>
   noise,
   beam,
   lava,
+  grid,
+  rays,
+  dots,
 }
 
 // CSS base compartido por todas las variantes. La regla [data-aui-static]

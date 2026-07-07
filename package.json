@@ -140,6 +140,61 @@
       "types": "./dist/guiding-branches.d.ts",
       "import": "./dist/guiding-branches.js",
       "require": "./dist/guiding-branches.cjs"
+    },
+    "./confetti-burst": {
+      "types": "./dist/confetti-burst.d.ts",
+      "import": "./dist/confetti-burst.js",
+      "require": "./dist/confetti-burst.cjs"
+    },
+    "./waves-background": {
+      "types": "./dist/waves-background.d.ts",
+      "import": "./dist/waves-background.js",
+      "require": "./dist/waves-background.cjs"
+    },
+    "./flow-field": {
+      "types": "./dist/flow-field.d.ts",
+      "import": "./dist/flow-field.js",
+      "require": "./dist/flow-field.cjs"
+    },
+    "./topographic-background": {
+      "types": "./dist/topographic-background.d.ts",
+      "import": "./dist/topographic-background.js",
+      "require": "./dist/topographic-background.cjs"
+    },
+    "./dock": {
+      "types": "./dist/dock.d.ts",
+      "import": "./dist/dock.js",
+      "require": "./dist/dock.cjs"
+    },
+    "./border-beam": {
+      "types": "./dist/border-beam.d.ts",
+      "import": "./dist/border-beam.js",
+      "require": "./dist/border-beam.cjs"
+    },
+    "./marquee": {
+      "types": "./dist/marquee.d.ts",
+      "import": "./dist/marquee.js",
+      "require": "./dist/marquee.cjs"
+    },
+    "./horizontal-scroll-section": {
+      "types": "./dist/horizontal-scroll-section.d.ts",
+      "import": "./dist/horizontal-scroll-section.js",
+      "require": "./dist/horizontal-scroll-section.cjs"
+    },
+    "./rotating-text": {
+      "types": "./dist/rotating-text.d.ts",
+      "import": "./dist/rotating-text.js",
+      "require": "./dist/rotating-text.cjs"
+    },
+    "./glitch-text": {
+      "types": "./dist/glitch-text.d.ts",
+      "import": "./dist/glitch-text.js",
+      "require": "./dist/glitch-text.cjs"
+    },
+    "./wavy-text": {
+      "types": "./dist/wavy-text.d.ts",
+      "import": "./dist/wavy-text.js",
+      "require": "./dist/wavy-text.cjs"
     }
   },
   "scripts": {

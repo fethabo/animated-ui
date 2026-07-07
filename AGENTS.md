@@ -47,3 +47,14 @@ Este repo usa **OpenSpec** (schema `spec-driven`):
 - Motor de scroll de posición continua: `subscribeScroll`/`viewportProgress`/`pageProgress` en `src/utils/scroll-driver.ts` (interno) — reutilizar para efectos ligados al scroll.
 - Exports en `src/index.ts` (componente + tipos públicos).
 - Documentación y comentarios en español; nombres de código en inglés.
+
+## Patrón one-shot imperativo (categoría celebración/feedback)
+
+Los efectos **one-shot disparados por eventos de la app** (confetti, y a futuro fireworks, sparkles, emoji burst) siguen la convención fijada por `ConfettiBurst` (ver `openspec/changes/confetti-burst-one-shot/design.md`, luego archivado):
+
+- El componente monta un **overlay pasivo** (`pointer-events: none`, sin RAF al montar) y expone métodos via `useImperativeHandle` con un handle tipado (`<Nombre>Handle`), e.g. `ref.current.fire(options?)`.
+- **Props = defaults** de cada disparo; las **options del método las overridean solo para ese disparo**.
+- El RAF arranca con el primer disparo y **se auto-detiene** cuando no quedan partículas vivas (costo cero en reposo); disparos concurrentes comparten RAF y canvas.
+- Disparar antes de la hidratación, sin canvas o bajo `prefers-reduced-motion` es **no-op** (sin versión estática: el feedback alternativo corre por cuenta del consumer).
+- La aleatoriedad por disparo usa `createPrng` con seed de un contador interno (nada de `Math.random()`).
+- Nada de funciones imperativas globales ni portales: el overlay se recorta a su contenedor (viewport = contenedor `fixed`).

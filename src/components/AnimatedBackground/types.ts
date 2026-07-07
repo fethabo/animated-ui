@@ -1,6 +1,14 @@
 import type { CSSProperties, HTMLAttributes } from 'react'
 
-export type AnimatedBackgroundVariantName = 'aurora' | 'mesh' | 'noise' | 'beam' | 'lava'
+export type AnimatedBackgroundVariantName =
+  | 'aurora'
+  | 'mesh'
+  | 'noise'
+  | 'beam'
+  | 'lava'
+  | 'grid'
+  | 'rays'
+  | 'dots'
 
 export interface AnimatedBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   /** Variante visual de la animación. Default: `'aurora'`. */

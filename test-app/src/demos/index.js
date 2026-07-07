@@ -22,6 +22,17 @@ import circuitBackground from './CircuitBackground.jsx'
 import teslaCoil from './TeslaCoil.jsx'
 import attentionCue from './AttentionCue.jsx'
 import guidingBranches from './GuidingBranches.jsx'
+import confettiBurst from './ConfettiBurst.jsx'
+import wavesBackground from './WavesBackground.jsx'
+import flowField from './FlowField.jsx'
+import topographicBackground from './TopographicBackground.jsx'
+import dock from './Dock.jsx'
+import borderBeam from './BorderBeam.jsx'
+import marquee from './Marquee.jsx'
+import horizontalScrollSection from './HorizontalScrollSection.jsx'
+import rotatingText from './RotatingText.jsx'
+import glitchText from './GlitchText.jsx'
+import wavyText from './WavyText.jsx'
 
 export const demos = [
   scrollProgress,
@@ -46,4 +57,15 @@ export const demos = [
   teslaCoil,
   attentionCue,
   guidingBranches,
+  confettiBurst,
+  wavesBackground,
+  flowField,
+  topographicBackground,
+  dock,
+  borderBeam,
+  marquee,
+  horizontalScrollSection,
+  rotatingText,
+  glitchText,
+  wavyText,
 ]

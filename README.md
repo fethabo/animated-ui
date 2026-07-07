@@ -45,7 +45,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 
 | Componente | Descripción |
 | --- | --- |
-| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise`, `beam` y `lava`. |
+| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays` y `dots`. |
 | [PixelBackground](#pixelbackground) | Grilla de píxeles sobre canvas con behaviors combinables: `hover`, `idle` y `reveal`. |
 | [TiltCard](#tiltcard) | Card con efecto 3D tilt via WAAPI, con glare opcional y render prop de estado. |
 | [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
@@ -56,6 +56,9 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [TypewriterText](#typewritertext) | Revela texto carácter por carácter (máquina de escribir) con cursor parpadeante y modo loop multi-string, accesible. |
 | [ScrollReveal](#scrollreveal) | Revela su contenido al entrar al viewport, con dirección y stagger entre hijos. |
 | [SplitReveal](#splitreveal) | Parte el texto en char/word/line y revela cada unidad con stagger (presets `fade`/`slide-up`/`blur`), CSS puro y accesible. |
+| [RotatingText](#rotatingtext) | Rota cíclicamente entre palabras con transición (`fade`/`slide-up`/`flip`) y layout estable, accesible sin `aria-live`. |
+| [GlitchText](#glitchtext) | Glitch RGB-split intermitente para titulares, CSS puro con pseudo-elementos y `clip-path`. |
+| [WavyText](#wavytext) | Caracteres ondulando en loop continuo (ola que recorre el texto), CSS puro y accesible. |
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 | [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
 | [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
@@ -67,12 +70,22 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [TeslaCoil](#teslacoil) | Nodo central que arroja rayos jagged hacia afuera; en hover dirige un rayo al cursor. `children` interactivo. |
 | [AttentionCue](#attentioncue) | Tras inactividad del mouse, dibuja un trazo dirigido a un elemento (modo directed) o ambiental. *Idle / Attention.* |
 | [GuidingBranches](#guidingbranches) | Tras inactividad, ramas orgánicas generativas que crecen desde el puntero, con estéticas intercambiables. *Idle / Attention.* |
+| [Dock](#dock) | Fila de ítems que se magnifican por proximidad del cursor (dock de macOS), horizontal o vertical. |
+| [BorderBeam](#borderbeam) | Cometa de luz que recorre el perímetro del borde en loop, CSS casi puro (`offset-path`). |
+| [Marquee](#marquee) | Cinta infinita de contenido sin costura, accesible, con pausa en hover y modo acoplado a la velocidad de scroll. |
+| [HorizontalScrollSection](#horizontalscrollsection) | Sección sticky cuyo contenido se desplaza horizontalmente conducido por el scroll vertical. |
+| [WavesBackground](#wavesbackground) | Fondo de líneas fluidas que ondulan orgánicamente con ruido simplex seedable. |
+| [FlowField](#flowfield) | Partículas que siguen un campo vectorial de ruido dejando trazos orgánicos con fade, seedable. |
+| [TopographicBackground](#topographicbackground) | Curvas de nivel animadas (mapa topográfico vivo) extraídas por marching squares, seedable. |
+| [ConfettiBurst](#confettiburst) | Ráfaga de confetti one-shot disparable imperativamente via ref (`fire()`), para celebrar submits, logros, likes. *Celebración / Feedback.* |
 
 ## AnimatedBackground
 
 Background animado renderizado con CSS puro (sin JS por frame). Se posiciona `absolute, inset: 0` para cubrir su contenedor `position: relative`, o el viewport completo con `fixed`. Cada variante tiene defaults visualmente atractivos y expone sus colores, velocidad e intensidad tanto por props como por CSS custom properties.
 
 **Variante `lava`:** blobs opacos que ascienden y descienden fundiéndose con el truco "gooey" (`filter: blur() + contrast()`), evocando una lámpara de lava. El `filter` sobre áreas grandes tiene costo de pintado: rinde mejor en contenedores acotados que a pantalla completa en gama baja. Con `prefers-reduced-motion` degrada a una composición estática de los blobs fundidos.
+
+**Variantes `grid` / `rays` / `dots`:** grilla retro-synthwave en perspectiva cuyas líneas avanzan hacia el horizonte (loop por período de celda exacto, sin salto), haces de luz que rotan lentamente en vaivén desde un vértice superior, y retícula de puntos con pulso suave de opacidad/escala. Mismo contrato de `colors`/`speed`/`intensity` que el resto.
 
 ```jsx
 import { AnimatedBackground } from '@fethabo/animated-ui'
@@ -88,7 +101,7 @@ import { AnimatedBackground } from '@fethabo/animated-ui'
 
 | Prop | Tipo | Default | Descripción |
 | --- | --- | --- | --- |
-| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam' \| 'lava'` | `'aurora'` | Variante visual de la animación. |
+| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam' \| 'lava' \| 'grid' \| 'rays' \| 'dots'` | `'aurora'` | Variante visual de la animación. |
 | `colors` | `string[]` | colores de la variante | Paleta de la animación (hasta 4 colores); los no provistos caen al default de la variante. |
 | `speed` | `number` | según variante | Segundos que tarda un ciclo completo de la animación. |
 | `intensity` | `number` | `1` | Intensidad/opacidad global del efecto, de 0 a 1. |
@@ -137,6 +150,25 @@ Todas se pueden pisar desde tu CSS en cascada, e.g. `.mi-bg { --aui-aurora-speed
 | `--aui-lava-contrast` | `16` | Contraste que "endurece" los bordes del blur (fusión gooey). |
 | `--aui-lava-size` | `280px` | Diámetro base de los blobs. |
 | `--aui-lava-opacity` | `1` | Intensidad global del efecto. |
+| `--aui-grid-line` | `rgba(124, 58, 237, 0.5)` | Color de las líneas de la grilla synthwave. |
+| `--aui-grid-base` | `#050510` | Color de fondo / cielo. |
+| `--aui-grid-glow` | `rgba(236, 72, 153, 0.35)` | Glow del horizonte. |
+| `--aui-grid-cell` | `48px` | Lado de la celda de la grilla. |
+| `--aui-grid-speed` | `8s` | Duración de un avance de celda completo. |
+| `--aui-grid-opacity` | `1` | Intensidad global del efecto. |
+| `--aui-rays-color-1` | `rgba(251, 191, 36, 0.4)` | Primer haz de luz. |
+| `--aui-rays-color-2` | `rgba(249, 115, 22, 0.28)` | Segundo haz de luz. |
+| `--aui-rays-color-3` | `rgba(236, 72, 153, 0.22)` | Tercer haz de luz. |
+| `--aui-rays-base` | `#050510` | Color de fondo. |
+| `--aui-rays-speed` | `18s` | Duración de un barrido completo (vaivén). |
+| `--aui-rays-blur` | `18px` | Desenfoque que suaviza los haces. |
+| `--aui-rays-opacity` | `1` | Intensidad global del efecto. |
+| `--aui-dots-color` | `rgba(124, 58, 237, 0.7)` | Color de los puntos. |
+| `--aui-dots-base` | `#050510` | Color de fondo. |
+| `--aui-dots-size` | `2px` | Radio de cada punto. |
+| `--aui-dots-cell` | `28px` | Separación de la retícula. |
+| `--aui-dots-speed` | `4s` | Duración de un pulso completo. |
+| `--aui-dots-opacity` | `1` | Intensidad global (pico del pulso). |
 
 ## PixelBackground
 
@@ -568,6 +600,113 @@ También acepta cualquier otra prop HTML válida de `<span>`.
 | `--aui-split-easing` | `cubic-bezier(0.22, 1, 0.36, 1)` | Curva de la transición (solo via CSS). |
 
 `--aui-split-i` es una variable de runtime (índice por unidad, o índice de línea medido en modo `line`); no la setees a mano.
+
+## RotatingText
+
+Texto base opcional + una palabra que rota cíclicamente por una lista con transición animada: "Hacemos *webs* / *apps* / *magia*". El avance usa timers (sin RAF) y la transición es CSS inyectado. El ancho del contenedor de la palabra transiciona suavemente entre palabras de largos distintos (medición al cambiar, no por frame) — si querés eliminar incluso ese ajuste, fijá un `width` via CSS sobre `.aui-rotating-box`.
+
+Accesible sin spam: el root expone un `aria-label` estático con el texto base + la lista completa, y la palabra animada es `aria-hidden` — sin `aria-live`. Con `prefers-reduced-motion` muestra la primera palabra estática.
+
+```jsx
+import { RotatingText } from '@fethabo/animated-ui'
+
+<h1>
+  <RotatingText words={['webs', 'apps', 'magia']} transition="slide-up" color="#a78bfa">
+    Hacemos{' '}
+  </RotatingText>
+</h1>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `words` | `string[]` | — | Lista de palabras por las que rota. |
+| `transition` | `'fade' \| 'slide-up' \| 'flip'` | `'slide-up'` | Preset de la transición entre palabras. |
+| `interval` | `number` | `2200` | Ms que cada palabra permanece visible. |
+| `duration` | `number` | `0.4` | Duración de la transición (y del ajuste de ancho) en segundos. |
+| `color` | `string` | hereda | Color de la palabra rotante. |
+| `loop` | `boolean` | `true` | Con `false`, se detiene en la última palabra. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, primera palabra estática. |
+| `children` | `ReactNode` | — | Texto base opcional que precede a la palabra. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-rotating-color` | hereda | Color de la palabra rotante. Prevalece sobre `color`. |
+| `--aui-rotating-duration` | `0.4s` | Duración de la transición. |
+
+## GlitchText
+
+Texto con glitch RGB-split **intermitente** (ráfagas breves separadas por períodos estables), CSS puro sin JS por frame: dos capas del mismo texto en pseudo-elementos (`content: attr(data-text)`, fuera del árbol de accesibilidad — el texto se lee una sola vez) desplazadas en sentidos opuestos y recortadas con `clip-path` animado. `trigger="hover"` limita el glitch a mientras el cursor está encima.
+
+> **Alcance:** acepta **solo texto plano** (`children: string`) y está pensado para **titulares** — el `clip-path` animado sobre párrafos largos tiene costo de pintado.
+
+Con `prefers-reduced-motion`, `loop` queda estático; `hover` conserva un split estático atenuado, sin jitter.
+
+```jsx
+import { GlitchText } from '@fethabo/animated-ui'
+
+<GlitchText as="h1" frequency={2} intensity={4}>ERROR 404</GlitchText>
+<GlitchText trigger="hover" colors={['#f0f', '#0ff']}>hover me</GlitchText>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `children` | `string` | — | El texto (solo texto plano). |
+| `as` | `ElementType` | `'span'` | Elemento root a renderizar. |
+| `trigger` | `'loop' \| 'hover'` | `'loop'` | Glitch autónomo intermitente, o solo en hover. |
+| `colors` | `[string, string]` | rojo/cyan | Colores de los dos canales desplazados. |
+| `intensity` | `number` | `3` | Desplazamiento máximo de los canales en px. |
+| `frequency` | `number` | `1` | Ráfagas por ciclo (~3s). |
+| `burstDuration` | `number` | `0.3` | Duración de cada ráfaga en segundos. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, texto estático (hover: split atenuado). |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida del elemento root.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-glitch-color-1` | `#ff004d` | Canal desplazado a la izquierda. Prevalece sobre `colors[0]`. |
+| `--aui-glitch-color-2` | `#00fff9` | Canal desplazado a la derecha. |
+| `--aui-glitch-intensity` | `3px` | Desplazamiento de los canales. Prevalece sobre `intensity`. |
+| `--aui-glitch-cycle` | `3s` | Duración del ciclo completo de ráfagas. |
+
+## WavyText
+
+Caracteres ondulando en loop continuo: una ola recorre el texto de izquierda a derecha. CSS puro (keyframes + `animation-delay` escalonado por índice, seteado inline una sola vez), sin JS por frame; anima **solo `transform: translateY`** (compositado), así la métrica de la línea circundante no cambia. Reutiliza el split por carácter del paquete: el texto completo va en `aria-label` y los caracteres son `aria-hidden`, con los espacios preservados.
+
+Con `prefers-reduced-motion` el texto queda estático en su línea base.
+
+```jsx
+import { WavyText } from '@fethabo/animated-ui'
+
+<WavyText as="h2" amplitude={8} speed={1.4}>¡Olas en el texto!</WavyText>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `children` | `string` | — | El texto a ondular (texto plano). |
+| `as` | `ElementType` | `'span'` | Elemento root a renderizar. |
+| `amplitude` | `number` | `6` | Desplazamiento vertical máximo en px. |
+| `speed` | `number` | `1.6` | Duración de un ciclo de ola en segundos. |
+| `stagger` | `number` | `0.06` | Desfase entre caracteres consecutivos en segundos. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, texto estático. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida del elemento root.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-wavy-amplitude` | `6px` | Desplazamiento vertical máximo. Prevalece sobre `amplitude`. |
+| `--aui-wavy-speed` | `1.6s` | Duración del ciclo de ola. Prevalece sobre `speed`. |
+| `--aui-wavy-stagger` | `0.06s` | Desfase entre caracteres. Prevalece sobre `stagger`. |
 
 ## MouseParallax
 
@@ -1049,6 +1188,316 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-branches-line-width` | `2px` | Grosor del trazo. |
 | `--aui-branches-curl` | `0.6` | Curvatura de las raíces (numérico, sin unidad). Prevalece sobre `curl`. |
 | `--aui-branches-jitter` | `0` | Jitter del trazo en px (numérico, sin unidad). |
+
+## Dock
+
+Fila de ítems que se magnifican según la proximidad del cursor (efecto dock de macOS): el ítem bajo el cursor alcanza `magnification` y los vecinos escalan decrecientemente con una campana suave dentro de `radius` px. El tracking escribe `scale` directo al style de cada ítem por refs — sin re-renders de React por frame; al salir el cursor, una transition CSS devuelve todo a escala base. Los ítems (declarados con `Dock.Item`) permanecen completamente interactivos: clicks, foco y orden de tabulación intactos.
+
+> **Touch:** sin cursor no hay magnificación — el dock queda como fila estática completamente funcional. Con `prefers-reduced-motion`, ídem.
+
+```jsx
+import { Dock } from '@fethabo/animated-ui'
+
+<Dock magnification={1.8} radius={140} gap={10}>
+  <Dock.Item><button className="icono">🏠</button></Dock.Item>
+  <Dock.Item><button className="icono">🔍</button></Dock.Item>
+  <Dock.Item><button className="icono">⚙️</button></Dock.Item>
+</Dock>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `magnification` | `number` | `1.5` | Escala máxima del ítem bajo el cursor. |
+| `radius` | `number` | `120` | Radio de influencia en px (a esa distancia la escala vuelve a 1). |
+| `gap` | `number` | `8` | Separación entre ítems en px. |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Eje de la fila y de la magnificación. |
+| `returnDuration` | `number` | `0.25` | Duración del retorno a escala base en segundos. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, fila estática sin magnificación. |
+| `className` / `style` | — | — | Extensión del root; `Dock.Item` también los acepta. |
+
+También acepta cualquier otra prop HTML válida de `<div>` (ídem `Dock.Item`).
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-dock-gap` | `8px` | Separación entre ítems. Prevalece sobre `gap`. |
+| `--aui-dock-return` | `0.25s` | Duración del retorno a escala base. |
+
+## BorderBeam
+
+Cometa de luz (cabeza brillante con estela en degradé) que recorre el perímetro del borde del contenedor en loop continuo — CSS casi puro (`offset-path: border-box` + `offset-distance` animado), sin JS por frame. Sigue el `border-radius` que le des al componente, incluyendo esquinas redondeadas. La capa del cometa es `pointer-events: none`: los clicks pasan al contenido. En browsers sin `offset-path: border-box` el cometa se oculta sin afectar nada (`@supports`). Con `prefers-reduced-motion` muestra un realce de borde estático sutil.
+
+```jsx
+import { BorderBeam } from '@fethabo/animated-ui'
+
+<BorderBeam duration={8} colorFrom="#f59e0b" style={{ borderRadius: 16, padding: 24 }}>
+  <h3>Card destacada</h3>
+</BorderBeam>
+
+{/* Varias instancias desincronizadas: */}
+<BorderBeam delay={0}>…</BorderBeam>
+<BorderBeam delay={-3}>…</BorderBeam>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `colorFrom` | `string` | `'#7c3aed'` | Color de la cabeza del cometa. |
+| `colorTo` | `string` | `'#0ea5e9'` | Color de la cola del degradé. |
+| `size` | `number` | `96` | Largo del cometa en px. |
+| `duration` | `number` | `6` | Segundos por vuelta completa. |
+| `delay` | `number` | `0` | Desfase inicial en segundos (negativo arranca avanzado). |
+| `borderWidth` | `number` | `2` | Grosor del trazo (y del realce estático) en px. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, realce de borde estático sin movimiento. |
+| `className` / `style` | — | — | Extensión del root (poné acá el `border-radius`). |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-beam-color-from` | `#7c3aed` | Color de la cabeza. Prevalece sobre `colorFrom`. |
+| `--aui-beam-color-to` | `#0ea5e9` | Color de la cola. |
+| `--aui-beam-size` | `96px` | Largo del cometa. |
+| `--aui-beam-duration` | `6s` | Segundos por vuelta. |
+| `--aui-beam-delay` | `0s` | Desfase inicial. |
+| `--aui-beam-border-width` | `2px` | Grosor del trazo. |
+
+## Marquee
+
+Cinta infinita de contenido (logos, testimonios) con desplazamiento continuo CSS puro — sin JS por frame en el modo base. El contenido se duplica internamente con las copias `aria-hidden` (los lectores de pantalla lo anuncian una sola vez) y el loop es sin costura. Si los children son más angostos que el contenedor, se repiten automáticamente hasta llenar la pista (medición por observer, una vez — no por frame).
+
+`scrollVelocity` (opt-in) acopla la velocidad de la cinta y un skew sutil a la velocidad de scroll de la página via el scroll-driver del paquete; sin la prop no hay suscripción al scroll. Con `prefers-reduced-motion` el contenido queda estático en una sola pasada. Las direcciones `up`/`down` (columnas) requieren acotar la altura del componente.
+
+```jsx
+import { Marquee } from '@fethabo/animated-ui'
+
+<Marquee speed={80} gap={40} pauseOnHover fadeEdges>
+  <img src="/logo-a.svg" alt="Logo A" />
+  <img src="/logo-b.svg" alt="Logo B" />
+  <img src="/logo-c.svg" alt="Logo C" />
+</Marquee>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `direction` | `'left' \| 'right' \| 'up' \| 'down'` | `'left'` | Dirección del desplazamiento. |
+| `speed` | `number` | `60` | Velocidad en px/s. |
+| `pauseOnHover` | `boolean` | `false` | Pausa con el cursor encima; reanuda al salir, sin salto. |
+| `scrollVelocity` | `boolean` | `false` | Acopla velocidad y skew a la velocidad de scroll (opt-in). |
+| `gap` | `number` | `24` | Separación entre ítems y repeticiones en px. |
+| `fadeEdges` | `boolean` | `false` | Desvanece los extremos con una máscara de gradiente. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, contenido estático en una sola pasada. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-marquee-gap` | `24px` | Separación entre ítems/repeticiones. Prevalece sobre `gap`. |
+| `--aui-marquee-duration` | `20s` | Duración del ciclo (el componente la deriva de `speed`; pisala para control manual). |
+
+## HorizontalScrollSection
+
+Sección cuyo contenido (una fila de paneles: los `children`) se desplaza **horizontalmente** conducido por el **scroll vertical**: el root provee el recorrido (su altura = `100dvh` + recorrido horizontal × `speed`), un inner sticky fija el viewport de la fila, y el scroll-driver escribe `--aui-hscroll-progress` (0→1) en el root — el desplazamiento es un `translateX(calc(...))` compositado, sin React state por frame. El scroll es reversible y el recorrido se recalcula ante resizes (observer, no por frame).
+
+La var de progreso queda disponible para efectos derivados del consumer (`var(--aui-hscroll-progress)` en tu CSS dentro de la sección). Con `prefers-reduced-motion` degrada a paneles apilados verticalmente, alcanzables con scroll normal; todo el contenido está en el markup SSR.
+
+```jsx
+import { HorizontalScrollSection } from '@fethabo/animated-ui'
+
+<HorizontalScrollSection speed={1}>
+  <section style={{ width: '100vw', height: '100dvh' }}>Panel 1</section>
+  <section style={{ width: '100vw', height: '100dvh' }}>Panel 2</section>
+  <section style={{ width: '100vw', height: '100dvh' }}>Panel 3</section>
+</HorizontalScrollSection>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `speed` | `number` | `1` | Multiplicador del recorrido vertical (más alto ⇒ desplazamiento más lento). |
+| `easing` | `(t: number) => number` | lineal | Easing del mapeo scroll→desplazamiento. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, paneles apilados verticalmente sin acople. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-hscroll-progress` | `0` | Progreso del recorrido (0→1), escrito por el componente — leelo para efectos derivados. |
+| `--aui-hscroll-travel` | `0px` | Recorrido horizontal medido en px. |
+
+## WavesBackground
+
+Fondo de líneas fluidas sobre `<canvas>`: cada línea horizontal se curva con ruido simplex evaluado en `(x, t)` — el tiempo entra como coordenada del campo, así la ondulación es orgánica, continua y sin repetición periódica visible. El muestreo es espaciado (~8 px por punto, nunca por pixel) y el estado vive en refs (sin re-renders por frame). **Determinista por `seed`**: misma seed + dimensiones ⇒ mismas ondas, estable entre repaints. Se posiciona `absolute, inset: 0` para cubrir su contenedor `position: relative` y se adapta a resizes (con `devicePixelRatio`).
+
+Con `prefers-reduced-motion` las líneas se dibujan curvadas pero inmóviles (frame estático), sin RAF corriendo.
+
+```jsx
+import { WavesBackground } from '@fethabo/animated-ui'
+
+<div style={{ position: 'relative', height: 400, background: '#050510' }}>
+  <WavesBackground lines={30} amplitude={28} colors={['#22d3ee', '#a78bfa']} seed="hero" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `lines` | `number` | `24` | Cantidad de líneas distribuidas verticalmente. |
+| `amplitude` | `number` | `24` | Amplitud de la ondulación en px. |
+| `speed` | `number` | `1` | Velocidad de la deriva temporal (`0` congela la forma). |
+| `colors` | `string[]` | `['#22d3ee', '#a78bfa']` | Paleta: cada línea interpola su color entre los extremos según su posición vertical. |
+| `lineWidth` | `number` | `1.5` | Grosor de las líneas en px. |
+| `seed` | `string \| number` | `'aui'` | Semilla del campo (determinista, sin `Math.random`). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, frame estático sin animación. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-waves-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta desde CSS en cascada. |
+| `--aui-waves-line-width` | `1.5px` | Grosor de las líneas. Prevalece sobre `lineWidth`. |
+
+## FlowField
+
+Partículas que siguen un campo vectorial de ruido simplex dejando trazos orgánicos sobre `<canvas>`: el ángulo de avance de cada partícula sale del valor del campo en su posición (una muestra de ruido por partícula por frame). La persistencia de los trazos se logra pintando por frame un velo semitransparente del color de fondo (`fade`) — sin historial de posiciones. **Determinista por `seed`** (posiciones iniciales, respawns y campo): misma seed + dimensiones ⇒ misma evolución, frame a frame.
+
+> **Nota:** a diferencia de los demás fondos, `FlowField` **pinta su propio fondo** (`background`, no transparente): el velo del fade lo requiere. Elegí un `background` acorde a tu diseño.
+
+Se posiciona `absolute, inset: 0` y ante un resize reinicia la simulación de forma determinista. Con `prefers-reduced-motion` muestra una composición estática de trazos pre-simulados (presupuesto fijo de pasos en el montaje), sin RAF corriendo.
+
+```jsx
+import { FlowField } from '@fethabo/animated-ui'
+
+<div style={{ position: 'relative', height: 400 }}>
+  <FlowField count={500} colors={['#22d3ee', '#a78bfa', '#f472b6']} background="#0a0a12" seed="flow" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `count` | `number` | `400` | Cantidad de partículas trazando el campo. |
+| `speed` | `number` | `1` | Avance de las partículas en px/frame. |
+| `colors` | `string[]` | `['#22d3ee', '#a78bfa', '#f472b6']` | Paleta: cada partícula sortea su color. |
+| `fade` | `number` | `0.95` | Persistencia del trazo (`0–1`): más alto ⇒ los trazos permanecen más tiempo. |
+| `scale` | `number` | `200` | Zoom del campo en px: mayor ⇒ curvas más amplias y suaves. |
+| `background` | `string` | `'#0a0a12'` | Color de fondo que el componente pinta (necesario para el fade). |
+| `seed` | `string \| number` | `'aui'` | Semilla del campo y los respawns (determinista, sin `Math.random`). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, composición estática de trazos pre-simulados. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-flow-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta desde CSS en cascada. |
+| `--aui-flow-background` | `#0a0a12` | Color del fondo/velo. Prevalece sobre `background`. |
+
+## TopographicBackground
+
+Curvas de nivel animadas (mapa topográfico vivo) sobre `<canvas>`: el terreno es un campo de ruido simplex fractal (fBm) muestreado sobre una grilla de celdas (~24 px, nunca por pixel), del que se extraen `levels` isolíneas con **marching squares** (interpolación en aristas: curvas suaves, sin artefactos de grilla). Las curvas se dibujan sobre una capa offscreen que se recalcula **a intervalos espaciados** — nunca en cada frame — y se copia al canvas visible sin parpadeos. **Determinista por `seed`**: misma seed + dimensiones ⇒ mismo mapa.
+
+Con `speed={0}` el terreno queda fijo (sin RAF); con `speed > 0` se deforma lenta y continuamente. El recálculo por resize se debouncea (~150 ms). Con `prefers-reduced-motion` el mapa se dibuja una vez, estático. Se posiciona `absolute, inset: 0` sobre su contenedor `position: relative`.
+
+```jsx
+import { TopographicBackground } from '@fethabo/animated-ui'
+
+<div style={{ position: 'relative', height: 400, background: '#0b1120' }}>
+  <TopographicBackground levels={12} color="#38bdf8" seed="terrain" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `levels` | `number` | `10` | Cantidad de niveles de contorno distribuidos por el rango del campo. |
+| `color` | `string` | `'#38bdf8'` | Color de las curvas. |
+| `lineWidth` | `number` | `1` | Grosor de las curvas en px. |
+| `scale` | `number` | `220` | Zoom del terreno en px: mayor ⇒ relieves más amplios. |
+| `speed` | `number` | `1` | Velocidad de la evolución del terreno (`0` = fijo, sin RAF). |
+| `seed` | `string \| number` | `'aui'` | Semilla del terreno (determinista, sin `Math.random`). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, mapa estático sin evolución. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-topo-color` | `#38bdf8` | Color de las curvas. Prevalece sobre la prop `color`. |
+| `--aui-topo-line-width` | `1px` | Grosor de las curvas. Prevalece sobre `lineWidth`. |
+
+## Celebración / Feedback
+
+Efectos **one-shot** disparados por eventos de la app (un submit exitoso, un logro, un like), en contraste con los efectos continuos declarativos del resto del paquete. El componente monta un overlay pasivo (sin animación ni RAF en reposo) y expone un **handle imperativo via ref**: la app declara *dónde* vive el efecto con JSX y decide *cuándo* dispara llamando un método del handle. Las props del componente son los **defaults** de cada disparo, y cada método acepta opciones que las **overridean solo para esa ráfaga**.
+
+## ConfettiBurst
+
+Ráfaga de confetti sobre un overlay `<canvas>` (`absolute, inset: 0`, `pointer-events: none` — los clicks pasan al contenido). No anima al montar: se dispara con `ref.current.fire(options?)`. Los copos salen en abanico desde `origin` según `angle`/`spread`/`power`, caen con gravedad y drag, y giran con tumbling 3D simulado. Disparos sucesivos se **acumulan** sobre el mismo canvas; el RAF arranca con el primer `fire()` y se detiene solo cuando no quedan copos vivos — **costo cero en reposo**. La aleatoriedad usa el PRNG seedable del paquete (varía entre disparos, sin `Math.random`).
+
+El confetti se recorta al contenedor del componente. Para cubrir el viewport completo, montalo en un contenedor `position: fixed; inset: 0`.
+
+```jsx
+import { useRef } from 'react'
+import { ConfettiBurst } from '@fethabo/animated-ui'
+// TypeScript: import type { ConfettiBurstHandle } from '@fethabo/animated-ui'
+
+function SubmitButton() {
+  const confettiRef = useRef(null) // useRef<ConfettiBurstHandle>(null)
+
+  const onSubmit = async () => {
+    await submitForm()
+    confettiRef.current?.fire() // ráfaga con los defaults de las props
+    // o por disparo: confettiRef.current?.fire({ count: 200, origin: { x: 0.5, y: 1 } })
+  }
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <button onClick={onSubmit}>Enviar</button>
+      <ConfettiBurst ref={confettiRef} colors={['#f43f5e', '#fbbf24', '#34d399']} />
+    </div>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `count` | `number` | `80` | Cantidad de copos por ráfaga. |
+| `colors` | `string[]` | paleta festiva de 5 colores | Paleta: cada copo sortea su color. También via `--aui-confetti-color-<i>`. |
+| `shapes` | `('rect' \| 'circle')[]` | `['rect', 'circle']` | Formas disponibles para los copos. |
+| `origin` | `{ x: number, y: number }` | `{ x: 0.5, y: 0.5 }` | Origen de la ráfaga, relativo al contenedor (`0–1` por eje). |
+| `angle` | `number` | `90` | Dirección central del abanico en grados (`90` = hacia arriba). |
+| `spread` | `number` | `60` | Apertura total del cono en grados. |
+| `power` | `number` | `12` | Velocidad inicial en px/frame (potencia de la ráfaga). |
+| `gravity` | `number` | `0.25` | Gravedad en px/frame² (qué tan rápido caen los copos). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion`, `fire()` es un **no-op** (ver abajo). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+**`fire(options?)`** acepta las mismas opciones que las props visuales (`count`, `colors`, `shapes`, `origin`, `angle`, `spread`, `power`, `gravity`) y las overridea **solo para esa ráfaga**; las props siguen siendo los defaults de los disparos siguientes. `fire()` antes de la hidratación (o sin canvas disponible) es un no-op seguro. El tipo `ConfettiBurstHandle` tipa el ref en TypeScript.
+
+> **Reduced motion:** con `prefers-reduced-motion` activo (y `respectReducedMotion` default), `fire()` no anima nada — el confetti es celebración autónoma sin versión estática útil. Si tu flujo necesita feedback igualmente, resolvelo fuera del componente (e.g. un mensaje de éxito).
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-confetti-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta default desde CSS en cascada (no afecta `colors` pasados en `fire()`). |
 
 ## Hooks
 

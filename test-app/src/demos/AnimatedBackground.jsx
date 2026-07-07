@@ -15,7 +15,7 @@ export default {
   title: 'AnimatedBackground',
   height: '60vh',
   controls: [
-    { prop: 'variant', type: 'enum', options: ['aurora', 'beam', 'mesh', 'noise', 'lava'], default: 'aurora' },
+    { prop: 'variant', type: 'enum', options: ['aurora', 'beam', 'mesh', 'noise', 'lava', 'grid', 'rays', 'dots'], default: 'aurora' },
     { prop: 'colors', type: 'multi', asColors: true, options: PALETTE, default: [] },
     { prop: 'speed', type: 'number', min: 1, max: 20, step: 0.5, default: 8 },
     { prop: 'intensity', type: 'number', min: 0, max: 1, step: 0.05, default: 1 },
