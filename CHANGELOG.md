@@ -58,3 +58,8 @@
 * agregado lock pnpm @fethabo 620a8fe
 * agregada configuracion de publish @fethabo 1f326f7
 * Agregada action para publish en NPM @fethabo ec9ce34
+
+## [0.7.0](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.6.5...@fethabo/animated-ui@0.7.0) (2026-07-07)
+
+* **feat:** agregadas variantes en animatedBackground, borderBeam, ConfettiBurst, Dock, FlowField, GlitchText, HorizontalScrollSection, Marquee, RotatingText, TopographicBackground, WavesBackground, WavyText @fethabo 2a84cee
+* armados specs para nuevos waves @fethabo 5664371
