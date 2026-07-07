@@ -20,6 +20,6 @@
 ## 4. Verificación (definition-of-done)
 
 - [x] 4.1 Demo en `test-app` con botón de disparo + panel de controles (`count`, `colors`, `origin`, `angle`, `spread`, `power`, `gravity`, `respectReducedMotion`) y alta en `demos/index.js`
-- [ ] 4.2 Verificación visual: ráfagas acumulativas, look del copo (rect con tumbling), RAF detenido en reposo (verificar con devtools), clicks pasando a través del overlay
+- [x] 4.2 Verificación visual: ráfagas acumulativas, look del copo (rect con tumbling), RAF detenido en reposo (verificar con devtools), clicks pasando a través del overlay
 - [x] 4.3 Correr vitest completo + typecheck + build; confirmar tree-shaking
 - [x] 4.4 Revisar cumplimiento de la spec `component-authoring` antes de archivar

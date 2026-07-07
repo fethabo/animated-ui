@@ -40,6 +40,6 @@
 ## 7. Verificación (definition-of-done)
 
 - [x] 7.1 Demo + descriptor de controles en `test-app` por componente nuevo (incluye `respectReducedMotion`) y variantes nuevas en el demo de AnimatedBackground; alta en `demos/index.js`
-- [ ] 7.2 Verificación visual: magnificación y retorno del Dock (horizontal/vertical), cometa siguiendo esquinas redondeadas, marquee sin costura con pausa en hover y modo velocity, scroll horizontal reversible con resize
+- [x] 7.2 Verificación visual: magnificación y retorno del Dock (horizontal/vertical), cometa siguiendo esquinas redondeadas, marquee sin costura con pausa en hover y modo velocity, scroll horizontal reversible con resize
 - [x] 7.3 Correr vitest completo + typecheck + build; confirmar tree-shaking
 - [x] 7.4 Revisar cumplimiento de la spec `component-authoring` para cada componente antes de archivar

@@ -50,9 +50,9 @@ Cada CSS custom property usada por el componente SHALL tener un comentario en el
 - **WHEN** un developer inspecciona el elemento en DevTools
 - **THEN** SHALL ver las CSS vars con nombres descriptivos (e.g., `--aui-aurora-color-1`, `--aui-aurora-speed`) que puede pisar en su propio CSS
 
-### Requirement: El componente soporta cinco variantes de animación
+### Requirement: El componente soporta ocho variantes de animación
 
-AnimatedBackground SHALL soportar las variantes `aurora`, `mesh`, `noise`, `beam` y `lava`, seleccionables via prop `variant`. Cada variante SHALL tener valores visuales distintos y ser visualmente atractiva en su estado default. La variante `lava` SHALL implementarse con CSS puro (sin JS por frame): blobs de color que ascienden y descienden lentamente y se funden entre sí mediante el truco "gooey" (`filter: blur()` + `contrast()` sobre un contenedor de blobs opacos), evocando una lámpara de lava.
+AnimatedBackground SHALL soportar las variantes `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays` y `dots`, seleccionables via prop `variant`. Cada variante SHALL tener valores visuales distintos y ser visualmente atractiva en su estado default. Las variantes nuevas SHALL implementarse con CSS puro (sin JS por frame) y cumplir el mismo contrato de `colors`/`speed`/`intensity` y CSS custom properties (`--aui-grid-*`, `--aui-rays-*`, `--aui-dots-*`) que las existentes: `grid` es una grilla retro-synthwave en perspectiva cuyas líneas se desplazan hacia el horizonte; `rays` son haces de luz que rotan lentamente desde un vértice; `dots` es un patrón de puntos con pulso suave de opacidad/escala.
 
 #### Scenario: Variante aurora
 
@@ -79,10 +79,30 @@ AnimatedBackground SHALL soportar las variantes `aurora`, `mesh`, `noise`, `beam
 - **WHEN** se renderiza `<AnimatedBackground variant="lava" />`
 - **THEN** el background SHALL mostrar blobs que ascienden y descienden lentamente, fundiéndose y separándose con bordes orgánicos tipo lámpara de lava
 
-#### Scenario: Colores configurables de la variante lava
+#### Scenario: Variante grid
 
-- **WHEN** el consumer pasa `variant="lava"` con `colors={['#ff6b6b', '#f59e0b']}`
-- **THEN** los blobs de lava SHALL usar esos colores en lugar de los defaults de la variante
+- **WHEN** se renderiza `<AnimatedBackground variant="grid" />`
+- **THEN** el background SHALL mostrar una grilla en perspectiva cuyas líneas se desplazan continuamente hacia el horizonte
+
+#### Scenario: Variante rays
+
+- **WHEN** se renderiza `<AnimatedBackground variant="rays" />`
+- **THEN** el background SHALL mostrar haces de luz rotando lentamente desde un vértice
+
+#### Scenario: Variante dots
+
+- **WHEN** se renderiza `<AnimatedBackground variant="dots" />`
+- **THEN** el background SHALL mostrar un patrón de puntos con un pulso suave de opacidad/escala
+
+#### Scenario: Colores configurables de las variantes nuevas
+
+- **WHEN** el consumer pasa `variant="grid"` con `colors={['#22d3ee', '#0f172a']}`
+- **THEN** la variante SHALL usar esos colores en lugar de los defaults, igual que las variantes existentes
+
+#### Scenario: Reduced motion en las variantes nuevas
+
+- **WHEN** el browser reporta `prefers-reduced-motion: reduce` con `variant` en `grid`, `rays` o `dots`
+- **THEN** la variante SHALL mostrar su composición estática sin animación, como el resto de las variantes
 
 ### Requirement: La variante lava degrada de forma legible bajo prefers-reduced-motion
 

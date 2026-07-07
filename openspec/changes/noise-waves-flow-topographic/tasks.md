@@ -35,7 +35,7 @@
 ## 6. Verificación (definition-of-done)
 
 - [x] 6.1 Demo + descriptor de controles en `test-app` por componente (incluye `seed` y `respectReducedMotion`) y alta en `demos/index.js`
-- [ ] 6.2 Verificación visual: ondulación continua sin repetición evidente; trazos del flow field con fade; curvas topográficas sin artefactos de grilla; evolución lenta sin parpadeo
+- [x] 6.2 Verificación visual: ondulación continua sin repetición evidente; trazos del flow field con fade; curvas topográficas sin artefactos de grilla; evolución lenta sin parpadeo
 - [x] 6.3 Verificar presupuestos de performance del design (muestreo por grilla/línea, offscreen en Topographic, un sample por partícula) y determinismo SSR↔hidratación
 - [x] 6.4 Correr vitest completo + typecheck + build; confirmar tree-shaking
 - [x] 6.5 Revisar cumplimiento de la spec `component-authoring` para cada componente antes de archivar

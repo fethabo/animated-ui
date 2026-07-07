@@ -30,6 +30,6 @@
 ## 6. Verificación (definition-of-done)
 
 - [x] 6.1 Demo + descriptor de controles en `test-app` por componente (incluye `respectReducedMotion`) y alta en `demos/index.js`
-- [ ] 6.2 Verificación visual en `test-app`: rotación con los tres presets y anchos dispares; glitch en loop y hover; ola continua sin romper la línea
+- [x] 6.2 Verificación visual en `test-app`: rotación con los tres presets y anchos dispares; glitch en loop y hover; ola continua sin romper la línea
 - [x] 6.3 Correr vitest completo + typecheck + build; confirmar tree-shaking
 - [x] 6.4 Revisar cumplimiento de la spec `component-authoring` para cada componente antes de archivar
