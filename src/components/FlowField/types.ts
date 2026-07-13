@@ -1,40 +1,40 @@
 import type { HTMLAttributes } from 'react'
 
 export interface FlowFieldProps extends HTMLAttributes<HTMLDivElement> {
-  /** Cantidad de partículas trazando el campo. Default: `400`. */
+  /** Number of particles tracing the field. Default: `400`. */
   count?: number
-  /** Velocidad de avance de las partículas en px/frame. Default: `1`. */
+  /** Particle advance speed in px/frame. Default: `1`. */
   speed?: number
   /**
-   * Paleta de los trazos: cada partícula sortea su color. Default:
-   * `['#22d3ee', '#a78bfa', '#f472b6']`. También via `--aui-flow-color-<i>`.
+   * Trail palette: each particle draws its color at random. Default:
+   * `['#22d3ee', '#a78bfa', '#f472b6']`. Also via `--aui-flow-color-<i>`.
    */
   colors?: string[]
   /**
-   * Persistencia del trazo (`0–1`): cuánto tarda en desvanecerse. Más alto ⇒
-   * los trazos permanecen visibles más tiempo. Default: `0.95`.
+   * Trail persistence (`0–1`): how long it takes to fade out. Higher ⇒
+   * trails remain visible for longer. Default: `0.95`.
    */
   fade?: number
   /**
-   * Zoom del campo de ruido en px: a mayor `scale`, curvas más amplias y
-   * suaves. Default: `200`.
+   * Noise field zoom in px: the larger the `scale`, the wider and
+   * smoother the curves. Default: `200`.
    */
   scale?: number
   /**
-   * Color de fondo que el componente pinta (necesario para el fade de los
-   * trazos: el fondo NO es transparente, a diferencia de ParticleField).
-   * Default: `'#0a0a12'`. También via `--aui-flow-background`.
+   * Background color the component paints (required for the trail fade:
+   * the background is NOT transparent, unlike ParticleField).
+   * Default: `'#0a0a12'`. Also via `--aui-flow-background`.
    */
   background?: string
   /**
-   * Semilla del campo y de las posiciones/respawns: la misma `seed` +
-   * dimensiones producen la misma evolución (sin `Math.random`). Default: `'aui'`.
+   * Seed for the field and the positions/respawns: the same `seed` +
+   * dimensions produce the same evolution (no `Math.random`). Default: `'aui'`.
    */
   seed?: string | number
   /**
-   * Si es `false`, la simulación corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, se dibuja una
-   * composición estática de trazos pre-simulados, sin RAF).
+   * If `false`, the simulation runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, a static
+   * composition of pre-simulated trails is drawn, no RAF).
    */
   respectReducedMotion?: boolean
 }

@@ -1,0 +1,10 @@
+{
+  "words": "Lista de palabras por las que rota.",
+  "transition": "Preset de la transición entre palabras.",
+  "interval": "Ms que cada palabra permanece visible.",
+  "duration": "Duración de la transición (entrada y ajuste de ancho) en segundos. También via `--aui-rotating-duration`.",
+  "color": "Color de la palabra rotante. Default: hereda. También via `--aui-rotating-color`.",
+  "loop": "Con `false`, la rotación se detiene en la última palabra.",
+  "respectReducedMotion": "Si es `false`, la rotación opera aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, muestra la primera palabra estática).",
+  "children": "Texto base opcional que precede a la palabra rotante (e.g. `Hacemos `)."
+}

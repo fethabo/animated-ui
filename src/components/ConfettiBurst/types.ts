@@ -1,78 +1,79 @@
 import type { HTMLAttributes } from 'react'
 
-/** Forma de cada copo de confetti. */
+/** Shape of each confetti piece. */
 export type ConfettiShape = 'rect' | 'circle'
 
-/** Origen de la ráfaga, relativo al contenedor: `0–1` por eje (`{x:0.5, y:0.5}` = centro). */
+/** Burst origin, relative to the container: `0–1` per axis (`{x:0.5, y:0.5}` = center). */
 export interface ConfettiOrigin {
   x: number
   y: number
 }
 
 /**
- * Opciones de un disparo individual de `fire(options?)`. Cada campo overridea
- * la prop homónima del componente **solo para esa ráfaga** — las props quedan
- * como defaults de los disparos siguientes.
+ * Options for a single `fire(options?)` shot. Each field overrides the
+ * component prop of the same name **for that burst only** — the props remain
+ * the defaults for subsequent shots.
  */
 export interface FireOptions {
-  /** Cantidad de copos de la ráfaga. */
+  /** Number of pieces in the burst. */
   count?: number
-  /** Paleta de la ráfaga: cada copo sortea su color de acá. */
+  /** Burst palette: each piece picks its color at random from here. */
   colors?: string[]
-  /** Formas disponibles para los copos. */
+  /** Shapes available for the pieces. */
   shapes?: ConfettiShape[]
-  /** Origen de la ráfaga, relativo al contenedor (`0–1` por eje). */
+  /** Burst origin, relative to the container (`0–1` per axis). */
   origin?: ConfettiOrigin
-  /** Dirección central del abanico en grados; `90` = hacia arriba. */
+  /** Central direction of the fan in degrees; `90` = upward. */
   angle?: number
-  /** Apertura total del cono en grados. */
+  /** Total cone spread in degrees. */
   spread?: number
-  /** Velocidad inicial en px/frame (potencia de la ráfaga). */
+  /** Initial velocity in px/frame (burst strength). */
   power?: number
-  /** Gravedad en px/frame² (cuánto y qué tan rápido caen los copos). */
+  /** Gravity in px/frame² (how much and how fast the pieces fall). */
   gravity?: number
 }
 
 /**
- * Handle imperativo expuesto por `ConfettiBurst` via ref: tipá tu
- * `useRef<ConfettiBurstHandle>(null)` con esto y disparás con
+ * Imperative handle exposed by `ConfettiBurst` via ref: type your
+ * `useRef<ConfettiBurstHandle>(null)` with this and fire with
  * `ref.current?.fire()`.
  */
 export interface ConfettiBurstHandle {
   /**
-   * Dispara una ráfaga de confetti. Las `options` overridean las props del
-   * componente para esta ráfaga. Disparos sucesivos se acumulan sobre el
-   * mismo canvas. No-op antes de la hidratación y bajo
-   * `prefers-reduced-motion` (con `respectReducedMotion` activo).
+   * Fires a confetti burst. The `options` override the component props for
+   * this burst. Successive shots accumulate on the same canvas. No-op
+   * before hydration and under `prefers-reduced-motion` (with
+   * `respectReducedMotion` enabled).
    */
   fire(options?: FireOptions): void
 }
 
 export interface ConfettiBurstProps extends HTMLAttributes<HTMLDivElement> {
-  /** Cantidad de copos por ráfaga. Default: `80`. */
+  /** Number of pieces per burst. Default: `80`. */
   count?: number
   /**
-   * Paleta default: cada copo sortea su color de acá. Default: paleta festiva
-   * de 5 colores. También via `--aui-confetti-color-<i>`.
+   * Default palette: each piece picks its color at random from here.
+   * Default: festive 5-color palette. Also via `--aui-confetti-color-<i>`.
    */
   colors?: string[]
-  /** Formas disponibles para los copos. Default: `['rect', 'circle']`. */
+  /** Shapes available for the pieces. Default: `['rect', 'circle']`. */
   shapes?: ConfettiShape[]
-  /** Origen default de las ráfagas, relativo al contenedor (`0–1`). Default: `{x: 0.5, y: 0.5}`. */
+  /** Default burst origin, relative to the container (`0–1`). Default: `{x: 0.5, y: 0.5}`. */
   origin?: ConfettiOrigin
-  /** Dirección central del abanico en grados; `90` = hacia arriba. Default: `90`. */
+  /** Central direction of the fan in degrees; `90` = upward. Default: `90`. */
   angle?: number
-  /** Apertura total del cono en grados. Default: `60`. */
+  /** Total cone spread in degrees. Default: `60`. */
   spread?: number
-  /** Velocidad inicial en px/frame. Default: `12`. */
+  /** Initial velocity in px/frame. Default: `12`. */
   power?: number
-  /** Gravedad en px/frame². Default: `0.25`. */
+  /** Gravity in px/frame². Default: `0.25`. */
   gravity?: number
   /**
-   * Si es `false`, `fire()` anima aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con la preferencia activa,
-   * `fire()` es un no-op: el confetti es celebración autónoma sin versión
-   * estática útil — el feedback alternativo corre por cuenta del consumer).
+   * If `false`, `fire()` animates even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with the preference
+   * active, `fire()` is a no-op: confetti is a self-contained celebration
+   * with no useful static version — alternative feedback is up to the
+   * consumer).
    */
   respectReducedMotion?: boolean
 }

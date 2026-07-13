@@ -1,0 +1,7 @@
+{
+  "children": "Contenido del card: nodos React o función `(state: TiltState) => ReactNode`.",
+  "glare": "Si es `true`, agrega un overlay de brillo especular que sigue el tilt invertido.",
+  "maxAngle": "Ángulo máximo de rotación en grados, en cualquier eje.",
+  "perspective": "Profundidad de perspectiva 3D en px. También controlable via CSS: `--aui-tilt-perspective` pisa este valor.",
+  "respectReducedMotion": "Si es `false`, el tilt corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, tiltX/tiltY quedan en 0 pero `isHovering` sigue funcionando)."
+}

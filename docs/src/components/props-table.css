@@ -1,0 +1,61 @@
+.docs-props-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+}
+
+.docs-props {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.docs-props th,
+.docs-props td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--docs-border);
+}
+
+.docs-props tr:last-child td {
+  border-bottom: none;
+}
+
+.docs-props th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--docs-text-dim);
+  background: var(--docs-bg-raised);
+}
+
+.docs-props code {
+  background: var(--docs-bg-raised);
+  border: 1px solid var(--docs-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.docs-props .docs-type {
+  color: var(--docs-accent-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.docs-props td:last-child {
+  color: var(--docs-text-dim);
+  min-width: 220px;
+}
+
+.docs-props td:last-child code {
+  white-space: nowrap;
+}
+
+.docs-required {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f87171;
+}

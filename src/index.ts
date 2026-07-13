@@ -118,6 +118,86 @@ export type {
   FireOptions,
 } from './components/ConfettiBurst'
 
+export { FireworksBurst } from './components/FireworksBurst'
+export type {
+  FireworksBurstHandle,
+  FireworksBurstProps,
+  FireworksFireOptions,
+  FireworksOrigin,
+} from './components/FireworksBurst'
+
+export { SparkleBurst } from './components/SparkleBurst'
+export type {
+  SparkleBurstHandle,
+  SparkleBurstProps,
+  SparkleFireOptions,
+  SparkleOrigin,
+} from './components/SparkleBurst'
+
+export { EmojiBurst } from './components/EmojiBurst'
+export type {
+  EmojiBurstHandle,
+  EmojiBurstProps,
+  EmojiFireOptions,
+  EmojiOrigin,
+} from './components/EmojiBurst'
+
+export { ClickSpark } from './components/ClickSpark'
+export type { ClickSparkProps } from './components/ClickSpark'
+
+export { RippleContainer } from './components/RippleContainer'
+export type { RippleContainerProps } from './components/RippleContainer'
+
+export { CountUp } from './components/CountUp'
+export type { CountUpProps } from './components/CountUp'
+
+export { TextScrollReveal } from './components/TextScrollReveal'
+export type { TextScrollRevealProps } from './components/TextScrollReveal'
+
+export { CursorTrail } from './components/CursorTrail'
+export type { CursorTrailMode, CursorTrailProps } from './components/CursorTrail'
+
+export { CustomCursor } from './components/CustomCursor'
+export type { CustomCursorProps } from './components/CustomCursor'
+
+export { ImageTrail } from './components/ImageTrail'
+export type { ImageTrailProps } from './components/ImageTrail'
+
+export { StarfieldBackground } from './components/StarfieldBackground'
+export type { StarfieldBackgroundProps } from './components/StarfieldBackground'
+
+export { MatrixRain } from './components/MatrixRain'
+export type { MatrixRainProps } from './components/MatrixRain'
+
+export { TextHighlighter } from './components/TextHighlighter'
+export type {
+  HighlighterShape,
+  HighlighterTrigger,
+  TextHighlighterProps,
+} from './components/TextHighlighter'
+
+export { DrawPath } from './components/DrawPath'
+export type { DrawPathProps, DrawPathTrigger } from './components/DrawPath'
+
+export { ScribbleDecoration } from './components/ScribbleDecoration'
+export type {
+  ScribbleDecorationProps,
+  ScribbleShape,
+  ScribbleShapeName,
+  ScribbleSize,
+  ScribbleTrigger,
+} from './components/ScribbleDecoration'
+
+export { AnimatedList } from './components/AnimatedList'
+export type {
+  AnimatedListEnterPreset,
+  AnimatedListExitPreset,
+  AnimatedListProps,
+} from './components/AnimatedList'
+
+export { AutoHeight } from './components/AutoHeight'
+export type { AutoHeightProps } from './components/AutoHeight'
+
 export { useReducedMotion } from './hooks/useReducedMotion'
 export { useMousePosition } from './hooks/useMousePosition'
 export { useResizeObserver } from './hooks/useResizeObserver'

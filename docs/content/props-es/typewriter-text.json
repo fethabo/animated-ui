@@ -1,0 +1,10 @@
+{
+  "text": "Texto a escribir. Un string se escribe una sola vez; un `string[]` con `loop` activo cicla escribiendo → pausando → borrando → siguiente. Es texto plano (no `children`): el motor opera carácter por carácter.",
+  "speed": "Caracteres escritos por segundo.",
+  "startDelay": "Milisegundos antes de comenzar a escribir.",
+  "cursor": "Cursor al final del texto. `true` usa un glifo default (`|`); un string usa ese carácter como glifo (e.g. `\"_\"`, `\"▋\"`); `false` lo desactiva. Parpadea via animación CSS (sin JS por frame).",
+  "deleteSpeed": "Caracteres borrados por segundo en modo loop.",
+  "pauseDuration": "Milisegundos de pausa con el string completo antes de borrar.",
+  "loop": "Si es `true` y `text` es un arreglo, cicla indefinidamente entre los strings (escribe→pausa→borra→siguiente).",
+  "respectReducedMotion": "Si es `false`, la escritura anima aunque el sistema tenga activado `prefers-reduced-motion` (con reduce se muestra el texto final completo de inmediato, sin escritura ni parpadeo del cursor)."
+}

@@ -1,0 +1,10 @@
+{
+  "value": "Valor final de la cuenta. Es lo que renderiza el SSR y lo que anuncia el lector de pantalla.",
+  "from": "Valor inicial desde el que arranca la cuenta.",
+  "duration": "Duración de la cuenta en ms.",
+  "decimals": "Cantidad de decimales, estable durante toda la cuenta.",
+  "separator": "Separador de miles (e.g. `'.'`, `','`). Default: sin separador.",
+  "prefix": "String antepuesto al número (e.g. `'$'`).",
+  "suffix": "String pospuesto al número (e.g. `'+'`).",
+  "respectReducedMotion": "Si es `false`, la cuenta anima aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, se muestra el valor final directo, igual que el markup SSR)."
+}

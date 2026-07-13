@@ -10,6 +10,7 @@ import {
 import { injectStyles, styleId } from '../../utils/inject-styles'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { createPrng } from '../../utils/prng'
+import { useOneShotCanvas } from '../shared/use-one-shot-canvas'
 import { spawnFlakes, stepFlakes, type Flake } from './physics'
 import type {
   ConfettiBurstHandle,
@@ -96,12 +97,6 @@ export const ConfettiBurst = forwardRef<ConfettiBurstHandle, ConfettiBurstProps>
     },
     ref,
   ) {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    // Pool por ráfaga: cada disparo conserva su propia gravedad (las options
-    // overridean solo su ráfaga) y se remueve al vaciarse.
-    const burstsRef = useRef<Array<{ flakes: Flake[]; gravity: number }>>([])
-    const rafRef = useRef<number | null>(null)
     // Seed por disparo: contador interno → cada ráfaga varía, sin Math.random.
     const burstRef = useRef(0)
     const staticRef = useRef(false)
@@ -110,6 +105,36 @@ export const ConfettiBurst = forwardRef<ConfettiBurstHandle, ConfettiBurstProps>
     const defaultsRef = useRef({ count, colors, shapes, origin, angle, spread, power, gravity })
 
     const reducedMotion = useReducedMotion()
+
+    // Esqueleto one-shot compartido (overlay + pool + RAF auto-detenible);
+    // cada ráfaga conserva su propia gravedad (las options overridean solo
+    // su ráfaga). Acá solo vive la física + el dibujo del copo.
+    const { containerRef, canvasRef, fire: engineFire } = useOneShotCanvas<{
+      flakes: Flake[]
+      gravity: number
+    }>((ctx, w, h, burst) => {
+      stepFlakes(burst.flakes, { width: w, height: h, gravity: burst.gravity })
+      for (const f of burst.flakes) {
+        ctx.save()
+        ctx.translate(f.x, f.y)
+        ctx.rotate(f.rotation)
+        ctx.globalAlpha = Math.max(0, Math.min(1, f.life))
+        ctx.fillStyle = f.color
+        // Tumbling: el eje menor se escala con cos(tumble) — el rect "da
+        // vueltas" sobre sí mismo y el circle se achata como una moneda.
+        const sy = Math.cos(f.tumble)
+        if (f.shape === 'circle') {
+          ctx.beginPath()
+          ctx.ellipse(0, 0, f.size / 2, Math.max(0.5, (f.size / 2) * Math.abs(sy)), 0, 0, Math.PI * 2)
+          ctx.fill()
+        } else {
+          const minor = f.size * RECT_ASPECT * sy
+          ctx.fillRect(-f.size / 2, -minor / 2, f.size, minor)
+        }
+        ctx.restore()
+      }
+      return burst.flakes.length > 0
+    })
 
     useEffect(() => {
       injectStyles(styleId('confetti-burst'), CSS)
@@ -123,101 +148,41 @@ export const ConfettiBurst = forwardRef<ConfettiBurstHandle, ConfettiBurstProps>
       defaultsRef.current = { count, colors, shapes, origin, angle, spread, power, gravity }
     })
 
-    // Detiene el RAF y vacía el pool al desmontar (StrictMode-safe: el
-    // remount arranca de cero y ningún loop del mount anterior sobrevive).
-    useEffect(() => {
-      return () => {
-        if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-        burstsRef.current = []
-      }
-    }, [])
+    const fire = useCallback(
+      (options?: FireOptions) => {
+        // No-op bajo reduced motion; pre-hidratación/sin canvas lo resuelve
+        // el engine compartido.
+        if (staticRef.current) return
+        const container = containerRef.current
+        if (!container) return
+        engineFire((width, height) => {
+          const d = defaultsRef.current
+          const burstColors = options?.colors ?? d.colors
+          // Colores efectivos: un override CSS (`--aui-confetti-color-<i>`)
+          // prevalece sobre el default de la prop (no sobre options explícitas).
+          const computed = getComputedStyle(container)
+          const effColors = burstColors.map((c, i) => {
+            if (options?.colors) return c
+            return computed.getPropertyValue(`--aui-confetti-color-${i}`).trim() || c
+          })
 
-    const fire = useCallback((options?: FireOptions) => {
-      // No-op pre-hidratación, sin canvas o bajo reduced motion.
-      const canvas = canvasRef.current
-      const container = containerRef.current
-      if (!canvas || !container || staticRef.current) return
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return
-
-      const width = container.clientWidth
-      const height = container.clientHeight
-      if (width <= 0 || height <= 0) return
-
-      // Ajusta el backing store al tamaño actual (con devicePixelRatio); solo
-      // en `fire()` — sin observers ni trabajo en reposo.
-      const dpr = window.devicePixelRatio || 1
-      const bw = Math.max(1, Math.round(width * dpr))
-      const bh = Math.max(1, Math.round(height * dpr))
-      if (canvas.width !== bw || canvas.height !== bh) {
-        canvas.width = bw
-        canvas.height = bh
-      }
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-
-      const d = defaultsRef.current
-      const burstColors = options?.colors ?? d.colors
-      // Colores efectivos: un override CSS (`--aui-confetti-color-<i>`)
-      // prevalece sobre el default de la prop (no sobre options explícitas).
-      const computed = getComputedStyle(container)
-      const effColors = burstColors.map((c, i) => {
-        if (options?.colors) return c
-        return computed.getPropertyValue(`--aui-confetti-color-${i}`).trim() || c
-      })
-
-      const flakes = spawnFlakes({
-        count: options?.count ?? d.count,
-        width,
-        height,
-        origin: options?.origin ?? d.origin,
-        angle: options?.angle ?? d.angle,
-        spread: options?.spread ?? d.spread,
-        power: options?.power ?? d.power,
-        colors: effColors,
-        shapes: options?.shapes ?? d.shapes,
-        rng: createPrng(`aui-confetti-${burstRef.current++}`),
-      })
-      burstsRef.current.push({ flakes, gravity: options?.gravity ?? d.gravity })
-
-      if (rafRef.current !== null) return // ya hay un loop corriendo: acumula y listo
-
-      const loop = () => {
-        const w = container.clientWidth
-        const h = container.clientHeight
-        ctx.clearRect(0, 0, w, h)
-        for (const burst of burstsRef.current) {
-          stepFlakes(burst.flakes, { width: w, height: h, gravity: burst.gravity })
-          for (const f of burst.flakes) {
-            ctx.save()
-            ctx.translate(f.x, f.y)
-            ctx.rotate(f.rotation)
-            ctx.globalAlpha = Math.max(0, Math.min(1, f.life))
-            ctx.fillStyle = f.color
-            // Tumbling: el eje menor se escala con cos(tumble) — el rect "da
-            // vueltas" sobre sí mismo y el circle se achata como una moneda.
-            const sy = Math.cos(f.tumble)
-            if (f.shape === 'circle') {
-              ctx.beginPath()
-              ctx.ellipse(0, 0, f.size / 2, Math.max(0.5, (f.size / 2) * Math.abs(sy)), 0, 0, Math.PI * 2)
-              ctx.fill()
-            } else {
-              const minor = f.size * RECT_ASPECT * sy
-              ctx.fillRect(-f.size / 2, -minor / 2, f.size, minor)
-            }
-            ctx.restore()
-          }
-        }
-        burstsRef.current = burstsRef.current.filter((b) => b.flakes.length > 0)
-        if (burstsRef.current.length === 0) {
-          // Pool vacío → el RAF se detiene solo (costo cero en reposo).
-          rafRef.current = null
-          return
-        }
-        rafRef.current = requestAnimationFrame(loop)
-      }
-      rafRef.current = requestAnimationFrame(loop)
-    }, [])
+          const flakes = spawnFlakes({
+            count: options?.count ?? d.count,
+            width,
+            height,
+            origin: options?.origin ?? d.origin,
+            angle: options?.angle ?? d.angle,
+            spread: options?.spread ?? d.spread,
+            power: options?.power ?? d.power,
+            colors: effColors,
+            shapes: options?.shapes ?? d.shapes,
+            rng: createPrng(`aui-confetti-${burstRef.current++}`),
+          })
+          return { flakes, gravity: options?.gravity ?? d.gravity }
+        })
+      },
+      [engineFire, containerRef],
+    )
 
     useImperativeHandle(ref, () => ({ fire }), [fire])
 

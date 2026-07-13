@@ -1,0 +1,8 @@
+{
+  "variant": "Variante visual de la animación.",
+  "colors": "Paleta de colores de la animación. Cada variante usa hasta 4 colores; los no provistos caen al default de la variante.",
+  "speed": "Segundos que tarda un ciclo completo de la animación.",
+  "intensity": "Intensidad/opacidad global del efecto, de 0 a 1.",
+  "fixed": "Si es `true` usa `position: fixed` para cubrir el viewport completo. (`position: absolute`, cubre el padre `relative`).",
+  "respectReducedMotion": "Si es `false`, la animación corre aunque el sistema tenga activado `prefers-reduced-motion`."
+}

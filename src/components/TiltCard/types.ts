@@ -1,32 +1,32 @@
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 
-/** Estado de animación expuesto via render prop. */
+/** Animation state exposed via render prop. */
 export interface TiltState {
-  /** Rotación actual sobre el eje X en grados (mouse arriba/abajo). */
+  /** Current rotation around the X axis in degrees (mouse up/down). */
   tiltX: number
-  /** Rotación actual sobre el eje Y en grados (mouse izquierda/derecha). */
+  /** Current rotation around the Y axis in degrees (mouse left/right). */
   tiltY: number
-  /** `true` mientras el cursor está sobre el card. */
+  /** `true` while the cursor is over the card. */
   isHovering: boolean
 }
 
 export interface TiltCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-  /** Ángulo máximo de rotación en grados, en cualquier eje. Default: `15`. */
+  /** Maximum rotation angle in degrees, on either axis. Default: `15`. */
   maxAngle?: number
   /**
-   * Profundidad de perspectiva 3D en px. Default: `1000`.
-   * También controlable via CSS: `--aui-tilt-perspective` pisa este valor.
+   * 3D perspective depth in px. Default: `1000`.
+   * Also controllable via CSS: `--aui-tilt-perspective` overrides this value.
    */
   perspective?: number
-  /** Si es `true`, agrega un overlay de brillo especular que sigue el tilt invertido. Default: `false`. */
+  /** If `true`, adds a specular glare overlay that follows the inverted tilt. Default: `false`. */
   glare?: boolean
   /**
-   * Si es `false`, el tilt corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, tiltX/tiltY
-   * quedan en 0 pero `isHovering` sigue funcionando).
+   * If `false`, the tilt runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, tiltX/tiltY
+   * stay at 0 but `isHovering` keeps working).
    */
   respectReducedMotion?: boolean
-  /** Contenido del card: nodos React o función `(state: TiltState) => ReactNode`. */
+  /** Card content: React nodes or a `(state: TiltState) => ReactNode` function. */
   children?: ReactNode | ((state: TiltState) => ReactNode)
   className?: string
   style?: CSSProperties

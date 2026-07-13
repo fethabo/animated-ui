@@ -1,20 +1,20 @@
 import type { ElementType, HTMLAttributes } from 'react'
 
 export interface WavyTextProps extends HTMLAttributes<HTMLElement> {
-  /** El texto a ondular (texto plano; se parte por carácter). */
+  /** The text to wave (plain text; split per character). */
   children: string
-  /** Elemento root a renderizar. Default: `'span'`. */
+  /** Root element to render. Default: `'span'`. */
   as?: ElementType
-  /** Desplazamiento vertical máximo en px. Default: `6`. También via `--aui-wavy-amplitude`. */
+  /** Maximum vertical offset in px. Default: `6`. Also via `--aui-wavy-amplitude`. */
   amplitude?: number
-  /** Duración de un ciclo de ola en segundos. Default: `1.6`. También via `--aui-wavy-speed`. */
+  /** Duration of one wave cycle in seconds. Default: `1.6`. Also via `--aui-wavy-speed`. */
   speed?: number
-  /** Desfase entre caracteres consecutivos en segundos. Default: `0.06`. También via `--aui-wavy-stagger`. */
+  /** Offset between consecutive characters in seconds. Default: `0.06`. Also via `--aui-wavy-stagger`. */
   stagger?: number
   /**
-   * Si es `false`, la ondulación opera aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, texto estático en
-   * su línea base).
+   * If `false`, the wave runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, static
+   * text on its baseline).
    */
   respectReducedMotion?: boolean
 }

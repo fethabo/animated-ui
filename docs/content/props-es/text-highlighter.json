@@ -1,0 +1,12 @@
+{
+  "children": "Texto (o contenido inline) a resaltar. Queda intacto: real, seleccionable y legible.",
+  "shape": "Shape del marcador.",
+  "color": "Color del trazo. También via `--aui-highlighter-color`.",
+  "strokeWidth": "Grosor del trazo en px. Default: `3` (`highlight` usa `1em`: la franja cubre el alto del texto). También via `--aui-highlighter-stroke-width`.",
+  "duration": "Duración del dibujo en segundos. También via `--aui-highlighter-duration`.",
+  "delay": "Segundos de espera antes de dibujar. También via `--aui-highlighter-delay`.",
+  "trigger": "Qué dispara el dibujo: `'in-view'` al entrar al viewport (vía IntersectionObserver), `'mount'` al montar, `'hover'` al entrar el puntero.",
+  "once": "Si es `true` (default), el shape queda dibujado tras el primer disparo. Con `false`, se des-dibuja al salir (del viewport o del hover) y se redibuja al re-entrar.",
+  "seed": "Semilla del jitter hand-drawn: la misma semilla y tamaño producen el mismo trazo. Default: estable por instancia.",
+  "respectReducedMotion": "Si es `false`, el dibujo anima aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, el shape aparece completo de inmediato al dispararse, sin animación)."
+}

@@ -1,0 +1,12 @@
+{
+  "text": "Texto a revelar. Es un string plano (no `children`): el componente lo parte en unidades. Para SEO/SSR se renderiza completo desde el primer paint y se parte tras la hidratación.",
+  "split": "Unidad de partición.",
+  "preset": "Animación de entrada de cada unidad.",
+  "trigger": "Qué dispara el revelado: `'in-view'` al entrar al viewport (vía IntersectionObserver), `'mount'` al montar.",
+  "stagger": "Segundos de delay incremental entre unidades. También via `--aui-split-stagger`.",
+  "duration": "Duración de la transición de cada unidad, en segundos. También via `--aui-split-duration`.",
+  "distance": "Desplazamiento inicial en px para `slide-up`. También via `--aui-split-distance`.",
+  "threshold": "Fracción visible que dispara el revelado con `trigger='in-view'`.",
+  "once": "Si es `true` (default), el contenido queda revelado tras el primer disparo. Con `false`, se re-oculta al salir del viewport y re-revela al re-entrar (solo con `trigger='in-view'`).",
+  "respectReducedMotion": "Si es `false`, el revelado anima aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, el texto completo se muestra de inmediato, sin stagger ni animación)."
+}

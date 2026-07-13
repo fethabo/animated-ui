@@ -51,6 +51,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
 | [GlowBorder](#glowborder) | Borde de gradiente cónico animado, en loop autónomo o apuntando al cursor. |
 | [MagneticElement](#magneticelement) | Wrapper que atrae su contenido hacia el cursor, con retorno elástico y render prop. |
+| [RippleContainer](#ripplecontainer) | Ondas expansivas desde el punto de click (material ripple), con nodos efímeros autolimpiados. |
 | [ShinyText](#shinytext) | Texto con un brillo que lo barre en loop, CSS puro; sirve también como texto con gradiente. |
 | [ScrambleText](#scrambletext) | Texto que se "descifra" carácter por carácter (efecto decrypt/Matrix), accesible. |
 | [TypewriterText](#typewritertext) | Revela texto carácter por carácter (máquina de escribir) con cursor parpadeante y modo loop multi-string, accesible. |
@@ -59,6 +60,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [RotatingText](#rotatingtext) | Rota cíclicamente entre palabras con transición (`fade`/`slide-up`/`flip`) y layout estable, accesible sin `aria-live`. |
 | [GlitchText](#glitchtext) | Glitch RGB-split intermitente para titulares, CSS puro con pseudo-elementos y `clip-path`. |
 | [WavyText](#wavytext) | Caracteres ondulando en loop continuo (ola que recorre el texto), CSS puro y accesible. |
+| [CountUp](#countup) | Número que cuenta hasta su valor al entrar al viewport, con easing de salida y formato configurable, SEO-safe. |
 | [MouseParallax](#mouseparallax) | Capas con profundidad que se desplazan según el mouse, sin re-renders por frame. |
 | [ParallaxLayers](#parallaxlayers) | Capas con profundidad ligadas a la posición de scroll, sin re-renders por frame. |
 | [ScrollProgress](#scrollprogress) | Barra fija de progreso de lectura de la página, compositada. |
@@ -66,6 +68,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [ImageDissolve](#imagedissolve) | Transición entre imágenes con dithering ordered (matriz Bayer 8×8) al cambiar `src`. |
 | [StickyScenes](#stickyscenes) | Secciones sticky que transicionan entre escenas durante el scroll, sin re-renders por frame. |
 | [StackedCards](#stackedcards) | Cards que se fijan y se apilan una sobre otra al scrollear; las de abajo se encogen/oscurecen, sin re-renders por frame. |
+| [TextScrollReveal](#textscrollreveal) | Párrafo cuyas palabras se "encienden" progresivamente según el avance del scroll (highlight progresivo), reversible y accesible. |
 | [CircuitBackground](#circuitbackground) | Fondo de circuito PCB generado proceduralmente (seedable y determinista), con pulsos de luz recorriendo las pistas. |
 | [TeslaCoil](#teslacoil) | Nodo central que arroja rayos jagged hacia afuera; en hover dirige un rayo al cursor. `children` interactivo. |
 | [AttentionCue](#attentioncue) | Tras inactividad del mouse, dibuja un trazo dirigido a un elemento (modo directed) o ambiental. *Idle / Attention.* |
@@ -78,6 +81,20 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 | [FlowField](#flowfield) | Partículas que siguen un campo vectorial de ruido dejando trazos orgánicos con fade, seedable. |
 | [TopographicBackground](#topographicbackground) | Curvas de nivel animadas (mapa topográfico vivo) extraídas por marching squares, seedable. |
 | [ConfettiBurst](#confettiburst) | Ráfaga de confetti one-shot disparable imperativamente via ref (`fire()`), para celebrar submits, logros, likes. *Celebración / Feedback.* |
+| [FireworksBurst](#fireworksburst) | Fuegos artificiales one-shot: cohetes que ascienden y explotan en chispas radiales, via ref (`fire()`). *Celebración / Feedback.* |
+| [SparkleBurst](#sparkleburst) | Destellos breves (estrellas de 4 puntas) alrededor de un punto, via ref (`fire()`) — likes, favoritos. *Celebración / Feedback.* |
+| [EmojiBurst](#emojiburst) | Ráfaga de emojis con física de confetti, renderizados con la fuente de la plataforma (cero assets), via ref (`fire()`). *Celebración / Feedback.* |
+| [ClickSpark](#clickspark) | Chispas automáticas en cada click dentro del contenedor — declarativo, sin ref; children interactivos. *Celebración / Feedback.* |
+| [StarfieldBackground](#starfieldbackground) | Cielo estrellado vivo: estrellas titilando asíncronas + fugaces ocasionales, seedable y determinista. |
+| [MatrixRain](#matrixrain) | Lluvia de glifos cayendo por columnas (code rain), seedable, con charset y colores configurables. |
+| [CursorTrail](#cursortrail) | Estela de partículas o línea fluida que sigue al puntero dentro del contenedor. *Cursor.* |
+| [CustomCursor](#customcursor) | Punto + anillo con lag elástico que reemplaza al cursor nativo dentro del contenedor; el anillo se agranda sobre interactivos. *Cursor.* |
+| [ImageTrail](#imagetrail) | Imágenes efímeras que brotan siguiendo el mouse y se desvanecen (efecto agency/portfolio). *Cursor.* |
+| [TextHighlighter](#texthighlighter) | Marcador a mano alzada que subraya/resalta/encierra/tacha texto inline, dibujándose al entrar al viewport. *SVG stroke.* |
+| [DrawPath](#drawpath) | Cualquier SVG del consumer se "dibuja" trazo a trazo al entrar al viewport, con stagger entre paths. *SVG stroke.* |
+| [ScribbleDecoration](#scribbledecoration) | Garabatos decorativos animados (flecha, asterisco, espiral…), procedurales, seedables y extensibles por función. *SVG stroke.* |
+| [AnimatedList](#animatedlist) | Hijos keyed que animan entrada, salida y reordenamiento (filtros, sorting, todo-lists). *Layout / FLIP.* |
+| [AutoHeight](#autoheight) | Contenedor que transiciona su altura (y opcionalmente ancho) al cambiar el contenido — la forma de animar `height: auto`. *Layout / FLIP.* |
 
 ## AnimatedBackground
 
@@ -406,6 +423,39 @@ Objeto que recibe el render prop en cada actualización:
 | `offsetY` | `number` | Desplazamiento vertical actual del contenido en px. |
 | `isActive` | `boolean` | `true` mientras el cursor está dentro de la zona de atracción. |
 
+## RippleContainer
+
+Contenedor que dibuja una onda expansiva desde el punto exacto de cada click (material ripple). Cada onda es un nodo efímero creado imperativamente en `pointerdown` (la onda arranca al presionar, no al soltar) y removido del DOM al terminar su animación — sin estado de React por onda: los clicks rápidos generan ondas concurrentes sin re-renders ni acumulación de nodos. Las ondas viven en una capa `pointer-events: none` recortada al contenedor (hereda su `border-radius`), así nunca interceptan clicks ni foco de los children.
+
+Con `prefers-reduced-motion`, la expansión se reemplaza por un fade estático breve en el punto del click: se preserva el feedback de interacción, no el movimiento.
+
+```jsx
+import { RippleContainer } from '@fethabo/animated-ui'
+
+<RippleContainer color="rgba(255,255,255,0.5)" duration={700} style={{ borderRadius: 12 }}>
+  <button className="mi-boton">Click acá</button>
+</RippleContainer>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `color` | `string` | `currentColor` | Color de las ondas. |
+| `duration` | `number` | `600` | Duración de cada onda (expansión + fade) en ms. |
+| `maxRadius` | `number` | cubre el contenedor | Radio máximo de la onda en px; por default llega hasta la esquina más lejana desde el punto de click. |
+| `opacity` | `number` | `0.25` | Opacidad inicial de la onda. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, fade estático sin expansión. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<div>` — incluidos tus propios handlers: un `onPointerDown` del consumer sigue funcionando junto a la onda.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-ripple-color` | `currentColor` | Color de las ondas. Prevalece sobre `color`. |
+| `--aui-ripple-duration` | `600ms` | Duración de cada onda. Prevalece sobre `duration`. |
+| `--aui-ripple-opacity` | `0.25` | Opacidad inicial de la onda. Prevalece sobre `opacity`. |
+
 ## ShinyText
 
 Texto con una franja de brillo que lo barre en loop. CSS puro: el gradiente se clipea a los glifos con `background-clip: text` y se desplaza animando `background-position` — cero JS por frame. Con colores custom de base y brillo funciona también como texto con gradiente animado. El texto sigue siendo texto real (seleccionable, copiable, legible por lectores de pantalla).
@@ -708,6 +758,40 @@ También acepta cualquier otra prop HTML válida del elemento root.
 | `--aui-wavy-speed` | `1.6s` | Duración del ciclo de ola. Prevalece sobre `speed`. |
 | `--aui-wavy-stagger` | `0.06s` | Desfase entre caracteres. Prevalece sobre `stagger`. |
 
+## CountUp
+
+Número que cuenta desde `from` hasta `value` al entrar al viewport, con easing de salida (arranque rápido, frenado al llegar) — el clásico de las stats de landing. El RAF muta `textContent` por ref (patrón ScrambleText): cero re-renders por frame. La cuenta corre una sola vez por montaje.
+
+SEO-safe: el markup SSR contiene el valor final formateado (correcto sin JavaScript y para crawlers); el texto se resetea al valor inicial recién cuando la cuenta arranca. Accesible: el root expone el valor final en `aria-label`, así los lectores de pantalla anuncian el valor definitivo y no los intermedios. Con `prefers-reduced-motion` se muestra el valor final directo (coincide con el markup SSR — cero salto visual).
+
+> **Tip:** los números de ancho variable pueden hacer "bailar" el layout durante la cuenta. Aplicá `font-variant-numeric: tabular-nums` al componente (o a su contenedor) para un ancho estable.
+
+```jsx
+import { CountUp } from '@fethabo/animated-ui'
+
+<CountUp
+  value={12500}
+  separator="."
+  suffix="+"
+  duration={2500}
+  style={{ fontVariantNumeric: 'tabular-nums' }}
+/>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Valor final de la cuenta (lo que renderiza el SSR). |
+| `from` | `number` | `0` | Valor inicial desde el que arranca la cuenta. |
+| `duration` | `number` | `2000` | Duración de la cuenta en ms. |
+| `decimals` | `number` | `0` | Cantidad de decimales, estable durante toda la cuenta. |
+| `separator` | `string` | `''` | Separador de miles (e.g. `'.'`, `','`). |
+| `prefix` | `string` | `''` | String antepuesto al número (e.g. `'$'`). |
+| `suffix` | `string` | `''` | String pospuesto al número (e.g. `'+'`). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, valor final directo sin cuenta. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
 ## MouseParallax
 
 Contenedor con capas a distintas profundidades que se desplazan según la posición del mouse — parallax creativo **sin scroll**. El tracking escribe CSS custom properties directamente sobre el root (patrón SpotlightCard): mover el mouse no re-renderiza los children. Cada capa se traslada con `calc()` puro suavizado por una transition del compositor.
@@ -999,6 +1083,46 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-stack-travel` | `400px` | Recorrido de scroll / altura de cada wrapper. |
 
 `--aui-stack-depth` (profundidad por card) y `--aui-stack-i` (índice por card) son variables de runtime escritas por el componente; podés usarlas con `calc()` para efectos derivados, pero no las setees a mano.
+
+## TextScrollReveal
+
+Párrafo particionado por palabra cuyas palabras pasan de apagadas a encendidas progresivamente según el avance del scroll (highlight progresivo), en orden y reversible al scrollear hacia atrás. El scroll-driver escribe una única CSS var de progreso (`--aui-text-scroll-progress`, 0→1) en el root; cada palabra resuelve su opacidad (y color, opcional) con `calc()` a partir de su índice — cero JS por palabra por frame y sin React state en el hot path. El tracking solo corre con el contenedor cerca del viewport: N párrafos fuera de pantalla cuestan cero por frame.
+
+Accesible: el texto completo va en `aria-label` del root y las palabras son `aria-hidden` (patrón de split del paquete), sin espacios duplicados. Con `prefers-reduced-motion` el texto se muestra completamente encendido y estático.
+
+```jsx
+import { TextScrollReveal } from '@fethabo/animated-ui'
+
+<TextScrollReveal fromOpacity={0.15} offset={[0.2, 0.6]} style={{ fontSize: '2rem', maxWidth: 640 }}>
+  Cada palabra de este párrafo se enciende a medida que scrolleás, y se vuelve
+  a apagar si scrolleás hacia atrás.
+</TextScrollReveal>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `children` | `string` | — | El texto a encender (texto plano; se parte por palabra). |
+| `as` | `ElementType` | `'p'` | Elemento root a renderizar. |
+| `fromOpacity` | `number` | `0.15` | Opacidad de las palabras apagadas. |
+| `toOpacity` | `number` | `1` | Opacidad de las palabras encendidas. |
+| `fromColor` | `string` | — | Color de las palabras apagadas (opcional; sin colores usa `currentColor`). |
+| `toColor` | `string` | — | Color de las palabras encendidas (opcional). |
+| `offset` | `[number, number]` | `[0.2, 0.6]` | Porción del recorrido por el viewport en la que ocurre el encendido (0 = asoma por abajo, 1 = salió por arriba). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, texto encendido estático sin tracking. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida del elemento root.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-text-scroll-from-opacity` | `0.15` | Opacidad apagada. Prevalece sobre `fromOpacity`. |
+| `--aui-text-scroll-to-opacity` | `1` | Opacidad encendida. Prevalece sobre `toOpacity`. |
+| `--aui-text-scroll-from-color` | `currentColor` | Color apagado. Prevalece sobre `fromColor`. |
+| `--aui-text-scroll-to-color` | `currentColor` | Color encendido. Prevalece sobre `toColor`. |
+
+`--aui-text-scroll-progress` es una variable de runtime escrita por el scroll-driver; no la setees a mano.
 
 ## CircuitBackground
 
@@ -1440,6 +1564,419 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-topo-color` | `#38bdf8` | Color de las curvas. Prevalece sobre la prop `color`. |
 | `--aui-topo-line-width` | `1px` | Grosor de las curvas. Prevalece sobre `lineWidth`. |
 
+## StarfieldBackground
+
+Cielo estrellado vivo sobre `<canvas>`: estrellas que titilan con fases independientes (alpha senoidal por estrella, nunca en sincronía) y estrellas fugaces ocasionales que cruzan el canvas con un trazo que decae. **Determinista por `seed`**: misma seed + dimensiones ⇒ mismo cielo. El campo se pinta una sola vez en una capa offscreen (al montar y en cada resize, con regeneración determinista); por frame solo se compone el titileo y las fugaces.
+
+**Performance:** `density` es la palanca principal — el costo por frame es proporcional a la cantidad de estrellas. Con `prefers-reduced-motion` se pinta el campo estático (sin titileo, fugaces ni RAF). Se posiciona `absolute, inset: 0` sobre su contenedor `position: relative`, o el viewport con `fixed`.
+
+```jsx
+import { StarfieldBackground } from '@fethabo/animated-ui'
+
+<div style={{ position: 'relative', height: 400 }}>
+  <StarfieldBackground density={1.2} shootingStars={10} seed="cielo" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `seed` | `string \| number` | `'aui'` | Semilla del cielo (determinista, sin `Math.random`). |
+| `density` | `number` | `1` | Multiplicador de la densidad de estrellas por área. |
+| `colors` | `string[]` | `['#ffffff', '#bfdbfe', '#fde68a']` | Paleta: cada estrella sortea su color (determinista). |
+| `background` | `string` | `'#050514'` | Color base del cielo. |
+| `speed` | `number` | `1` | Velocidad del titileo (`0` lo congela). |
+| `shootingStars` | `number` | `8` | Frecuencia media de fugaces, por minuto (`0` las desactiva). |
+| `fixed` | `boolean` | `false` | `position: fixed` para cubrir el viewport completo. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, campo estático sin titileo ni fugaces, sin RAF. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-starfield-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta desde CSS en cascada. |
+| `--aui-starfield-background` | `#050514` | Color base del cielo. Prevalece sobre `background`. |
+
+## MatrixRain
+
+Lluvia de glifos por columnas (code rain) sobre `<canvas>`: cada columna dibuja un glifo nuevo en su cabeza brillante y una veladura semitransparente del fondo desvanece los anteriores por frame — el trail sale gratis, sin buffer de historia. Al salir por abajo, cada columna reinicia desde arriba tras un delay pseudoaleatorio. **Determinista por `seed`**: misma seed + tamaño ⇒ misma disposición y secuencia. Glifos con fuente monospace del sistema.
+
+> **Nota:** como `FlowField`, `MatrixRain` **pinta su propio fondo** (`background`, no transparente): la veladura del trail lo requiere.
+
+**Performance:** la grilla de columnas deriva de `fontSize` (con cap interno): subir `fontSize` reduce las columnas — la palanca para pantallas grandes o gama baja. Con `prefers-reduced-motion` se pinta un frame estático de columnas pre-dibujadas a distintas alturas, sin RAF. Se posiciona `absolute, inset: 0`, o el viewport con `fixed`.
+
+```jsx
+import { MatrixRain } from '@fethabo/animated-ui'
+
+<div style={{ position: 'relative', height: 400 }}>
+  <MatrixRain color="#22c55e" fontSize={18} seed="matrix" />
+</div>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `seed` | `string \| number` | `'aui'` | Semilla de la lluvia (determinista, sin `Math.random`). |
+| `charset` | `string` | dígitos + ASCII + katakana | Glifos posibles (cada carácter del string es un glifo). |
+| `color` | `string` | `'#22c55e'` | Color de la cola de glifos. |
+| `headColor` | `string` | `'#d9ffe3'` | Color de la cabeza brillante de cada columna. |
+| `background` | `string` | `'#040905'` | Color de fondo que el componente pinta (necesario para la veladura). |
+| `fontSize` | `number` | `16` | Tamaño de los glifos en px; determina la densidad de columnas. |
+| `speed` | `number` | `1` | Velocidad de caída. |
+| `fixed` | `boolean` | `false` | `position: fixed` para cubrir el viewport completo. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, frame estático de columnas pre-dibujadas, sin RAF. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-matrix-color` | `#22c55e` | Color de la cola. Prevalece sobre `color`. |
+| `--aui-matrix-head-color` | `#d9ffe3` | Color de la cabeza. Prevalece sobre `headColor`. |
+| `--aui-matrix-background` | `#040905` | Color del fondo/veladura. Prevalece sobre `background`. |
+
+## CursorTrail
+
+Estela que sigue al puntero dentro de su contenedor, dibujada sobre un canvas overlay `pointer-events: none` — los children siguen interactivos. Dos modos: `particles` (partículas con vida, fade y deriva leve) y `line` (línea fluida de los últimos puntos, con grosor y alpha decrecientes hacia la cola). La emisión se throttlea por distancia recorrida (`emitEvery` px) y el RAF corre solo mientras hay estela viva: con el puntero quieto no hay trabajo por frame.
+
+Con `prefers-reduced-motion` el efecto se desactiva por completo (sin dibujo ni RAF): la estela es decoración de movimiento, no feedback funcional. En touch degrada a no-op (no hay puntero persistente).
+
+```jsx
+import { CursorTrail } from '@fethabo/animated-ui'
+
+<CursorTrail mode="line" color="#22d3ee" style={{ height: 400 }}>
+  <section>Contenido interactivo</section>
+</CursorTrail>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `mode` | `'particles' \| 'line'` | `'particles'` | Estela de partículas o línea fluida. |
+| `color` | `string` | `'#7c3aed'` | Color de la estela. También via `--aui-cursor-trail-color`. |
+| `colors` | `string[]` | — | Paleta multicolor (cada partícula sortea; prioridad sobre `color`). |
+| `size` | `number` | `8` | Diámetro de partícula / grosor de la cabeza de la línea, en px. También via `--aui-cursor-trail-size`. |
+| `life` | `number` | `0.6` | Persistencia de la estela en segundos. |
+| `length` | `number` | `36` | Máximo de puntos vivos de la línea (solo `mode="line"`). |
+| `emitEvery` | `number` | `12` | Umbral de emisión: px de recorrido entre emisiones. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, el efecto se desactiva por completo. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-cursor-trail-color` | `#7c3aed` | Color de la estela. Prevalece sobre `color`. |
+| `--aui-cursor-trail-size` | `8px` | Tamaño base de la estela. Prevalece sobre `size`. |
+
+## CustomCursor
+
+Cursor personalizado — punto que sigue al puntero de inmediato + anillo que lo persigue con lag elástico — **dentro de su contenedor**, sin portales ni efectos a nivel documento. El posicionamiento usa CSS vars escritas por `pointermove` (`--aui-cursor-x/y`, cero re-renders por frame) y el lag es una CSS transition (sin RAF propio). El anillo se agranda sobre elementos interactivos, detectados por delegación (`a`, `button`, `[role="button"]` y cualquier elemento marcado con `data-aui-cursor`). El estado se expone como `data-aui-cursor-state="idle" | "hover" | "down"` sobre el root, para estilado custom.
+
+> **Alcance del `cursor: none`:** con `hideNativeCursor` (default `true`) el cursor nativo se oculta **solo dentro del contenedor** y sus descendientes. Los inputs de texto y otros elementos con cursor propio también lo pierden: conviene no envolver formularios completos.
+
+**Guardas:** en dispositivos sin `(hover: hover) and (pointer: fine)` (touch, pointers gruesos) no monta los nodos custom ni toca el cursor nativo — children intactos. Con `prefers-reduced-motion` el seguimiento es directo, sin lag elástico ni transiciones.
+
+```jsx
+import { CustomCursor } from '@fethabo/animated-ui'
+
+<CustomCursor color="#f0abfc" hoverScale={2} style={{ minHeight: 400 }}>
+  <a href="#demo">El anillo se agranda acá</a>
+  <div data-aui-cursor>Y acá también</div>
+</CustomCursor>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `dotSize` | `number` | `8` | Diámetro del punto central en px. También via `--aui-cursor-dot-size`. |
+| `ringSize` | `number` | `36` | Diámetro del anillo en px. También via `--aui-cursor-ring-size`. |
+| `color` | `string` | `'#7c3aed'` | Color del dot y del borde del ring. También via `--aui-cursor-color`. |
+| `lag` | `number` | `0.15` | Retardo elástico del anillo en segundos. También via `--aui-cursor-lag`. |
+| `hoverScale` | `number` | `1.5` | Factor de crecimiento del anillo en `hover`. También via `--aui-cursor-hover-scale`. |
+| `hideNativeCursor` | `boolean` | `true` | Oculta el cursor nativo solo dentro del contenedor. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, seguimiento directo sin lag. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-cursor-dot-size` | `8px` | Diámetro del dot. Prevalece sobre `dotSize`. |
+| `--aui-cursor-ring-size` | `36px` | Diámetro del ring. Prevalece sobre `ringSize`. |
+| `--aui-cursor-color` | `#7c3aed` | Color de dot y ring. Prevalece sobre `color`. |
+| `--aui-cursor-lag` | `0.15s` | Duración del lag del ring. Prevalece sobre `lag`. |
+| `--aui-cursor-hover-scale` | `1.5` | Escala del ring en hover. Prevalece sobre `hoverScale`. |
+
+## ImageTrail
+
+Imágenes efímeras que brotan siguiendo el puntero y se desvanecen (efecto agency/portfolio). El pool `images` rota secuencialmente en orden cíclico; la emisión se throttlea por distancia recorrida (`emitEvery` px) con un cap de nodos vivos (`maxConcurrent`). Cada imagen es un nodo `<img>` efímero que se remueve solo del DOM al terminar su animación — sin estado de React por imagen. Las URLs se **precargan** tras el montaje para evitar jank de decode en la primera emisión (aun así, conviene usar imágenes livianas). La capa es `pointer-events: none`: los children siguen interactivos.
+
+Con `prefers-reduced-motion` el efecto es no-op (sin emisión). En touch degrada a no-op.
+
+```jsx
+import { ImageTrail } from '@fethabo/animated-ui'
+
+<ImageTrail
+  images={['/uno.jpg', '/dos.jpg', '/tres.jpg']}
+  size={140}
+  imageStyle={{ borderRadius: 12, boxShadow: '0 8px 30px rgba(0,0,0,0.35)' }}
+  style={{ height: 400 }}
+>
+  <h2>Movete por acá</h2>
+</ImageTrail>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `images` | `string[]` | — (requerida) | URLs del pool, emitidas en rotación cíclica. |
+| `size` | `number` | `120` | Ancho máximo de cada imagen en px. También via `--aui-image-trail-size`. |
+| `emitEvery` | `number` | `80` | Umbral de emisión: px de recorrido entre imágenes. |
+| `duration` | `number` | `900` | Vida de cada imagen en ms. También via `--aui-image-trail-duration`. |
+| `maxConcurrent` | `number` | `8` | Cap de imágenes vivas; alcanzado, la emisión espera. |
+| `imageClassName` | `string` | — | Clase extra para cada `<img>` (border-radius, sombras). |
+| `imageStyle` | `CSSProperties` | — | Estilos inline extra para cada `<img>`. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, no se emiten imágenes. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-image-trail-size` | `120px` | Ancho máximo de las imágenes. Prevalece sobre `size`. |
+| `--aui-image-trail-duration` | `900ms` | Vida de cada imagen. Prevalece sobre `duration`. |
+
+## TextHighlighter
+
+Marcador a mano alzada sobre texto inline: subraya, resalta, encierra, tacha o recuadra el contenido envuelto con un trazo procedural que se "dibuja" al dispararse (line-drawing por `stroke-dashoffset`, cero JS por frame). El path se genera con **jitter seedable** para el tamaño medido del texto (misma `seed` ⇒ mismo temblor) y se regenera al cambiar el tamaño. El texto queda intacto: real, seleccionable y legible por lectores de pantalla — el SVG es un overlay absoluto `aria-hidden` sin eventos.
+
+> **Nota:** el shape se dibuja sobre el bounding box completo del span; en texto que wrappea en varias líneas puede verse tosco — conviene aplicarlo a **palabras o frases cortas**. En SSR se sirve solo el texto (el overlay aparece tras la hidratación).
+
+```jsx
+import { TextHighlighter } from '@fethabo/animated-ui'
+
+<p>
+  La parte <TextHighlighter shape="highlight" color="#facc15">importante</TextHighlighter>{' '}
+  y la <TextHighlighter shape="circle" color="#f43f5e">clave</TextHighlighter> de la frase.
+</p>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — (requerida) | Texto o contenido inline a resaltar; queda intacto. |
+| `shape` | `'underline' \| 'wavy-underline' \| 'circle' \| 'highlight' \| 'strike' \| 'box'` | `'underline'` | Shape del marcador. |
+| `color` | `string` | `currentColor` | Color del trazo. También via `--aui-highlighter-color`. |
+| `strokeWidth` | `number` | `3` (`highlight`: `1em`) | Grosor del trazo en px. También via `--aui-highlighter-stroke-width`. |
+| `duration` | `number` | `0.9` | Duración del dibujo en segundos. También via `--aui-highlighter-duration`. |
+| `delay` | `number` | `0` | Segundos de espera antes de dibujar. También via `--aui-highlighter-delay`. |
+| `trigger` | `'in-view' \| 'mount' \| 'hover'` | `'in-view'` | Qué dispara el dibujo. |
+| `once` | `boolean` | `true` | Con `false`, se des-dibuja al salir (del viewport o del hover) y se redibuja al re-entrar. |
+| `seed` | `string \| number` | estable por instancia | Semilla del jitter hand-drawn (determinista). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, el shape aparece completo de inmediato, sin animación. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-highlighter-color` | `currentColor` | Color del trazo. Prevalece sobre `color`. |
+| `--aui-highlighter-stroke-width` | `3` (`highlight`: `1em`) | Grosor del trazo. Prevalece sobre `strokeWidth`. |
+| `--aui-highlighter-duration` | `0.9s` | Duración del dibujo. Prevalece sobre `duration`. |
+| `--aui-highlighter-delay` | `0s` | Delay previo al dibujo. Prevalece sobre `delay`. |
+| `--aui-highlighter-easing` | `cubic-bezier(0.45, 0, 0.35, 1)` | Curva del dibujo. |
+| `--aui-highlighter-opacity` | `0.45` | Opacidad de la franja `highlight`. |
+
+## DrawPath
+
+Wrapper genérico de line-drawing: cualquier SVG del consumer se "dibuja" trazo a trazo al entrar al viewport (o al montar), con **stagger por orden documental** entre trazos. El SVG no se reestructura — se miden sus `path`/`line`/`polyline`/`circle`/`rect`/`ellipse` con `getTotalLength()` y se les aplican las vars de dash, respetando `stroke`/`stroke-width` existentes. Los elementos con `data-aui-no-draw` (o dentro de un grupo que lo tenga) quedan visibles sin animar, igual que los que no exponen `getTotalLength()` (browsers viejos).
+
+> **Nota:** el markup SSR sirve el SVG **completo y visible** (SEO/no-JS); el "rebobinado" corre en un layout effect post-hidratación, así que puede verse un flash breve del SVG completo antes del dibujo. Los SVGs montados después del primer render no se re-escanean.
+
+```jsx
+import { DrawPath } from '@fethabo/animated-ui'
+
+<DrawPath duration={1.5} stagger={0.25}>
+  <svg viewBox="0 0 200 100" fill="none">
+    <path d="M 10 80 Q 60 10 110 60" stroke="#0ea5e9" strokeWidth="3" />
+    <circle cx="160" cy="50" r="30" stroke="#f59e0b" strokeWidth="3" />
+  </svg>
+</DrawPath>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — (requerida) | El SVG (o markup con SVGs) a dibujar; no se modifica estructuralmente. |
+| `duration` | `number` | `1.2` | Duración del dibujo de cada trazo en segundos. También via `--aui-draw-duration`. |
+| `stagger` | `number` | `0.15` | Segundos de delay incremental entre trazos. También via `--aui-draw-stagger`. |
+| `delay` | `number` | `0` | Segundos de espera antes del primer trazo. También via `--aui-draw-delay`. |
+| `trigger` | `'in-view' \| 'mount'` | `'in-view'` | Qué dispara el dibujo. |
+| `once` | `boolean` | `true` | Con `false`, los trazos se rebobinan al salir del viewport y se redibujan al re-entrar. |
+| `threshold` | `number` | `0.15` | Fracción visible que dispara con `trigger='in-view'`. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, el SVG se muestra completo de inmediato, sin animación. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-draw-duration` | `1.2s` | Duración del dibujo de cada trazo. Prevalece sobre `duration`. |
+| `--aui-draw-stagger` | `0.15s` | Delay incremental entre trazos. Prevalece sobre `stagger`. |
+| `--aui-draw-delay` | `0s` | Delay previo al primer trazo. Prevalece sobre `delay`. |
+| `--aui-draw-easing` | `cubic-bezier(0.45, 0, 0.35, 1)` | Curva del dibujo. |
+
+## ScribbleDecoration
+
+Garabato decorativo a mano alzada — flecha, asterisco, espiral, subrayado ondulado o círculo — generado proceduralmente con jitter **seedable** y dibujado por line-drawing al entrar al viewport o al montar. Con `repeat`, se dibuja, desvanece y redibuja en loop. El SVG es decoración pura (`aria-hidden`, sin eventos), dimensionado por su contenedor (tamaño default `8em × 4em`, pisable por CSS) y regenerado con la misma seed en cada resize.
+
+La biblioteca de shapes es **extensible por contrato**: la prop `shape` acepta, además de los nombres builtin, una función `(size, seed, options) => d` (tipo `ScribbleShape` exportado) — el consumer agrega shapes propias sin tocar el paquete.
+
+```jsx
+import { ScribbleDecoration } from '@fethabo/animated-ui'
+
+<ScribbleDecoration shape="arrow" color="#f43f5e" strokeWidth={4} />
+
+// Shape custom por función:
+<ScribbleDecoration shape={({ width, height }) => `M 0 ${height} L ${width} 0`} />
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `shape` | `'arrow' \| 'asterisk' \| 'spiral' \| 'underline' \| 'circle' \| ScribbleShape` | `'arrow'` | Garabato builtin o función custom `(size, seed, options) => d`. |
+| `color` | `string` | `currentColor` | Color del trazo. También via `--aui-scribble-color`. |
+| `strokeWidth` | `number` | `3` | Grosor del trazo en px. También via `--aui-scribble-stroke-width`. |
+| `duration` | `number` | `0.9` | Duración del dibujo en segundos. También via `--aui-scribble-duration`. |
+| `delay` | `number` | `0` | Segundos de espera antes de dibujar. También via `--aui-scribble-delay`. |
+| `trigger` | `'in-view' \| 'mount'` | `'in-view'` | Qué dispara el dibujo. |
+| `once` | `boolean` | `true` | Con `false`, se rebobina al salir del viewport y se redibuja al re-entrar. |
+| `repeat` | `boolean` | `false` | Loop dibuja→desvanece→redibuja mientras esté disparado. |
+| `seed` | `string \| number` | estable por instancia | Semilla del jitter (misma seed, shape y tamaño ⇒ mismo garabato). |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, el garabato se muestra completo y estático (sin dibujo ni loop). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<span>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-scribble-color` | `currentColor` | Color del trazo. Prevalece sobre `color`. |
+| `--aui-scribble-stroke-width` | `3` | Grosor del trazo. Prevalece sobre `strokeWidth`. |
+| `--aui-scribble-duration` | `0.9s` | Duración del dibujo. Prevalece sobre `duration`. |
+| `--aui-scribble-delay` | `0s` | Delay previo al dibujo. Prevalece sobre `delay`. |
+| `--aui-scribble-easing` | `cubic-bezier(0.45, 0, 0.35, 1)` | Curva del dibujo. |
+| `--aui-scribble-width` | `8em` | Ancho default del contenedor. |
+| `--aui-scribble-height` | `4em` | Alto default del contenedor. |
+
+## Layout animado (FLIP)
+
+`AnimatedList` y `AutoHeight` animan **cambios de layout reales** (elementos que se reordenan, aparecen, desaparecen o cambian de tamaño entre renders), en contraste con los efectos de presentación del resto del paquete. El motor es FLIP (First-Last-Invert-Play): se capturan los rects antes del cambio, el browser layoutea, y la diferencia se invierte con `transform` y se anima hacia identidad con WAAPI — antes del paint, sin re-renders por frame. Con `prefers-reduced-motion` los cambios se aplican de inmediato, sin animación.
+
+## AnimatedList
+
+Contenedor cuyos hijos keyed animan **entrada** (preset configurable con stagger opcional), **salida** (un clon visual estático anima en el último rect del item y se remueve del DOM al terminar) y **reordenamiento** (FLIP) cuando la lista cambia entre renders — filtros, sorting, todo-lists. La identidad de cada hijo es su `key` de React, como en cualquier lista: no hay API paralela ni cambia la forma de renderizar del consumer. Si un cambio llega con animaciones en vuelo, cada item se redirige desde su posición visual actual, sin saltos.
+
+El root puede ser el propio grid/flex del consumer (pasale tus clases con `className`); cada hijo va envuelto en un wrapper medible que actúa como celda (`itemClassName`/`itemStyle`). El primer render (SSR/hidratación) no anima.
+
+Trade-offs para tener presentes: el clon de salida es **inerte** (un snapshot visual sin handlers ni updates — no lo uses para formularios en vuelo, y contenido vivo como `<canvas>`/`<video>` se congela durante la salida), y cada commit mide un rect por item — recomendado hasta ~100 items.
+
+```jsx
+import { AnimatedList } from '@fethabo/animated-ui'
+
+function Todos() {
+  const [items, setItems] = useState(['Diseñar', 'Implementar', 'Testear'])
+  return (
+    <>
+      <button onClick={() => setItems((list) => [...list].sort())}>Ordenar</button>
+      <AnimatedList as="ul" enter="scale-in" stagger={0.05}>
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </AnimatedList>
+    </>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `duration` | `number` | `0.35` | Duración de cada animación (FLIP, entrada, salida) en segundos. |
+| `easing` | `string` | `'ease'` | Easing de las animaciones. |
+| `enter` | `'fade' \| 'scale-in' \| 'slide' \| 'none'` | `'fade'` | Preset de entrada para keys nuevas. |
+| `exit` | `'fade' \| 'scale-out' \| 'none'` | `'fade'` | Preset de salida para keys removidas. |
+| `stagger` | `number` | `0` | Segundos de delay incremental entre entradas simultáneas. |
+| `as` | `ElementType` | `'div'` | Elemento del root (`'ul'`, `'ol'`, …). |
+| `itemClassName` | `string` | — | Clase extra del wrapper medible de cada hijo (la "celda"). |
+| `itemStyle` | `CSSProperties` | — | Estilo inline extra del wrapper de cada hijo. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, cambios instantáneos: sin FLIP, entradas/salidas ni clones. |
+| `className` / `style` | — | — | Extensión del root (puede ser tu grid/flex). |
+
+También acepta cualquier otra prop HTML válida de su elemento root.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-animated-list-easing` | `ease` | Easing de las animaciones (se resuelve al momento de animar). |
+| `--aui-animated-list-duration` | `0.35s` | Duración de cada animación (se resuelve al momento de animar). |
+
+## AutoHeight
+
+Contenedor que transiciona su **altura** (y opcionalmente su **ancho**, con `width`) cuando el contenido cambia de tamaño — acordeones, tabs, disclosure, textos expandibles: el dolor universal de transicionar `height: auto`. Detecta cambios de children entre renders (antes del paint, sin salto visible) y resizes del contenido via `ResizeObserver`, y anima entre la dimensión anterior y la nueva con WAAPI, aplicando `overflow: hidden` solo durante la transición. La altura nunca queda fijada: al terminar, el contenedor vuelve a `height: auto` y sigue el flujo normal del layout (re-wraps del viewport incluidos). Si el contenido vuelve a cambiar en vuelo, la transición se redirige desde la altura visual actual.
+
+Trade-off para tener presente: animar `height` relayoutea por frame (no es compositado) — es *la* forma de animar `auto`; el costo queda local al contenedor y la duración corta lo hace imperceptible.
+
+```jsx
+import { AutoHeight } from '@fethabo/animated-ui'
+
+function Disclosure() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button onClick={() => setOpen((o) => !o)}>Detalles</button>
+      <AutoHeight duration={0.3}>
+        {open ? <p>Un párrafo largo con todos los detalles…</p> : null}
+      </AutoHeight>
+    </>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `duration` | `number` | `0.3` | Duración de la transición en segundos. |
+| `easing` | `string` | `'ease'` | Easing de la transición. |
+| `width` | `boolean` | `false` | Anima también el ancho del contenedor. |
+| `respectReducedMotion` | `boolean` | `true` | Con `reduce`, ajuste instantáneo manteniendo `height: auto`. |
+| `className` / `style` | — | — | Extensión del root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-autoheight-easing` | `ease` | Easing de la transición (se resuelve al momento de animar). |
+| `--aui-autoheight-duration` | `0.3s` | Duración de la transición (se resuelve al momento de animar). |
+
 ## Celebración / Feedback
 
 Efectos **one-shot** disparados por eventos de la app (un submit exitoso, un logro, un like), en contraste con los efectos continuos declarativos del resto del paquete. El componente monta un overlay pasivo (sin animación ni RAF en reposo) y expone un **handle imperativo via ref**: la app declara *dónde* vive el efecto con JSX y decide *cuándo* dispara llamando un método del handle. Las props del componente son los **defaults** de cada disparo, y cada método acepta opciones que las **overridean solo para esa ráfaga**.
@@ -1498,6 +2035,156 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | Variable | Default | Descripción |
 | --- | --- | --- |
 | `--aui-confetti-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta default desde CSS en cascada (no afecta `colors` pasados en `fire()`). |
+
+## FireworksBurst
+
+Fuegos artificiales one-shot sobre un overlay `<canvas>` pasivo (mismo contrato que [ConfettiBurst](#confettiburst)): cada `fire(options?)` lanza uno o más cohetes desde la base (`origin`, default centro-abajo) que ascienden con un wobble lateral y explotan en el apex en chispas radiales que caen con gravedad y se desvanecen. Varios cohetes por disparo despegan escalonados. Disparos sucesivos se acumulan; el RAF arranca con el primer `fire()` y se detiene solo al morir la última chispa — costo cero en reposo.
+
+```jsx
+import { useRef } from 'react'
+import { FireworksBurst } from '@fethabo/animated-ui'
+// TypeScript: import type { FireworksBurstHandle } from '@fethabo/animated-ui'
+
+function Logro() {
+  const ref = useRef(null) // useRef<FireworksBurstHandle>(null)
+  return (
+    <div style={{ position: 'relative', height: 400 }}>
+      <button onClick={() => ref.current?.fire({ rockets: 3 })}>¡Logro desbloqueado!</button>
+      <FireworksBurst ref={ref} particleCount={80} />
+    </div>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `rockets` | `number` | `1` | Cohetes por ráfaga (despegue escalonado). |
+| `particleCount` | `number` | `60` | Chispas por explosión. |
+| `colors` | `string[]` | paleta festiva de 5 colores | Paleta: cada cohete sortea el color de su explosión. También via `--aui-fireworks-color-<i>`. |
+| `origin` | `{ x: number, y: number }` | `{ x: 0.5, y: 1 }` | Base de lanzamiento, relativa al contenedor (`0–1` por eje). |
+| `power` | `number` | `13` | Impulso de ascenso en px/frame (define también la altura del apex). |
+| `gravity` | `number` | `0.18` | Gravedad en px/frame² (frena el ascenso y hace caer las chispas). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion`, `fire()` es un no-op (convención de la categoría). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`. **`fire(options?)`** acepta `rockets`, `particleCount`, `colors`, `origin`, `power` y `gravity`, y las overridea solo para esa ráfaga. El tipo `FireworksBurstHandle` tipa el ref en TypeScript.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-fireworks-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta default desde CSS en cascada (no afecta `colors` pasados en `fire()`). |
+
+## SparkleBurst
+
+Destellos one-shot: estrellas de 4 puntas que aparecen escalonadas alrededor de un punto, crecen rápido, giran y se apagan (~1 segundo). Pensado para feedback breve y localizado — un like, un favorito, un logro chico — donde el confetti sería demasiado. Mismo contrato imperativo que [ConfettiBurst](#confettiburst); las estrellas se dibujan por path en canvas (no dependen de fuentes).
+
+```jsx
+import { useRef } from 'react'
+import { SparkleBurst } from '@fethabo/animated-ui'
+// TypeScript: import type { SparkleBurstHandle } from '@fethabo/animated-ui'
+
+function LikeButton() {
+  const ref = useRef(null) // useRef<SparkleBurstHandle>(null)
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <button onClick={() => ref.current?.fire()}>❤️ Like</button>
+      <SparkleBurst ref={ref} colors={['#fde047', '#ffffff']} spread={40} />
+    </div>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `count` | `number` | `8` | Destellos por ráfaga. |
+| `colors` | `string[]` | dorados y blanco | Paleta: cada destello sortea su color. También via `--aui-sparkle-color-<i>`. |
+| `origin` | `{ x: number, y: number }` | `{ x: 0.5, y: 0.5 }` | Centro de la dispersión, relativo al contenedor (`0–1` por eje). |
+| `spread` | `number` | `60` | Radio de dispersión alrededor del origen, en px. |
+| `size` | `number` | `12` | Radio exterior máximo de cada estrella, en px. |
+| `duration` | `number` | `0.9` | Vida total de la ráfaga en segundos. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion`, `fire()` es un no-op (convención de la categoría). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`. **`fire(options?)`** acepta `count`, `colors`, `origin`, `spread`, `size` y `duration`, y las overridea solo para esa ráfaga — `origin` por disparo es útil para destellar exactamente donde ocurrió el evento. El tipo `SparkleBurstHandle` tipa el ref en TypeScript.
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-sparkle-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta default desde CSS en cascada (no afecta `colors` pasados en `fire()`). |
+
+## EmojiBurst
+
+Ráfaga de emojis one-shot con física de confetti (abanico, gravedad, drag, giro): `fire()` lanza 🎉 ✨ ❤️ — o los que definas — desde el `origin`. Los emojis se renderizan con `fillText` y la **fuente de emojis de la plataforma**: cero assets ni fuentes externas, y el aspecto varía entre sistemas operativos (Windows/Android/iOS), que es el comportamiento esperado. Mismo contrato imperativo que [ConfettiBurst](#confettiburst).
+
+> **Performance:** `fillText` por partícula es más caro que las formas del confetti; el default de `count` es conservador (30). Si necesitás una lluvia densa, preferí `ConfettiBurst`.
+
+```jsx
+import { useRef } from 'react'
+import { EmojiBurst } from '@fethabo/animated-ui'
+// TypeScript: import type { EmojiBurstHandle } from '@fethabo/animated-ui'
+
+function Reaction() {
+  const ref = useRef(null) // useRef<EmojiBurstHandle>(null)
+  return (
+    <div style={{ position: 'relative', height: 300 }}>
+      <button onClick={() => ref.current?.fire({ emojis: ['❤️'] })}>❤️</button>
+      <button onClick={() => ref.current?.fire({ emojis: ['🎉', '🥳'] })}>🎉</button>
+      <EmojiBurst ref={ref} />
+    </div>
+  )
+}
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `emojis` | `string[]` | `['🎉', '✨', '❤️']` | Lista de la que cada partícula sortea su emoji. |
+| `count` | `number` | `30` | Emojis por ráfaga (conservador por el costo de `fillText`). |
+| `size` | `number` | `24` | Tamaño de fuente base en px (cada emoji jittéa alrededor). |
+| `origin` | `{ x: number, y: number }` | `{ x: 0.5, y: 0.5 }` | Origen de la ráfaga, relativo al contenedor (`0–1` por eje). |
+| `angle` | `number` | `90` | Dirección central del abanico en grados (`90` = hacia arriba). |
+| `spread` | `number` | `70` | Apertura total del cono en grados. |
+| `power` | `number` | `11` | Velocidad inicial en px/frame. |
+| `gravity` | `number` | `0.25` | Gravedad en px/frame². |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion`, `fire()` es un no-op (convención de la categoría). |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>`. **`fire(options?)`** acepta `emojis`, `count`, `size`, `origin`, `angle`, `spread`, `power` y `gravity`, y las overridea solo para esa ráfaga. El tipo `EmojiBurstHandle` tipa el ref en TypeScript. No expone CSS custom properties: el color lo aporta cada emoji.
+
+## ClickSpark
+
+La variante **declarativa** de la categoría: sin ref ni handle — envolvé tu contenido y cada click (`pointerdown`) dentro del contenedor emite una ráfaga breve de chispas radiales en el punto exacto del evento. El canvas es un overlay `pointer-events: none`: botones, links e inputs del contenido siguen siendo interactivos, y tu `onPointerDown` (si lo pasás) corre siempre. Clicks rápidos generan ráfagas concurrentes sobre el mismo canvas y RAF, que se auto-detiene al no quedar chispas — costo cero en reposo.
+
+```jsx
+import { ClickSpark } from '@fethabo/animated-ui'
+
+<ClickSpark colors={['#fbbf24', '#fde68a']} radius={50}>
+  <button>Cada click chispea</button>
+</ClickSpark>
+```
+
+| Prop | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `colors` | `string[]` | dorados | Paleta: cada chispa sortea su color. También via `--aui-clickspark-color-<i>`. |
+| `count` | `number` | `8` | Chispas por click. |
+| `size` | `number` | `8` | Largo base del segmento de chispa en px. |
+| `radius` | `number` | `40` | Alcance aproximado de la ráfaga en px. |
+| `duration` | `number` | `0.4` | Vida de cada ráfaga en segundos. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` los clicks no emiten chispas; la interactividad del contenido queda intacta. |
+| `className` | `string` | — | Clases adicionales para el elemento root. |
+| `style` | `CSSProperties` | — | Estilos inline adicionales para el elemento root. |
+
+También acepta cualquier otra prop HTML válida de `<div>` (incluidos handlers como `onPointerDown`, que se componen con el del efecto).
+
+### CSS Custom Properties
+
+| Variable | Default | Descripción |
+| --- | --- | --- |
+| `--aui-clickspark-color-<i>` | color `i` de `colors` | Pisa el color `i` de la paleta default desde CSS en cascada. |
 
 ## Hooks
 

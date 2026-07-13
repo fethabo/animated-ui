@@ -6,49 +6,49 @@ export type { AestheticName } from './aesthetics'
 
 export interface GuidingBranchesProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Opcional. Elemento hacia el que sesgar las ramas: `RefObject`, `Element` o
-   * selector CSS. El uso principal es **ambient** (sin `target`): las ramas se
-   * expanden en los 360° alrededor del puntero hasta la frontera. Con `target`,
-   * la rama dominante se sesga hacia él (modo directed).
+   * Optional. Element to bias the branches toward: `RefObject`, `Element` or
+   * CSS selector. The primary use is **ambient** (no `target`): branches
+   * expand 360° around the pointer up to the boundary. With `target`, the
+   * dominant branch is biased toward it (directed mode).
    */
   target?: TargetLike
-  /** Estética del trazo: `'roots'` (orgánico), `'lightning'` (rayo) o `'circuit'` (ortogonal). Default: `'roots'`. */
+  /** Stroke aesthetic: `'roots'` (organic), `'lightning'` (bolt) or `'circuit'` (orthogonal). Default: `'roots'`. */
   aesthetic?: AestheticName
-  /** Ms de inactividad del puntero antes de hacer crecer las ramas. Default: `2000`. */
+  /** Ms of pointer inactivity before growing the branches. Default: `2000`. */
   idleDelay?: number
-  /** Color de las ramas. Default: `'#34d399'`. También via `--aui-branches-color`. */
+  /** Color of the branches. Default: `'#34d399'`. Also via `--aui-branches-color`. */
   color?: string
   /**
-   * Si es `true`, el trazo re-crece en ciclo: al completarse espera `duration`
-   * ms y vuelve a crecer. Si es `false` (default), crece una vez y **queda
-   * estático** hasta que el puntero se mueve (sin bucle).
+   * If `true`, the stroke re-grows in a loop: once complete it waits
+   * `duration` ms and grows again. If `false` (default), it grows once and
+   * **stays static** until the pointer moves (no loop).
    */
   loop?: boolean
-  /** Ms que las ramas permanecen completas antes de re-crecer, cuando `loop`. Default: `1400`. También via `--aui-branches-duration`. */
+  /** Ms the branches stay complete before re-growing, when `loop`. Default: `1400`. Also via `--aui-branches-duration`. */
   duration?: number
-  /** Velocidad de dibujado del crecimiento en px/segundo. Default: `320`. También via `--aui-branches-speed`. */
+  /** Drawing speed of the growth in px/second. Default: `320`. Also via `--aui-branches-speed`. */
   speed?: number
-  /** Distancia máxima en px que cualquier rama puede alcanzar desde el puntero. Default: `260`. También via `--aui-branches-max-distance`. */
+  /** Maximum distance in px any branch can reach from the pointer. Default: `260`. Also via `--aui-branches-max-distance`. */
   maxDistance?: number
-  /** Densidad de ramificación (cantidad de troncos / probabilidad de hijos). Default: `4`. */
+  /** Branching density (number of trunks / probability of children). Default: `4`. */
   density?: number
-  /** Profundidad máxima de sub-ramificación. Default: `3`. */
+  /** Maximum sub-branching depth. Default: `3`. */
   depth?: number
-  /** Grosor del trazo en px. Default: `2`. También via `--aui-branches-line-width`. */
+  /** Stroke width in px. Default: `2`. Also via `--aui-branches-line-width`. */
   lineWidth?: number
   /**
-   * Curvatura del trazo (0 = casi recto, 1 = muy sinuoso). Sube esto para que
-   * `roots` parezca raíces orgánicas en vez de rayos. Default: `0.6`. También
-   * via `--aui-branches-curl`. (Las estéticas ortogonales lo ignoran.)
+   * Curvature of the stroke (0 = nearly straight, 1 = very sinuous). Raise
+   * this so `roots` looks like organic roots instead of bolts. Default: `0.6`.
+   * Also via `--aui-branches-curl`. (Orthogonal aesthetics ignore it.)
    */
   curl?: number
-  /** Jitter del trazo para estéticas tipo relámpago en px. Default: `0` (auto). También via `--aui-branches-jitter`. */
+  /** Stroke jitter for lightning-like aesthetics in px. Default: `0` (auto). Also via `--aui-branches-jitter`. */
   jitter?: number
   /**
-   * Si es `true` (default), con `prefers-reduced-motion` las ramas (efecto
-   * autónomo por temporizador) NO se dibujan.
+   * If `true` (default), with `prefers-reduced-motion` the branches (an
+   * autonomous timer-driven effect) are NOT drawn.
    */
   respectReducedMotion?: boolean
-  /** Contenido monitoreado/superpuesto (el overlay no intercepta sus clicks). */
+  /** Monitored/overlaid content (the overlay does not intercept its clicks). */
   children?: ReactNode
 }

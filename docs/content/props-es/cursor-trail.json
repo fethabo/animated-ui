@@ -1,0 +1,10 @@
+{
+  "mode": "Modo de estela. `'particles'` (default): partículas con vida, fade y deriva leve. `'line'`: línea fluida por los últimos puntos, con grosor y alpha decrecientes hacia la cola.",
+  "color": "Color de la estela (cualquier color CSS). También via `--aui-cursor-trail-color`.",
+  "colors": "Paleta multicolor: cada partícula sortea un color de acá (solo `mode=\"particles\"`; en `line` se usa el primero). Prevalece sobre `color`.",
+  "size": "Tamaño base en px: diámetro de la partícula o grosor de la cabeza de la línea. También via `--aui-cursor-trail-size`.",
+  "life": "Persistencia de la estela en segundos: vida de cada partícula o edad máxima de los puntos de la línea.",
+  "length": "Máximo de puntos vivos de la línea (solo `mode=\"line\"`).",
+  "emitEvery": "Umbral de emisión: px de recorrido del puntero entre emisiones (throttle por distancia; un movimiento menor no emite).",
+  "respectReducedMotion": "Si es `false`, la estela se dibuja aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el efecto se desactiva por completo: sin dibujo ni RAF)."
+}

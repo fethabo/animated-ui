@@ -1,27 +1,27 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-/** Preset de transición entre palabras. */
+/** Transition preset between words. */
 export type RotatingTransition = 'fade' | 'slide-up' | 'flip'
 
 export interface RotatingTextProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Lista de palabras por las que rota. */
+  /** List of words to rotate through. */
   words: string[]
-  /** Preset de la transición entre palabras. Default: `'slide-up'`. */
+  /** Preset for the transition between words. Default: `'slide-up'`. */
   transition?: RotatingTransition
-  /** Ms que cada palabra permanece visible. Default: `2200`. */
+  /** Ms each word stays visible. Default: `2200`. */
   interval?: number
-  /** Duración de la transición (entrada y ajuste de ancho) en segundos. Default: `0.4`. También via `--aui-rotating-duration`. */
+  /** Transition duration (entrance and width adjustment) in seconds. Default: `0.4`. Also via `--aui-rotating-duration`. */
   duration?: number
-  /** Color de la palabra rotante. Default: hereda. También via `--aui-rotating-color`. */
+  /** Color of the rotating word. Default: inherits. Also via `--aui-rotating-color`. */
   color?: string
-  /** Con `false`, la rotación se detiene en la última palabra. Default: `true`. */
+  /** With `false`, rotation stops at the last word. Default: `true`. */
   loop?: boolean
   /**
-   * Si es `false`, la rotación opera aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, muestra la primera
-   * palabra estática).
+   * If `false`, rotation runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, shows the
+   * first word statically).
    */
   respectReducedMotion?: boolean
-  /** Texto base opcional que precede a la palabra rotante (e.g. `Hacemos `). */
+  /** Optional base text preceding the rotating word (e.g. `We build `). */
   children?: ReactNode
 }

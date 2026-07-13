@@ -14,6 +14,7 @@ Paquete npm de componentes React animados, livianos y zero-config: cero dependen
 | [ROADMAP.md](ROADMAP.md) | Hoja de ruta de componentes por tiers/motores, secuencia de releases y criterio de priorización. | Al proponer un change o evaluar una idea nueva |
 | [openspec/specs/](openspec/specs/) | Specs por capability del comportamiento ya implementado. | Antes de modificar un componente existente |
 | [README.md](README.md) | Documentación de cara al consumer. Debe actualizarse en el mismo change que toca la API. | Al cambiar props, CSS vars o agregar componentes |
+| [docs/](docs/) | Web de documentación (Vite + React) de la versión publicada: una vista por componente, ES/EN, demo vivo, props auto-generadas desde los JSDoc, ejemplos. Se agrega la página del componente en el mismo change. | Al agregar un componente o cambiar su API |
 
 ## Criterios fundacionales (no negociables)
 
@@ -46,7 +47,7 @@ Este repo usa **OpenSpec** (schema `spec-driven`):
 - Hooks compartidos en `src/hooks/` (`useMousePosition`, `useReducedMotion`, `useResizeObserver`, `useInView`) — reutilizar antes de crear nuevos.
 - Motor de scroll de posición continua: `subscribeScroll`/`viewportProgress`/`pageProgress` en `src/utils/scroll-driver.ts` (interno) — reutilizar para efectos ligados al scroll.
 - Exports en `src/index.ts` (componente + tipos públicos).
-- Documentación y comentarios en español; nombres de código en inglés.
+- Nombres de código en inglés. **JSDoc de los tipos públicos (props, tipos exportados) en inglés**: es lo que ve el consumer en el autocomplete y la fuente de las tablas de props de la web de docs (las traducciones al español viven en `docs/content/props-es/`). Comentarios internos de implementación, en español.
 
 ## Patrón one-shot imperativo (categoría celebración/feedback)
 

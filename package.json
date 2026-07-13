@@ -195,6 +195,91 @@
       "types": "./dist/wavy-text.d.ts",
       "import": "./dist/wavy-text.js",
       "require": "./dist/wavy-text.cjs"
+    },
+    "./ripple-container": {
+      "types": "./dist/ripple-container.d.ts",
+      "import": "./dist/ripple-container.js",
+      "require": "./dist/ripple-container.cjs"
+    },
+    "./count-up": {
+      "types": "./dist/count-up.d.ts",
+      "import": "./dist/count-up.js",
+      "require": "./dist/count-up.cjs"
+    },
+    "./text-scroll-reveal": {
+      "types": "./dist/text-scroll-reveal.d.ts",
+      "import": "./dist/text-scroll-reveal.js",
+      "require": "./dist/text-scroll-reveal.cjs"
+    },
+    "./fireworks-burst": {
+      "types": "./dist/fireworks-burst.d.ts",
+      "import": "./dist/fireworks-burst.js",
+      "require": "./dist/fireworks-burst.cjs"
+    },
+    "./sparkle-burst": {
+      "types": "./dist/sparkle-burst.d.ts",
+      "import": "./dist/sparkle-burst.js",
+      "require": "./dist/sparkle-burst.cjs"
+    },
+    "./emoji-burst": {
+      "types": "./dist/emoji-burst.d.ts",
+      "import": "./dist/emoji-burst.js",
+      "require": "./dist/emoji-burst.cjs"
+    },
+    "./click-spark": {
+      "types": "./dist/click-spark.d.ts",
+      "import": "./dist/click-spark.js",
+      "require": "./dist/click-spark.cjs"
+    },
+    "./cursor-trail": {
+      "types": "./dist/cursor-trail.d.ts",
+      "import": "./dist/cursor-trail.js",
+      "require": "./dist/cursor-trail.cjs"
+    },
+    "./custom-cursor": {
+      "types": "./dist/custom-cursor.d.ts",
+      "import": "./dist/custom-cursor.js",
+      "require": "./dist/custom-cursor.cjs"
+    },
+    "./image-trail": {
+      "types": "./dist/image-trail.d.ts",
+      "import": "./dist/image-trail.js",
+      "require": "./dist/image-trail.cjs"
+    },
+    "./starfield-background": {
+      "types": "./dist/starfield-background.d.ts",
+      "import": "./dist/starfield-background.js",
+      "require": "./dist/starfield-background.cjs"
+    },
+    "./matrix-rain": {
+      "types": "./dist/matrix-rain.d.ts",
+      "import": "./dist/matrix-rain.js",
+      "require": "./dist/matrix-rain.cjs"
+    },
+    "./text-highlighter": {
+      "types": "./dist/text-highlighter.d.ts",
+      "import": "./dist/text-highlighter.js",
+      "require": "./dist/text-highlighter.cjs"
+    },
+    "./draw-path": {
+      "types": "./dist/draw-path.d.ts",
+      "import": "./dist/draw-path.js",
+      "require": "./dist/draw-path.cjs"
+    },
+    "./scribble-decoration": {
+      "types": "./dist/scribble-decoration.d.ts",
+      "import": "./dist/scribble-decoration.js",
+      "require": "./dist/scribble-decoration.cjs"
+    },
+    "./animated-list": {
+      "types": "./dist/animated-list.d.ts",
+      "import": "./dist/animated-list.js",
+      "require": "./dist/animated-list.cjs"
+    },
+    "./auto-height": {
+      "types": "./dist/auto-height.d.ts",
+      "import": "./dist/auto-height.js",
+      "require": "./dist/auto-height.cjs"
     }
   },
   "scripts": {

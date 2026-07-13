@@ -1,32 +1,32 @@
 import type { HTMLAttributes } from 'react'
 
-/** Dirección del desplazamiento; `up`/`down` para cintas verticales (columnas). */
+/** Scroll direction; `up`/`down` for vertical ribbons (columns). */
 export type MarqueeDirection = 'left' | 'right' | 'up' | 'down'
 
 export interface MarqueeProps extends HTMLAttributes<HTMLDivElement> {
-  /** Dirección del desplazamiento. Default: `'left'`. */
+  /** Scroll direction. Default: `'left'`. */
   direction?: MarqueeDirection
-  /** Velocidad de la cinta en px/s. Default: `60`. */
+  /** Ribbon speed in px/s. Default: `60`. */
   speed?: number
   /**
-   * Pausa la animación mientras el cursor está sobre la cinta y la reanuda al
-   * salir, sin salto. Default: `false`.
+   * Pauses the animation while the cursor is over the ribbon and resumes it
+   * on leave, without jumping. Default: `false`.
    */
   pauseOnHover?: boolean
   /**
-   * Modo opt-in: la velocidad de la cinta y un skew sutil responden a la
-   * velocidad de scroll de la página (via el scroll-driver del paquete).
-   * Sin esta prop el componente no se suscribe al scroll. Default: `false`.
+   * Opt-in mode: the ribbon speed and a subtle skew respond to the page's
+   * scroll velocity (via the package's scroll-driver).
+   * Without this prop the component does not subscribe to scroll. Default: `false`.
    */
   scrollVelocity?: boolean
-  /** Separación entre ítems y repeticiones en px. Default: `24`. También via `--aui-marquee-gap`. */
+  /** Gap between items and repetitions in px. Default: `24`. Also via `--aui-marquee-gap`. */
   gap?: number
-  /** Desvanece los extremos de la cinta con una máscara de gradiente. Default: `false`. */
+  /** Fades the ribbon edges with a gradient mask. Default: `false`. */
   fadeEdges?: boolean
   /**
-   * Si es `false`, la cinta se desplaza aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, contenido estático
-   * en una sola pasada, sin duplicados).
+   * If `false`, the ribbon scrolls even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, static
+   * content in a single pass, no duplicates).
    */
   respectReducedMotion?: boolean
 }

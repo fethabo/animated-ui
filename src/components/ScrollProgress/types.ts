@@ -3,20 +3,20 @@ import type { HTMLAttributes } from 'react'
 export type ScrollProgressPosition = 'top' | 'bottom'
 
 export interface ScrollProgressProps extends HTMLAttributes<HTMLDivElement> {
-  /** Borde del viewport donde se fija la barra. Default: `'top'`. */
+  /** Viewport edge where the bar is fixed. Default: `'top'`. */
   position?: ScrollProgressPosition
-  /** Color de la barra de progreso. Default: `#7c3aed`. También via `--aui-progress-color`. */
+  /** Progress bar color. Default: `#7c3aed`. Also via `--aui-progress-color`. */
   color?: string
-  /** Grosor de la barra en px. Default: `3`. También via `--aui-progress-height`. */
+  /** Bar thickness in px. Default: `3`. Also via `--aui-progress-height`. */
   height?: number
-  /** Color del track (el fondo de la barra). Default: `transparent`. También via `--aui-progress-bg`. */
+  /** Track color (the bar's background). Default: `transparent`. Also via `--aui-progress-bg`. */
   trackColor?: string
-  /** z-index del elemento fijo, por si compite con headers del consumer. Default: `50`. También via `--aui-progress-z`. */
+  /** z-index of the fixed element, in case it competes with the consumer's headers. Default: `50`. Also via `--aui-progress-z`. */
   zIndex?: number
   /**
-   * Aceptada por consistencia de API; la barra queda activa en ambos casos:
-   * refleja 1:1 la posición de scroll que el usuario controla directamente
-   * (como la scrollbar nativa) y no desplaza contenido. Default: `true`.
+   * Accepted for API consistency; the bar stays active in both cases:
+   * it mirrors 1:1 the scroll position the user controls directly
+   * (like the native scrollbar) and does not move content. Default: `true`.
    */
   respectReducedMotion?: boolean
 }

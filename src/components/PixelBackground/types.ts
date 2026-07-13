@@ -2,24 +2,24 @@ import type { CSSProperties, HTMLAttributes } from 'react'
 
 export type BehaviorName = 'hover' | 'idle' | 'reveal'
 
-/** Una celda de la grilla, en coordenadas de píxeles CSS. */
+/** A grid cell, in CSS pixel coordinates. */
 export interface PixelCell {
   col: number
   row: number
-  /** Esquina superior izquierda de la celda. */
+  /** Top-left corner of the cell. */
   x: number
   y: number
   centerX: number
   centerY: number
 }
 
-/** Contexto que el renderer pasa a cada behavior en cada frame. */
+/** Context the renderer passes to each behavior on every frame. */
 export interface PixelFrameContext {
-  /** Segundos desde que arrancó el renderer. */
+  /** Seconds since the renderer started. */
   time: number
-  /** Segundos desde el frame anterior. */
+  /** Seconds since the previous frame. */
   delta: number
-  /** Posición del mouse relativa al canvas, o `null` si está afuera. */
+  /** Mouse position relative to the canvas, or `null` if outside. */
   mouse: { x: number; y: number } | null
   cols: number
   rows: number
@@ -28,54 +28,54 @@ export interface PixelFrameContext {
 }
 
 /**
- * Un behavior aporta una contribución numérica por celda por frame.
- * - `mode: 'brightness'`: las contribuciones se SUMAN al alpha base (hover, idle).
- * - `mode: 'opacity'`: las contribuciones (0..1) se MULTIPLICAN sobre el resultado (reveal).
+ * A behavior contributes a numeric value per cell per frame.
+ * - `mode: 'brightness'`: contributions are ADDED to the base alpha (hover, idle).
+ * - `mode: 'opacity'`: contributions (0..1) are MULTIPLIED onto the result (reveal).
  */
 export interface PixelBehavior {
   name: BehaviorName
   mode: 'brightness' | 'opacity'
-  /** Hook opcional por frame, antes de iterar las celdas (e.g. easing de estado interno). */
+  /** Optional per-frame hook, before iterating the cells (e.g. easing internal state). */
   frame?(ctx: PixelFrameContext): void
-  /** Contribución de esta celda en este frame. */
+  /** This cell's contribution for this frame. */
   cell(cell: PixelCell, ctx: PixelFrameContext): number
 }
 
 /**
- * Callback de theming avanzado por celda.
- * @param x columna de la celda
- * @param y fila de la celda
- * @param proximity contribución del behavior hover (0..1), 0 si no está activo
- * @param idlePhase contribución del behavior idle (-intensity..+intensity), 0 si no está activo
- * @returns cualquier color CSS válido para `fillStyle`
+ * Advanced per-cell theming callback.
+ * @param x cell column
+ * @param y cell row
+ * @param proximity hover behavior contribution (0..1), 0 when not active
+ * @param idlePhase idle behavior contribution (-intensity..+intensity), 0 when not active
+ * @returns any valid CSS color for `fillStyle`
  */
 export type CellColorFn = (x: number, y: number, proximity: number, idlePhase: number) => string
 
 export interface PixelBackgroundProps extends HTMLAttributes<HTMLDivElement> {
-  /** Lado en px de cada celda cuadrada. Default: `12`. */
+  /** Side in px of each square cell. Default: `12`. */
   cellSize?: number
-  /** Espacio en px entre celdas. Default: `2`. */
+  /** Space in px between cells. Default: `2`. */
   gap?: number
-  /** Behaviors activos, combinables. Default: `['hover']`. */
+  /** Active behaviors, combinable. Default: `['hover']`. */
   behaviors?: BehaviorName[]
-  /** Color estático para todas las celdas. Default: `'#7c3aed'`. */
+  /** Static color for all cells. Default: `'#7c3aed'`. */
   color?: string
-  /** Color dinámico por celda; tiene prioridad sobre `color`. */
+  /** Dynamic per-cell color; takes precedence over `color`. */
   cellColor?: CellColorFn
-  /** Alpha base de las celdas sin contribución de behaviors (0..1). Default: `0.15`. */
+  /** Base alpha of cells with no behavior contribution (0..1). Default: `0.15`. */
   baseOpacity?: number
-  /** Radio en px de influencia del behavior hover. Default: `120`. */
+  /** Influence radius in px of the hover behavior. Default: `120`. */
   hoverRadius?: number
-  /** Amplitud del parpadeo del behavior idle (0..1). Default: `1`. */
+  /** Flicker amplitude of the idle behavior (0..1). Default: `1`. */
   idleIntensity?: number
-  /** Velocidad del parpadeo idle (ciclos por segundo aprox). Default: `1.5`. */
+  /** Idle flicker speed (approx. cycles per second). Default: `1.5`. */
   idleSpeed?: number
-  /** Duración en ms del reveal dithered. Default: `1200`. */
+  /** Duration in ms of the dithered reveal. Default: `1200`. */
   revealDuration?: number
   /**
-   * Si es `true` (default), con `prefers-reduced-motion` se desactivan los
-   * behaviors `idle` y `reveal`. `hover` sigue activo: es respuesta directa
-   * a input del usuario.
+   * If `true` (default), the `idle` and `reveal` behaviors are disabled
+   * under `prefers-reduced-motion`. `hover` stays active: it is a direct
+   * response to user input.
    */
   respectReducedMotion?: boolean
   className?: string

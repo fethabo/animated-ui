@@ -1,0 +1,6 @@
+{
+  "color": "Color del spotlight (cualquier color CSS; conviene usar alpha). También via `--aui-spotlight-color`.",
+  "radius": "Radio del spotlight en px. También via `--aui-spotlight-radius`.",
+  "opacity": "Opacidad máxima del overlay al hacer hover (0 a 1). También via `--aui-spotlight-opacity`.",
+  "respectReducedMotion": "Aceptada por consistencia de API. El spotlight responde a input directo del usuario y no desplaza contenido, así que permanece activo con `prefers-reduced-motion` (precedente: behavior `hover` de PixelBackground)."
+}

@@ -6,38 +6,38 @@ export type SplitTrigger = 'mount' | 'in-view'
 
 export interface SplitRevealProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   /**
-   * Texto a revelar. Es un string plano (no `children`): el componente lo
-   * parte en unidades. Para SEO/SSR se renderiza completo desde el primer
-   * paint y se parte tras la hidratación.
+   * Text to reveal. It is a plain string (not `children`): the component
+   * splits it into units. For SEO/SSR it renders in full from the first
+   * paint and is split after hydration.
    */
   text: string
-  /** Unidad de partición. Default: `'word'`. */
+  /** Split unit. Default: `'word'`. */
   split?: SplitMode
-  /** Animación de entrada de cada unidad. Default: `'slide-up'`. */
+  /** Entrance animation for each unit. Default: `'slide-up'`. */
   preset?: SplitPreset
   /**
-   * Qué dispara el revelado: `'in-view'` al entrar al viewport (vía
-   * IntersectionObserver), `'mount'` al montar. Default: `'in-view'`.
+   * What triggers the reveal: `'in-view'` on entering the viewport (via
+   * IntersectionObserver), `'mount'` on mount. Default: `'in-view'`.
    */
   trigger?: SplitTrigger
-  /** Segundos de delay incremental entre unidades. Default: `0.05`. También via `--aui-split-stagger`. */
+  /** Seconds of incremental delay between units. Default: `0.05`. Also via `--aui-split-stagger`. */
   stagger?: number
-  /** Duración de la transición de cada unidad, en segundos. Default: `0.6`. También via `--aui-split-duration`. */
+  /** Transition duration of each unit, in seconds. Default: `0.6`. Also via `--aui-split-duration`. */
   duration?: number
-  /** Desplazamiento inicial en px para `slide-up`. Default: `16`. También via `--aui-split-distance`. */
+  /** Initial offset in px for `slide-up`. Default: `16`. Also via `--aui-split-distance`. */
   distance?: number
-  /** Fracción visible que dispara el revelado con `trigger='in-view'`. Default: `0.15`. */
+  /** Visible fraction that triggers the reveal with `trigger='in-view'`. Default: `0.15`. */
   threshold?: number
   /**
-   * Si es `true` (default), el contenido queda revelado tras el primer
-   * disparo. Con `false`, se re-oculta al salir del viewport y re-revela al
-   * re-entrar (solo con `trigger='in-view'`).
+   * If `true` (default), the content stays revealed after the first
+   * trigger. With `false`, it re-hides on leaving the viewport and re-reveals
+   * on re-entering (only with `trigger='in-view'`).
    */
   once?: boolean
   /**
-   * Si es `false`, el revelado anima aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, el texto completo
-   * se muestra de inmediato, sin stagger ni animación).
+   * If `false`, the reveal animates even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the full
+   * text is shown immediately, with no stagger or animation).
    */
   respectReducedMotion?: boolean
 }

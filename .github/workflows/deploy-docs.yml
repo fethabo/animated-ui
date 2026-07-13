@@ -1,0 +1,61 @@
+name: Deploy Docs to Hostinger
+
+# Se dispara SOLO al publicar un Release (tag). Así la web refleja siempre la
+# última versión publicada del paquete, nunca el estado intermedio de main.
+on:
+  release:
+    types: [published]
+  # Permite re-deployar manualmente desde la pestaña Actions (fallback).
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout del tag de la release (github.ref apunta al tag publicado).
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # 1. Buildear la librería: docs la consume vía file:.. (su dist/).
+      - run: pnpm install
+      - run: pnpm run build
+
+      # 2. Buildear la docs contra esa versión (prebuild valida sincronía y
+      #    genera props/código/prosa; falla si algo está incompleto).
+      - name: Build docs
+        working-directory: docs
+        env:
+          DOCS_BASE: ${{ vars.DOCS_BASE || '/' }}
+        run: |
+          npm install
+          npm run build
+
+      # 3. Subir docs/dist por FTP a Hostinger.
+      #    Secrets requeridos (Settings → Secrets and variables → Actions):
+      #      FTP_SERVER    host FTP de Hostinger (e.g. ftp.tudominio.com)
+      #      FTP_USERNAME  usuario FTP
+      #      FTP_PASSWORD  contraseña FTP
+      #    Variable opcional:
+      #      FTP_SERVER_DIR  carpeta destino (default: la del subdominio, e.g. /docs/)
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./docs/dist/
+          server-dir: ${{ vars.FTP_SERVER_DIR || '/' }}
+          # No borrar archivos ajenos que no estén en el build (por si el
+          # subdominio comparte carpeta con otra cosa). Ajustable si se quiere
+          # un mirror exacto.
+          dangerous-clean-slate: false

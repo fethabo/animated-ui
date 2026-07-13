@@ -7,11 +7,11 @@ export interface MousePosition {
 }
 
 /**
- * Trackea la posición del mouse relativa al elemento referenciado.
+ * Tracks the mouse position relative to the referenced element.
  *
- * Retorna `{x, y}` en píxeles desde la esquina superior izquierda del
- * elemento, o `null` cuando el cursor está fuera de él. Los event listeners
- * se registran sobre el elemento y se limpian al desmontar.
+ * Returns `{x, y}` in pixels from the element's top-left corner, or `null`
+ * while the cursor is outside of it. Event listeners are registered on the
+ * element and cleaned up on unmount.
  */
 export function useMousePosition(ref: RefObject<HTMLElement | null>): MousePosition | null {
   const [position, setPosition] = useState<MousePosition | null>(null)

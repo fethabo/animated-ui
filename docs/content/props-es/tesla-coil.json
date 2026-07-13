@@ -1,0 +1,14 @@
+{
+  "color": "Color de los rayos y el glow (cualquier color CSS). También via `--aui-tesla-color`.",
+  "boltCount": "Cantidad de rayos ambientales emitidos desde el centro.",
+  "lineWidth": "Grosor de los rayos en px. También via `--aui-tesla-line-width`.",
+  "frequency": "Frecuencia de regeneración de los rayos ambientales en veces por segundo. También via `--aui-tesla-frequency`.",
+  "reach": "Alcance/longitud máxima de los rayos en px. También via `--aui-tesla-reach`.",
+  "jitter": "Magnitud de la desviación jagged del trazo en px. También via `--aui-tesla-jitter`.",
+  "followCursor": "Dirige rayos extra hacia el cursor cuando está sobre el contenedor. En touch (sin hover) se ignora.",
+  "cursorBolts": "Cantidad de rayos dirigidos al cursor. Se dibujan más gruesos y brillantes (con núcleo blanco) que los ambientales.",
+  "cursorTrigger": "Cuándo salen los rayos dirigidos al cursor: `'hover'` (mientras el cursor está encima, default) o `'click'` (solo mientras se mantiene presionado).",
+  "origin": "Posición del nodo central como fracción del contenedor.",
+  "respectReducedMotion": "Si es `true` (default), con `prefers-reduced-motion` los rayos ambientales no se regeneran (cuadro estático). El seguimiento del cursor puede seguir activo.",
+  "children": "Contenido superpuesto al efecto (el canvas no intercepta sus eventos)."
+}

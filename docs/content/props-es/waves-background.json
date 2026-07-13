@@ -1,0 +1,9 @@
+{
+  "amplitude": "Amplitud de la ondulación en px.",
+  "colors": "Paleta de las líneas: con más de un color, cada línea interpola su color según su posición vertical entre los extremos de la paleta. Default: `['#22d3ee', '#a78bfa']`. También via `--aui-waves-color-<i>`.",
+  "lines": "Cantidad de líneas distribuidas verticalmente.",
+  "lineWidth": "Grosor de las líneas en px. También via `--aui-waves-line-width`.",
+  "respectReducedMotion": "Si es `false`, la animación corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, las líneas se dibujan curvadas pero inmóviles, sin RAF).",
+  "seed": "Semilla del campo de ruido: la misma `seed` + dimensiones producen siempre las mismas ondas (sin `Math.random`).",
+  "speed": "Velocidad de la deriva temporal del campo (factor adimensional; `0` congela la ondulación)."
+}

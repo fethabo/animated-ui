@@ -1,16 +1,16 @@
 import type { HTMLAttributes } from 'react'
 
 export interface ImageDissolveProps extends HTMLAttributes<HTMLDivElement> {
-  /** URL de la imagen a mostrar. Cambiarla dispara la transición dithered. */
+  /** URL of the image to display. Changing it triggers the dithered transition. */
   src: string
-  /** Texto alternativo de la imagen (requerido por accesibilidad). */
+  /** Alternative text for the image (required for accessibility). */
   alt: string
-  /** Duración de la transición en milisegundos. Default: `800`. */
+  /** Transition duration in milliseconds. Default: `800`. */
   duration?: number
   /**
-   * Si es `false`, la transición dithered corre aunque el sistema tenga
-   * activado `prefers-reduced-motion`. Default: `true` (con reduce, el `src`
-   * se swapea instantáneamente sin animar el canvas).
+   * If `false`, the dithered transition runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the `src`
+   * is swapped instantly without animating the canvas).
    */
   respectReducedMotion?: boolean
 }

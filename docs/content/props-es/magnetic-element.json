@@ -1,0 +1,6 @@
+{
+  "strength": "Intensidad de la atracción (0 a 1): cuánto se desplaza el contenido hacia el cursor.",
+  "hitArea": "Padding transparente en px que agranda la zona de atracción alrededor del contenido. Participa del layout del wrapper; con `0` el wrapper colapsa al tamaño del contenido.",
+  "respectReducedMotion": "Si es `false`, la atracción corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el contenido no se mueve: offsets quedan en 0 pero `isActive` sigue reportándose).",
+  "children": "Contenido a magnetizar: nodos React o función `(state: MagneticState) => ReactNode`."
+}

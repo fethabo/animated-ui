@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 const QUERY = '(prefers-reduced-motion: reduce)'
 
 /**
- * Retorna `true` si el usuario tiene activada la preferencia de movimiento
- * reducido en su sistema operativo.
+ * Returns `true` if the user has the reduced-motion preference enabled in
+ * their operating system.
  *
- * SSR-safe: en el servidor (y en el primer render del cliente, para evitar
- * hydration mismatch) retorna `false`; el valor real se lee en `useEffect`.
- * Reacciona en vivo si la preferencia cambia mientras el componente está
- * montado.
+ * SSR-safe: on the server (and on the first client render, to avoid a
+ * hydration mismatch) it returns `false`; the real value is read in
+ * `useEffect`. Reacts live if the preference changes while the component
+ * is mounted.
  */
 export function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false)

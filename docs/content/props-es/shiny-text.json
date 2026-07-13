@@ -1,0 +1,7 @@
+{
+  "angle": "Ángulo del gradiente/barrido en grados. También via `--aui-shiny-angle`.",
+  "color": "Color base del texto. También via `--aui-shiny-color`.",
+  "highlight": "Color de la franja de brillo que barre el texto. También via `--aui-shiny-highlight`.",
+  "respectReducedMotion": "Si es `false`, el barrido corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el loop se detiene y queda el gradiente estático).",
+  "speed": "Segundos por barrido completo del loop. También via `--aui-shiny-speed`."
+}

@@ -1,49 +1,49 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-/** Posición del nodo central, como fracción del contenedor (0..1 en cada eje). */
+/** Position of the central node, as a fraction of the container (0..1 on each axis). */
 export interface CoilOrigin {
   x: number
   y: number
 }
 
 export interface TeslaCoilProps extends HTMLAttributes<HTMLDivElement> {
-  /** Color de los rayos y el glow (cualquier color CSS). Default: `'#7dd3fc'`. También via `--aui-tesla-color`. */
+  /** Color of the bolts and the glow (any CSS color). Default: `'#7dd3fc'`. Also via `--aui-tesla-color`. */
   color?: string
-  /** Cantidad de rayos ambientales emitidos desde el centro. Default: `7`. */
+  /** Number of ambient bolts emitted from the center. Default: `7`. */
   boltCount?: number
-  /** Grosor de los rayos en px. Default: `2`. También via `--aui-tesla-line-width`. */
+  /** Bolt thickness in px. Default: `2`. Also via `--aui-tesla-line-width`. */
   lineWidth?: number
   /**
-   * Frecuencia de regeneración de los rayos ambientales en veces por segundo.
-   * Default: `12`. También via `--aui-tesla-frequency`.
+   * Regeneration frequency of the ambient bolts in times per second.
+   * Default: `12`. Also via `--aui-tesla-frequency`.
    */
   frequency?: number
-  /** Alcance/longitud máxima de los rayos en px. Default: `160`. También via `--aui-tesla-reach`. */
+  /** Maximum reach/length of the bolts in px. Default: `160`. Also via `--aui-tesla-reach`. */
   reach?: number
-  /** Magnitud de la desviación jagged del trazo en px. Default: `18`. También via `--aui-tesla-jitter`. */
+  /** Magnitude of the jagged deviation of the stroke in px. Default: `18`. Also via `--aui-tesla-jitter`. */
   jitter?: number
   /**
-   * Dirige rayos extra hacia el cursor cuando está sobre el contenedor.
-   * Default: `true`. En touch (sin hover) se ignora.
+   * Directs extra bolts toward the cursor when it is over the container.
+   * Default: `true`. Ignored on touch (no hover).
    */
   followCursor?: boolean
   /**
-   * Cantidad de rayos dirigidos al cursor. Se dibujan más gruesos y brillantes
-   * (con núcleo blanco) que los ambientales. Default: `3`.
+   * Number of bolts directed at the cursor. Drawn thicker and brighter
+   * (with a white core) than the ambient ones. Default: `3`.
    */
   cursorBolts?: number
   /**
-   * Cuándo salen los rayos dirigidos al cursor: `'hover'` (mientras el cursor
-   * está encima, default) o `'click'` (solo mientras se mantiene presionado).
+   * When cursor-directed bolts fire: `'hover'` (while the cursor
+   * is over it, default) or `'click'` (only while pressed).
    */
   cursorTrigger?: 'hover' | 'click'
-  /** Posición del nodo central como fracción del contenedor. Default: `{ x: 0.5, y: 0.5 }`. */
+  /** Position of the central node as a fraction of the container. Default: `{ x: 0.5, y: 0.5 }`. */
   origin?: CoilOrigin
   /**
-   * Si es `true` (default), con `prefers-reduced-motion` los rayos ambientales
-   * no se regeneran (cuadro estático). El seguimiento del cursor MAY seguir activo.
+   * If `true` (default), with `prefers-reduced-motion` the ambient bolts
+   * do not regenerate (static frame). Cursor following MAY remain active.
    */
   respectReducedMotion?: boolean
-  /** Contenido superpuesto al efecto (el canvas no intercepta sus eventos). */
+  /** Content overlaid on the effect (the canvas does not intercept its events). */
   children?: ReactNode
 }

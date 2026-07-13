@@ -1,18 +1,18 @@
 import type { HTMLAttributes } from 'react'
 
 export interface ShinyTextProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Color base del texto. Default: `#71717a`. También via `--aui-shiny-color`. */
+  /** Base text color. Default: `#71717a`. Also via `--aui-shiny-color`. */
   color?: string
-  /** Color de la franja de brillo que barre el texto. Default: `#fafafa`. También via `--aui-shiny-highlight`. */
+  /** Color of the shine band that sweeps across the text. Default: `#fafafa`. Also via `--aui-shiny-highlight`. */
   highlight?: string
-  /** Segundos por barrido completo del loop. Default: `3`. También via `--aui-shiny-speed`. */
+  /** Seconds per full sweep of the loop. Default: `3`. Also via `--aui-shiny-speed`. */
   speed?: number
-  /** Ángulo del gradiente/barrido en grados. Default: `120`. También via `--aui-shiny-angle`. */
+  /** Gradient/sweep angle in degrees. Default: `120`. Also via `--aui-shiny-angle`. */
   angle?: number
   /**
-   * Si es `false`, el barrido corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, el loop se detiene
-   * y queda el gradiente estático).
+   * If `false`, the sweep runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the loop
+   * stops and the static gradient remains).
    */
   respectReducedMotion?: boolean
 }

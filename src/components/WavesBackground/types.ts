@@ -1,32 +1,32 @@
 import type { HTMLAttributes } from 'react'
 
 export interface WavesBackgroundProps extends HTMLAttributes<HTMLDivElement> {
-  /** Cantidad de líneas distribuidas verticalmente. Default: `24`. */
+  /** Number of lines distributed vertically. Default: `24`. */
   lines?: number
-  /** Amplitud de la ondulación en px. Default: `24`. */
+  /** Wave amplitude in px. Default: `24`. */
   amplitude?: number
   /**
-   * Velocidad de la deriva temporal del campo (factor adimensional; `0`
-   * congela la ondulación). Default: `1`.
+   * Speed of the field's temporal drift (dimensionless factor; `0`
+   * freezes the waving). Default: `1`.
    */
   speed?: number
   /**
-   * Paleta de las líneas: con más de un color, cada línea interpola su color
-   * según su posición vertical entre los extremos de la paleta. Default:
-   * `['#22d3ee', '#a78bfa']`. También via `--aui-waves-color-<i>`.
+   * Line palette: with more than one color, each line interpolates its color
+   * by its vertical position between the palette's endpoints. Default:
+   * `['#22d3ee', '#a78bfa']`. Also via `--aui-waves-color-<i>`.
    */
   colors?: string[]
-  /** Grosor de las líneas en px. Default: `1.5`. También via `--aui-waves-line-width`. */
+  /** Line thickness in px. Default: `1.5`. Also via `--aui-waves-line-width`. */
   lineWidth?: number
   /**
-   * Semilla del campo de ruido: la misma `seed` + dimensiones producen
-   * siempre las mismas ondas (sin `Math.random`). Default: `'aui'`.
+   * Noise field seed: the same `seed` + dimensions always produce
+   * the same waves (no `Math.random`). Default: `'aui'`.
    */
   seed?: string | number
   /**
-   * Si es `false`, la animación corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, las líneas se
-   * dibujan curvadas pero inmóviles, sin RAF).
+   * If `false`, the animation runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the lines
+   * are drawn curved but motionless, no RAF).
    */
   respectReducedMotion?: boolean
 }

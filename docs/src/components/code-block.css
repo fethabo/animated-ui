@@ -1,0 +1,42 @@
+.docs-code {
+  position: relative;
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+  overflow: hidden;
+}
+
+.docs-code-scroll {
+  overflow-x: auto;
+  max-height: 480px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.docs-code pre {
+  margin: 0;
+  padding: 16px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  background: var(--docs-bg-raised) !important;
+}
+
+.docs-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--docs-text);
+  background: color-mix(in srgb, var(--docs-bg) 75%, transparent);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.docs-copy:hover {
+  border-color: var(--docs-accent);
+}

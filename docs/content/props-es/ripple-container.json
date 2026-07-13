@@ -1,0 +1,8 @@
+{
+  "children": "Contenido a envolver. Las ondas se dibujan por encima sin interceptar la interacción.",
+  "color": "Color de las ondas. También via `--aui-ripple-color`.",
+  "duration": "Duración de cada onda (expansión + fade) en ms. También via `--aui-ripple-duration`.",
+  "maxRadius": "Radio máximo de la onda en px. Por default: la distancia desde el punto de click hasta la esquina más lejana del contenedor (la onda lo cubre por completo).",
+  "opacity": "Opacidad inicial de la onda. También via `--aui-ripple-opacity`.",
+  "respectReducedMotion": "Si es `false`, la onda se expande aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, la onda se reemplaza por un fade estático breve en el punto del click)."
+}

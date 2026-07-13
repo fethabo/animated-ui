@@ -1,0 +1,10 @@
+{
+  "children": "El texto a glitchear. Solo texto plano: las capas desplazadas se duplican via `content: attr(data-text)` (pseudo-elementos), que no soporta markup.",
+  "as": "Elemento root a renderizar.",
+  "trigger": "Modo de activación (ráfagas intermitentes autónomas con `'loop'`, o solo en `'hover'`).",
+  "colors": "Colores de los dos canales desplazados `[antes, después]`. Default: rojo/cyan. También via `--aui-glitch-color-1/2`.",
+  "intensity": "Desplazamiento máximo de los canales en px. También via `--aui-glitch-intensity`.",
+  "frequency": "Ráfagas de glitch por ciclo (el ciclo dura ~3s).",
+  "burstDuration": "Duración de cada ráfaga en segundos.",
+  "respectReducedMotion": "Si es `false`, el glitch opera aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, `loop` queda estático; `hover` conserva un split estático atenuado, sin jitter)."
+}

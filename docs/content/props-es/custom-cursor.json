@@ -1,0 +1,9 @@
+{
+  "color": "Color del dot y del borde del ring (cualquier color CSS). También via `--aui-cursor-color`.",
+  "dotSize": "Diámetro del punto central en px. También via `--aui-cursor-dot-size`.",
+  "hideNativeCursor": "Oculta el cursor nativo **solo dentro del contenedor** (`cursor: none` scoped; sin portales ni efectos a nivel documento).",
+  "hoverScale": "Factor de crecimiento del anillo sobre elementos interactivos (estado `hover`). También via `--aui-cursor-hover-scale`.",
+  "lag": "Retardo elástico del anillo en segundos (duración de la transición que lo hace perseguir al dot). También via `--aui-cursor-lag`.",
+  "ringSize": "Diámetro del anillo en px. También via `--aui-cursor-ring-size`.",
+  "respectReducedMotion": "Si es `false`, se conserva el lag elástico aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, dot y anillo siguen al puntero de forma directa, sin transiciones)."
+}

@@ -1,0 +1,9 @@
+{
+  "children": "Contenido interactivo a envolver (los eventos le llegan normalmente).",
+  "colors": "Paleta: cada chispa sortea su color de acá. Default: dorados. También via `--aui-clickspark-color-<i>`.",
+  "count": "Chispas por click.",
+  "duration": "Vida de cada ráfaga en segundos.",
+  "radius": "Alcance aproximado de la ráfaga en px.",
+  "size": "Largo base del segmento de chispa en px.",
+  "respectReducedMotion": "Si es `false`, los clicks emiten chispas aunque el sistema tenga activado `prefers-reduced-motion`. (con la preferencia activa no se emiten chispas: son movimiento decorativo no esencial; la interactividad de los children queda intacta)."
+}

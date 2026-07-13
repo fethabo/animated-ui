@@ -1,31 +1,31 @@
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 
-/** Estado de animación expuesto via render prop. */
+/** Animation state exposed via render prop. */
 export interface MagneticState {
-  /** Desplazamiento horizontal actual del contenido en px. */
+  /** Current horizontal displacement of the content in px. */
   offsetX: number
-  /** Desplazamiento vertical actual del contenido en px. */
+  /** Current vertical displacement of the content in px. */
   offsetY: number
-  /** `true` mientras el cursor está dentro de la zona de atracción. */
+  /** `true` while the cursor is inside the attraction zone. */
   isActive: boolean
 }
 
 export interface MagneticElementProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-  /** Intensidad de la atracción (0 a 1): cuánto se desplaza el contenido hacia el cursor. Default: `0.35`. */
+  /** Attraction strength (0 to 1): how far the content moves toward the cursor. Default: `0.35`. */
   strength?: number
   /**
-   * Padding transparente en px que agranda la zona de atracción alrededor
-   * del contenido. Participa del layout del wrapper; con `0` el wrapper
-   * colapsa al tamaño del contenido. Default: `40`.
+   * Transparent padding in px that enlarges the attraction zone around
+   * the content. Participates in the wrapper's layout; with `0` the wrapper
+   * collapses to the content's size. Default: `40`.
    */
   hitArea?: number
   /**
-   * Si es `false`, la atracción corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, el contenido no
-   * se mueve: offsets quedan en 0 pero `isActive` sigue reportándose).
+   * If `false`, the attraction runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the content
+   * does not move: offsets stay at 0 but `isActive` is still reported).
    */
   respectReducedMotion?: boolean
-  /** Contenido a magnetizar: nodos React o función `(state: MagneticState) => ReactNode`. */
+  /** Content to magnetize: React nodes or a `(state: MagneticState) => ReactNode` function. */
   children?: ReactNode | ((state: MagneticState) => ReactNode)
   className?: string
   style?: CSSProperties

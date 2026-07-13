@@ -1,0 +1,10 @@
+{
+  "images": "URLs del pool (requerida). Se emiten rotando en orden cíclico: agotado el array, la selección reinicia desde la primera.",
+  "size": "Ancho máximo de cada imagen en px. También via `--aui-image-trail-size`.",
+  "emitEvery": "Umbral de emisión: px de recorrido del puntero entre imágenes (throttle por distancia).",
+  "duration": "Vida de cada imagen en ms (aparece → flota → se desvanece → se remueve del DOM). También via `--aui-image-trail-duration`.",
+  "maxConcurrent": "Cap de nodos vivos: alcanzado, la emisión espera a que uno termine.",
+  "imageClassName": "Clase extra para cada `<img>` emitida (border-radius, sombras, filtros).",
+  "imageStyle": "Estilos inline extra para cada `<img>` emitida.",
+  "respectReducedMotion": "Si es `false`, se emiten imágenes aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el efecto es no-op: sin emisión, children intactos)."
+}

@@ -1,31 +1,31 @@
 import type { HTMLAttributes } from 'react'
 
 export interface TopographicBackgroundProps extends HTMLAttributes<HTMLDivElement> {
-  /** Cantidad de niveles de contorno distribuidos por el rango del campo. Default: `10`. */
+  /** Number of contour levels distributed across the field's range. Default: `10`. */
   levels?: number
-  /** Color de las curvas de nivel. Default: `'#38bdf8'`. También via `--aui-topo-color`. */
+  /** Contour line color. Default: `'#38bdf8'`. Also via `--aui-topo-color`. */
   color?: string
-  /** Grosor de las curvas en px. Default: `1`. También via `--aui-topo-line-width`. */
+  /** Contour thickness in px. Default: `1`. Also via `--aui-topo-line-width`. */
   lineWidth?: number
   /**
-   * Zoom del terreno en px: a mayor `scale`, relieves más amplios y curvas
-   * más espaciadas. Default: `220`.
+   * Terrain zoom in px: the larger the `scale`, the broader the relief and
+   * the more widely spaced the contours. Default: `220`.
    */
   scale?: number
   /**
-   * Velocidad de la evolución temporal del terreno (deformación gradual).
-   * `0` = terreno fijo, sin RAF corriendo. Default: `1` (lento).
+   * Speed of the terrain's temporal evolution (gradual deformation).
+   * `0` = fixed terrain, no RAF running. Default: `1` (slow).
    */
   speed?: number
   /**
-   * Semilla del campo: la misma `seed` + dimensiones producen el mismo mapa
-   * (sin `Math.random`). Default: `'aui'`.
+   * Field seed: the same `seed` + dimensions produce the same map
+   * (no `Math.random`). Default: `'aui'`.
    */
   seed?: string | number
   /**
-   * Si es `false`, la evolución corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, el mapa se dibuja
-   * una vez, estático).
+   * If `false`, the evolution runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the map is
+   * drawn once, static).
    */
   respectReducedMotion?: boolean
 }

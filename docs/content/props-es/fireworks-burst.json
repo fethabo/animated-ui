@@ -1,0 +1,9 @@
+{
+  "rockets": "Cohetes por ráfaga (despegue escalonado).",
+  "particleCount": "Chispas por explosión.",
+  "colors": "Paleta: cada cohete sortea el color de su explosión. También via `--aui-fireworks-color-<i>`.",
+  "origin": "Base de lanzamiento, relativa al contenedor (`0–1` por eje).",
+  "power": "Impulso de ascenso en px/frame (define también la altura del apex).",
+  "gravity": "Gravedad en px/frame² (frena el ascenso y hace caer las chispas).",
+  "respectReducedMotion": "Si es `false`, `fire()` anima aunque el sistema tenga activado `prefers-reduced-motion`. (con la preferencia activa, `fire()` es un no-op: los fuegos son una celebración autónoma sin versión estática útil — el feedback alternativo queda a cargo del consumer)."
+}

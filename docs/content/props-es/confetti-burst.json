@@ -1,0 +1,11 @@
+{
+  "angle": "Dirección central del abanico en grados; `90` = hacia arriba.",
+  "colors": "Paleta default: cada copo sortea su color de acá. Default: paleta festiva de 5 colores. También via `--aui-confetti-color-<i>`.",
+  "count": "Cantidad de copos por ráfaga.",
+  "gravity": "Gravedad en px/frame².",
+  "origin": "Origen default de las ráfagas, relativo al contenedor (`0–1`).",
+  "power": "Velocidad inicial en px/frame.",
+  "respectReducedMotion": "Si es `false`, `fire()` anima aunque el sistema tenga activado `prefers-reduced-motion`. (con la preferencia activa, `fire()` es un no-op: el confetti es celebración autónoma sin versión estática útil — el feedback alternativo corre por cuenta del consumer).",
+  "shapes": "Formas disponibles para los copos.",
+  "spread": "Apertura total del cono en grados."
+}

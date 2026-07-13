@@ -1,0 +1,11 @@
+{
+  "colors": "Colores del gradiente cónico (hasta 3); los no provistos caen al default. También via `--aui-glow-color-1..3`.",
+  "speed": "Segundos por rotación completa del loop. También via `--aui-glow-speed`.",
+  "width": "Ancho del anillo de borde en px. También via `--aui-glow-width`.",
+  "radius": "Border-radius exterior en px (el interior se calcula solo). También via `--aui-glow-radius`.",
+  "opacity": "Intensidad/opacidad del glow (0 a 1). También via `--aui-glow-opacity`.",
+  "followCursor": "Si es `true`, en lugar del loop autónomo el gradiente apunta hacia el cursor, interpolado con momentum (WAAPI).",
+  "respectReducedMotion": "Si es `false`, el loop autónomo corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el loop se detiene y queda el gradiente estático; `followCursor` sigue activo por responder a input directo del usuario).",
+  "contentClassName": "Clases para el contenedor interno de contenido (donde va tu background).",
+  "contentStyle": "Estilos inline para el contenedor interno de contenido."
+}

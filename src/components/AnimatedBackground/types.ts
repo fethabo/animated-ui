@@ -11,37 +11,37 @@ export type AnimatedBackgroundVariantName =
   | 'dots'
 
 export interface AnimatedBackgroundProps extends HTMLAttributes<HTMLDivElement> {
-  /** Variante visual de la animación. Default: `'aurora'`. */
+  /** Visual variant of the animation. Default: `'aurora'`. */
   variant?: AnimatedBackgroundVariantName
   /**
-   * Paleta de colores de la animación. Cada variante usa hasta 4 colores;
-   * los no provistos caen al default de la variante.
+   * Animation color palette. Each variant uses up to 4 colors;
+   * missing ones fall back to the variant's defaults.
    */
   colors?: string[]
-  /** Segundos que tarda un ciclo completo de la animación. */
+  /** Seconds a full animation cycle takes. */
   speed?: number
-  /** Intensidad/opacidad global del efecto, de 0 a 1. Default: 1. */
+  /** Global intensity/opacity of the effect, from 0 to 1. Default: 1. */
   intensity?: number
   /**
-   * Si es `true` usa `position: fixed` para cubrir el viewport completo.
-   * Default: `false` (`position: absolute`, cubre el padre `relative`).
+   * If `true`, uses `position: fixed` to cover the full viewport.
+   * Default: `false` (`position: absolute`, covers the `relative` parent).
    */
   fixed?: boolean
   /**
-   * Si es `false`, la animación corre aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true`.
+   * If `false`, the animation runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true`.
    */
   respectReducedMotion?: boolean
   className?: string
   style?: CSSProperties
 }
 
-/** Definición interna de una variante: CSS estático + mapeo de props a CSS vars. */
+/** Internal definition of a variant: static CSS + mapping of props to CSS vars. */
 export interface AnimatedBackgroundVariant {
-  /** Sufijo usado en el nombre de clase (`aui-<name>`) y en el style tag ID. */
+  /** Suffix used in the class name (`aui-<name>`) and in the style tag ID. */
   name: AnimatedBackgroundVariantName
-  /** CSS estático (clase + keyframes) inyectado una sola vez. */
+  /** Static CSS (class + keyframes) injected only once. */
   css: string
-  /** Mapea props dinámicas a CSS custom properties inline (overrideables en cascada). */
+  /** Maps dynamic props to inline CSS custom properties (overridable via the cascade). */
   cssVars(opts: { colors?: string[]; speed?: number; intensity?: number }): Record<string, string>
 }

@@ -4,30 +4,30 @@ export type ScrambleTrigger = 'mount' | 'hover' | 'both'
 
 export interface ScrambleTextProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   /**
-   * Texto final a revelar. Es un string plano (no `children`): el scrambler
-   * opera carácter por carácter y no puede scramblear elementos.
+   * Final text to reveal. It is a plain string (not `children`): the scrambler
+   * operates character by character and cannot scramble elements.
    */
   text: string
-  /** Caracteres revelados por segundo. Default: `25`. */
+  /** Characters revealed per second. Default: `25`. */
   speed?: number
-  /** Pool de caracteres aleatorios mostrados durante el scramble. */
+  /** Pool of random characters shown during the scramble. */
   charset?: string
   /**
-   * Qué dispara el scramble. `'mount'` anima al montar y al cambiar `text`;
-   * `'hover'` re-anima en cada `mouseenter`; `'both'` combina ambos.
+   * What triggers the scramble. `'mount'` animates on mount and when `text`
+   * changes; `'hover'` re-animates on each `mouseenter`; `'both'` combines both.
    * Default: `'mount'`.
    */
   trigger?: ScrambleTrigger
   /**
-   * Color de los caracteres mientras dura el scramble. Default:
-   * `currentColor`. También via `--aui-scramble-color`.
+   * Color of the characters while the scramble lasts. Default:
+   * `currentColor`. Also via `--aui-scramble-color`.
    */
   scrambleColor?: string
   /**
-   * Si es `false`, el reveal autónomo (mount, cambio de `text`) corre aunque
-   * el sistema tenga activado `prefers-reduced-motion`. Default: `true`
-   * (con reduce se muestra el texto final directo; el trigger `hover` sigue
-   * activo por responder a input directo del usuario).
+   * If `false`, the autonomous reveal (mount, `text` change) runs even when
+   * the system has `prefers-reduced-motion` enabled. Default: `true`
+   * (with reduce, the final text is shown directly; the `hover` trigger stays
+   * active because it responds to direct user input).
    */
   respectReducedMotion?: boolean
 }

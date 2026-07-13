@@ -4,28 +4,28 @@ export type RevealDirection = 'up' | 'down' | 'left' | 'right' | 'none'
 
 export interface ScrollRevealProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Desde dónde entra el contenido: `'up'` aparece desde abajo moviéndose
-   * hacia arriba, `'down'` desde arriba, `'left'` desde la derecha, `'right'`
-   * desde la izquierda, `'none'` solo fade. Default: `'up'`.
+   * Where the content enters from: `'up'` appears from below moving
+   * upward, `'down'` from above, `'left'` from the right, `'right'`
+   * from the left, `'none'` fade only. Default: `'up'`.
    */
   direction?: RevealDirection
-  /** Desplazamiento inicial en px. Default: `24`. También via `--aui-reveal-distance`. */
+  /** Initial offset in px. Default: `24`. Also via `--aui-reveal-distance`. */
   distance?: number
-  /** Duración de la transición en segundos. Default: `0.6`. También via `--aui-reveal-duration`. */
+  /** Transition duration in seconds. Default: `0.6`. Also via `--aui-reveal-duration`. */
   duration?: number
-  /** Segundos de delay incremental entre hijos directos. Default: `0.1`. También via `--aui-reveal-stagger`. */
+  /** Seconds of incremental delay between direct children. Default: `0.1`. Also via `--aui-reveal-stagger`. */
   stagger?: number
-  /** Fracción del componente que debe ser visible para disparar el reveal. Default: `0.15`. */
+  /** Fraction of the component that must be visible to trigger the reveal. Default: `0.15`. */
   threshold?: number
   /**
-   * Si es `true` (default), el contenido queda visible tras el primer reveal.
-   * Con `false`, vuelve a ocultarse al salir del viewport y re-revela al entrar.
+   * If `true` (default), the content stays visible after the first reveal.
+   * With `false`, it hides again when leaving the viewport and re-reveals on entry.
    */
   once?: boolean
   /**
-   * Si es `false`, el reveal anima aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, el contenido se
-   * muestra directo en su posición final, sin transición).
+   * If `false`, the reveal animates even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, the content
+   * is shown directly in its final position, without transition).
    */
   respectReducedMotion?: boolean
 }

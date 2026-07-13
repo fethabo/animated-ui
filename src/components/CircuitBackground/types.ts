@@ -2,28 +2,28 @@ import type { HTMLAttributes } from 'react'
 
 export interface CircuitBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Semilla del trazado: la misma `seed` + tamaño + `density` producen siempre
-   * el mismo circuito (determinista, estable SSR↔hidratación). Default: `'aui'`.
+   * Layout seed: the same `seed` + size + `density` always produce
+   * the same circuit (deterministic, stable across SSR↔hydration). Default: `'aui'`.
    */
   seed?: string | number
   /**
-   * Densidad de pistas: cantidad de caminos por área (escala con el tamaño).
-   * Valores mayores ⇒ más pistas. Default: `1`.
+   * Track density: number of paths per area (scales with size).
+   * Higher values ⇒ more tracks. Default: `1`.
    */
   density?: number
-  /** Color de las pistas y pads (cualquier color CSS). Default: `'#1e3a5f'`. También via `--aui-circuit-track-color`. */
+  /** Color of the tracks and pads (any CSS color). Default: `'#1e3a5f'`. Also via `--aui-circuit-track-color`. */
   trackColor?: string
-  /** Color de los pulsos de luz que recorren las pistas. Default: `'#22d3ee'`. También via `--aui-circuit-pulse-color`. */
+  /** Color of the light pulses traveling along the tracks. Default: `'#22d3ee'`. Also via `--aui-circuit-pulse-color`. */
   pulseColor?: string
-  /** Velocidad de los pulsos en px/segundo. Default: `90`. También via `--aui-circuit-pulse-speed`. */
+  /** Pulse speed in px/second. Default: `90`. Also via `--aui-circuit-pulse-speed`. */
   pulseSpeed?: number
-  /** Cantidad de pulsos viajando simultáneamente. Default: `8`. */
+  /** Number of pulses traveling simultaneously. Default: `8`. */
   pulseCount?: number
-  /** Grosor de las pistas en px. Default: `2`. También via `--aui-circuit-line-width`. */
+  /** Track thickness in px. Default: `2`. Also via `--aui-circuit-line-width`. */
   lineWidth?: number
   /**
-   * Si es `true` (default), con `prefers-reduced-motion` las pistas se dibujan
-   * estáticas pero los pulsos no se animan (loop detenido).
+   * If `true` (default), under `prefers-reduced-motion` the tracks are drawn
+   * static but the pulses do not animate (loop stopped).
    */
   respectReducedMotion?: boolean
 }

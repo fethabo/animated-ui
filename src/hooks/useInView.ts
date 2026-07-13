@@ -2,26 +2,26 @@
 import { useEffect, useState, type RefObject } from 'react'
 
 export interface UseInViewOptions {
-  /** Fracción del elemento que debe ser visible para considerarlo en viewport. Default: `0.15`. */
+  /** Fraction of the element that must be visible to consider it in the viewport. Default: `0.15`. */
   threshold?: number
-  /** Margen alrededor del viewport para adelantar/retrasar la intersección. Default: `'0px'`. */
+  /** Margin around the viewport to advance/delay the intersection. Default: `'0px'`. */
   rootMargin?: string
   /**
-   * Si es `true`, deja de observar tras la primera intersección y el valor
-   * queda en `true`. Con `false`, el valor sigue a la visibilidad. Default: `true`.
+   * If `true`, stops observing after the first intersection and the value
+   * stays `true`. With `false`, the value tracks visibility. Default: `true`.
    */
   once?: boolean
 }
 
 /**
- * Retorna `true` cuando el elemento referenciado interseca el viewport,
- * observándolo con IntersectionObserver.
+ * Returns `true` when the referenced element intersects the viewport,
+ * observing it with IntersectionObserver.
  *
- * SSR-safe: en el servidor (y en el primer render del cliente, para evitar
- * hydration mismatch) retorna `false`; la observación arranca en `useEffect`.
- * Si el entorno no tiene IntersectionObserver, retorna `true` tras el primer
- * effect: lo seguro para un reveal es mostrar el contenido, nunca dejarlo
- * oculto para siempre.
+ * SSR-safe: on the server (and on the first client render, to avoid a
+ * hydration mismatch) it returns `false`; observation starts in `useEffect`.
+ * If the environment lacks IntersectionObserver, it returns `true` after the
+ * first effect: the safe behavior for a reveal is to show the content, never
+ * to leave it hidden forever.
  */
 export function useInView(
   ref: RefObject<Element | null>,

@@ -1,19 +1,19 @@
 /**
- * Genera el ID estable de un style tag inyectado.
- * Formato: `aui-<name>-styles` (e.g. `aui-animated-background-styles`).
+ * Generates the stable ID of an injected style tag.
+ * Format: `aui-<name>-styles` (e.g. `aui-animated-background-styles`).
  */
 export function styleId(name: string): string {
   return `aui-${name}-styles`
 }
 
 /**
- * Inyecta un bloque de CSS en el `<head>` del documento.
+ * Injects a CSS block into the document's `<head>`.
  *
- * - Deduplica por ID: si ya existe un elemento con ese ID, no hace nada.
- *   Múltiples instancias del mismo componente comparten un único style tag.
- * - SSR-safe: si `document` no existe (render en servidor), retorna sin
- *   efecto. Los componentes la llaman desde `useEffect`, que nunca corre
- *   en SSR, pero el guard protege contra usos directos.
+ * - Deduplicates by ID: if an element with that ID already exists, it does
+ *   nothing. Multiple instances of the same component share a single style tag.
+ * - SSR-safe: if `document` does not exist (server render), it returns with
+ *   no effect. Components call it from `useEffect`, which never runs during
+ *   SSR, but the guard protects against direct usage.
  */
 export function injectStyles(id: string, css: string): void {
   if (typeof document === 'undefined') return

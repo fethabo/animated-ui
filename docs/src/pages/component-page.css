@@ -1,0 +1,146 @@
+.docs-component {
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.docs-component h2 {
+  font-size: 1.15rem;
+  margin: 0 0 12px;
+}
+
+.docs-crumb {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--docs-accent);
+}
+
+.docs-component-head h1 {
+  margin: 4px 0 8px;
+  font-size: 2rem;
+}
+
+.docs-lead {
+  margin: 0;
+  color: var(--docs-text-dim);
+  font-size: 1.05rem;
+  max-width: 60ch;
+}
+
+/* --- Demo -------------------------------------------------------------------- */
+
+.docs-demo {
+  position: relative;
+  min-height: 320px;
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+  overflow: hidden;
+  background: var(--docs-bg-raised);
+  display: grid;
+}
+
+.docs-demo-loading {
+  min-height: 320px;
+}
+
+/* Escenario default de los demos: contenido centrado. */
+.docs-demo-stage {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+}
+
+/* --- Tabs -------------------------------------------------------------------- */
+
+.docs-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.docs-tabs button {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  color: var(--docs-text-dim);
+  background: transparent;
+  border: 1px solid var(--docs-border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.docs-tabs button:hover {
+  color: var(--docs-text);
+}
+
+.docs-tabs button.active {
+  color: var(--docs-text);
+  background: var(--docs-bg-raised);
+  border-color: var(--docs-accent);
+}
+
+/* --- Prosa generada ------------------------------------------------------------ */
+
+.docs-prose h2 {
+  font-size: 1.15rem;
+  margin: 28px 0 10px;
+}
+
+.docs-prose h2:first-child {
+  margin-top: 0;
+}
+
+.docs-prose p,
+.docs-prose li {
+  color: var(--docs-text-dim);
+}
+
+.docs-prose code {
+  background: var(--docs-bg-raised);
+  border: 1px solid var(--docs-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+
+.docs-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+}
+
+.docs-prose th,
+.docs-prose td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--docs-border);
+}
+
+.docs-prose th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--docs-text-dim);
+  background: var(--docs-bg-raised);
+}
+
+/* --- Pager ------------------------------------------------------------------- */
+
+.docs-pager {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--docs-border);
+  padding-top: 20px;
+  font-size: 0.9rem;
+}

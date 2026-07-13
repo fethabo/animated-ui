@@ -1,0 +1,48 @@
+/* Tema dark del sitio. Namespace propio --docs-*; nunca redefinir --aui-* global. */
+:root {
+  --docs-bg: #0a0a12;
+  --docs-bg-raised: #12121f;
+  --docs-border: #23233a;
+  --docs-text: #e8e8f0;
+  --docs-text-dim: #9a9ab0;
+  --docs-accent: #7c3aed;
+  --docs-accent-2: #0ea5e9;
+  --docs-radius: 10px;
+  --docs-font:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --docs-mono: ui-monospace, 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  background: var(--docs-bg);
+  color: var(--docs-text);
+  font-family: var(--docs-font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--docs-accent-2);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--docs-mono);
+  font-size: 0.9em;
+}

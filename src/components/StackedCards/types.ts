@@ -1,21 +1,21 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
 export interface StackedCardsProps extends HTMLAttributes<HTMLDivElement> {
-  /** Cards: cada hijo directo se envuelve en un wrapper sticky. */
+  /** Cards: each direct child is wrapped in a sticky wrapper. */
   children?: ReactNode
-  /** Píxeles desde el top del viewport donde se fija el stack. Default: `0`. También via `--aui-stack-offset`. */
+  /** Pixels from the top of the viewport where the stack is pinned. Default: `0`. Also via `--aui-stack-offset`. */
   offsetTop?: number
-  /** Cuánto se encoge cada card por nivel de profundidad (0–1). Default: `0.05`. También via `--aui-stack-scale-step`. */
+  /** How much each card shrinks per depth level (0–1). Default: `0.05`. Also via `--aui-stack-scale-step`. */
   scaleStep?: number
-  /** Cuánto se oscurece cada card por nivel de profundidad (0–1). Default: `0` (sin oscurecer). También via `--aui-stack-opacity-step`. */
+  /** How much each card darkens per depth level (0–1). Default: `0` (no darkening). Also via `--aui-stack-opacity-step`. */
   opacityStep?: number
-  /** Píxeles de scroll dedicados a cada card (define el recorrido y la altura de cada wrapper). Default: `400`. También via `--aui-stack-travel`. */
+  /** Scroll pixels dedicated to each card (defines the travel and the height of each wrapper). Default: `400`. Also via `--aui-stack-travel`. */
   cardTravel?: number
   /**
-   * Si es `false`, el encogido/oscurecido ligado al scroll corre aunque el
-   * sistema tenga activado `prefers-reduced-motion`. Default: `true` (con
-   * reduce las cards quedan en un layout sticky estático y legible, sin las
-   * transformaciones ligadas al scroll).
+   * If `false`, the scroll-linked shrinking/darkening runs even when the
+   * system has `prefers-reduced-motion` enabled. Default: `true` (with
+   * reduce, the cards stay in a static, readable sticky layout, without the
+   * scroll-linked transforms).
    */
   respectReducedMotion?: boolean
 }

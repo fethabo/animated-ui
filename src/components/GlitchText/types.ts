@@ -1,30 +1,30 @@
 import type { ElementType, HTMLAttributes } from 'react'
 
-/** Cuándo glitchea: en loop autónomo o solo con el cursor encima. */
+/** When it glitches: in an autonomous loop or only while hovered. */
 export type GlitchTrigger = 'loop' | 'hover'
 
 export interface GlitchTextProps extends HTMLAttributes<HTMLElement> {
   /**
-   * El texto a glitchear. Solo texto plano: las capas desplazadas se duplican
-   * via `content: attr(data-text)` (pseudo-elementos), que no soporta markup.
+   * The text to glitch. Plain text only: the offset layers are duplicated
+   * via `content: attr(data-text)` (pseudo-elements), which does not support markup.
    */
   children: string
-  /** Elemento root a renderizar. Default: `'span'`. */
+  /** Root element to render. Default: `'span'`. */
   as?: ElementType
-  /** Modo de activación. Default: `'loop'` (ráfagas intermitentes autónomas). */
+  /** Activation mode. Default: `'loop'` (autonomous intermittent bursts). */
   trigger?: GlitchTrigger
-  /** Colores de los dos canales desplazados `[antes, después]`. Default: rojo/cyan. También via `--aui-glitch-color-1/2`. */
+  /** Colors of the two offset channels `[before, after]`. Default: red/cyan. Also via `--aui-glitch-color-1/2`. */
   colors?: [string, string] | string[]
-  /** Desplazamiento máximo de los canales en px. Default: `3`. También via `--aui-glitch-intensity`. */
+  /** Maximum channel offset in px. Default: `3`. Also via `--aui-glitch-intensity`. */
   intensity?: number
-  /** Ráfagas de glitch por ciclo (el ciclo dura ~3s). Default: `1`. */
+  /** Glitch bursts per cycle (a cycle lasts ~3s). Default: `1`. */
   frequency?: number
-  /** Duración de cada ráfaga en segundos. Default: `0.3`. */
+  /** Duration of each burst in seconds. Default: `0.3`. */
   burstDuration?: number
   /**
-   * Si es `false`, el glitch opera aunque el sistema tenga activado
-   * `prefers-reduced-motion`. Default: `true` (con reduce, `loop` queda
-   * estático; `hover` conserva un split estático atenuado, sin jitter).
+   * If `false`, the glitch runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true` (with reduce, `loop`
+   * stays static; `hover` keeps a dimmed static split, without jitter).
    */
   respectReducedMotion?: boolean
 }

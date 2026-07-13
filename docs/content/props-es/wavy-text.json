@@ -1,0 +1,8 @@
+{
+  "children": "El texto a ondular (texto plano; se parte por carácter).",
+  "as": "Elemento root a renderizar.",
+  "amplitude": "Desplazamiento vertical máximo en px. También via `--aui-wavy-amplitude`.",
+  "speed": "Duración de un ciclo de ola en segundos. También via `--aui-wavy-speed`.",
+  "stagger": "Desfase entre caracteres consecutivos en segundos. También via `--aui-wavy-stagger`.",
+  "respectReducedMotion": "Si es `false`, la ondulación opera aunque el sistema tenga activado `prefers-reduced-motion` (con reduce, texto estático en su línea base)."
+}

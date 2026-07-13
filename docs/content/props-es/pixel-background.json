@@ -1,0 +1,13 @@
+{
+  "cellSize": "Lado en px de cada celda cuadrada.",
+  "gap": "Espacio en px entre celdas.",
+  "behaviors": "Behaviors activos, combinables.",
+  "color": "Color estático para todas las celdas.",
+  "cellColor": "Color dinámico por celda; tiene prioridad sobre `color`.",
+  "baseOpacity": "Alpha base de las celdas sin contribución de behaviors (0..1).",
+  "hoverRadius": "Radio en px de influencia del behavior hover.",
+  "idleIntensity": "Amplitud del parpadeo del behavior idle (0..1).",
+  "idleSpeed": "Velocidad del parpadeo idle (ciclos por segundo aprox).",
+  "revealDuration": "Duración en ms del reveal dithered.",
+  "respectReducedMotion": "Si es `true` (default), con `prefers-reduced-motion` se desactivan los behaviors `idle` y `reveal`. `hover` sigue activo: es respuesta directa a input del usuario."
+}

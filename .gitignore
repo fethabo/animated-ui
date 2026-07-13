@@ -4,3 +4,6 @@ dist/
 .DS_Store
 *.log
 coverage/
+
+# Docs: contenido generado en build time (extract-props), nunca se edita a mano
+docs/src/generated/
