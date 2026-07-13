@@ -1,6 +1,6 @@
 # @fethabo/animated-ui
 
-![npm](https://img.shields.io/npm/v/@fethabo/animated-ui)
+[![npm](https://img.shields.io/npm/v/@fethabo/animated-ui)](https://www.npmjs.com/package/@fethabo/animated-ui)
 
 Componentes animados livianos para React: cero dependencias de runtime, tree-shakeable, y customizables al 100% via props y CSS custom properties (`--aui-*`).
 
