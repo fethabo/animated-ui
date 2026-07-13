@@ -63,3 +63,10 @@
 
 * **feat:** agregadas variantes en animatedBackground, borderBeam, ConfettiBurst, Dock, FlowField, GlitchText, HorizontalScrollSection, Marquee, RotatingText, TopographicBackground, WavesBackground, WavyText @fethabo 2a84cee
 * armados specs para nuevos waves @fethabo 5664371
+
+## [0.7.1](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.7.0...@fethabo/animated-ui@0.7.1) (2026-07-13)
+
+* **feat:** agregada apps de documentacion @fethabo 0cdaf0f
+* Update npm badge in README.md @fethabo 93e6d75
+* Implemented waves j to M and started docs app @fethabo c4ca9b0
+* archivados changes @fethabo 8ced19e
