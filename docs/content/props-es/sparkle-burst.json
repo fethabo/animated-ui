@@ -1,0 +1,9 @@
+{
+  "count": "Destellos por ráfaga.",
+  "colors": "Paleta default: cada destello elige su color al azar. Default: dorados y blanco. También via `--aui-sparkle-color-<i>`.",
+  "origin": "Centro default de la dispersión, relativo al contenedor (`0–1`).",
+  "spread": "Radio de dispersión alrededor del origen, en px.",
+  "size": "Radio externo máximo de cada estrella, en px.",
+  "duration": "Vida total de cada ráfaga en segundos.",
+  "respectReducedMotion": "Si es `false`, `fire()` anima aunque el sistema tenga activado `prefers-reduced-motion`. (con la preferencia activa, `fire()` es un no-op: el destello es celebración autónoma sin versión estática útil — el feedback alternativo corre por cuenta del consumer)."
+}

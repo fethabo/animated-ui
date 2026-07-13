@@ -1,0 +1,8 @@
+{
+  "position": "Borde del viewport donde se fija la barra.",
+  "color": "Color de la barra de progreso. También via `--aui-progress-color`.",
+  "height": "Grosor de la barra en px. También via `--aui-progress-height`.",
+  "trackColor": "Color del track (el fondo de la barra). También via `--aui-progress-bg`.",
+  "zIndex": "z-index del elemento fijo, por si compite con los headers del consumer. También via `--aui-progress-z`.",
+  "respectReducedMotion": "Aceptada por consistencia de API; la barra queda activa en ambos casos: espeja 1:1 la posición de scroll que el usuario controla directo (como la scrollbar nativa) y no mueve contenido."
+}

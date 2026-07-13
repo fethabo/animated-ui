@@ -1,0 +1,38 @@
+# Ejemplo de server block nginx para servir la docs (SPA).
+# Copiar/adaptar en el server Hostinger (p. ej. /etc/nginx/sites-available/) y
+# recargar nginx (`sudo nginx -t && sudo systemctl reload nginx`).
+#
+# La clave es `try_files ... /index.html`: cualquier ruta que no sea un archivo
+# real se sirve con index.html, para que el router de la SPA resuelva la vista
+# (deep links y recarga de /es/components/<slug> sin 404).
+
+server {
+  listen 80;
+  # Sin dominio todavía: usar la IP del server o un server_name provisional.
+  # Cuando haya dominio, poner acá docs.tudominio.com (y sumar TLS con certbot).
+  server_name _;
+
+  # Carpeta donde rsync/sftp sube docs/dist (coincide con SSH_TARGET del deploy).
+  root /home/usuario/htdocs/docs;
+  index index.html;
+
+  # Routing SPA: rutas profundas → index.html.
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+
+  # Assets con hash en el nombre: cache largo e inmutable.
+  location ~* \.(js|css|woff2?|svg|png|jpg|jpeg|gif|webp)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    try_files $uri =404;
+  }
+
+  # index.html nunca se cachea: es el punto de entrada a los assets versionados.
+  location = /index.html {
+    add_header Cache-Control "no-cache, no-store, must-revalidate";
+  }
+
+  gzip on;
+  gzip_types text/css application/javascript image/svg+xml;
+}

@@ -1,0 +1,10 @@
+{
+  "seed": "Semilla del layout: la misma `seed` + tamaño + `density` producen siempre el mismo circuito (determinístico, estable SSR↔hidratación).",
+  "density": "Densidad de trazas: cantidad de caminos por área (escala con el tamaño). Valores altos ⇒ más trazas.",
+  "trackColor": "Color de las trazas y pads (cualquier color CSS). También via `--aui-circuit-track-color`.",
+  "pulseColor": "Color de los pulsos de luz que recorren las trazas. También via `--aui-circuit-pulse-color`.",
+  "pulseSpeed": "Velocidad de los pulsos en px/segundo. También via `--aui-circuit-pulse-speed`.",
+  "pulseCount": "Cantidad de pulsos viajando simultáneamente.",
+  "lineWidth": "Grosor de las trazas en px. También via `--aui-circuit-line-width`.",
+  "respectReducedMotion": "Si es `true` (default), con `prefers-reduced-motion` las trazas se dibujan estáticas pero los pulsos no animan (loop detenido)."
+}

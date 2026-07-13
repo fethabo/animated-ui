@@ -1,15 +1,8 @@
-import {
-  Suspense,
-  lazy,
-  useEffect,
-  useMemo,
-  useState,
-  type ComponentType,
-} from 'react'
+import { Suspense, lazy, useEffect, useMemo, useState, type ComponentType } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { componentBySlug, components } from '../registry'
 import { codeFor, demoModules, proseFor, propsFor } from '../content'
-import type { CodeEntry, ProseEntry } from '../content'
+import type { CodeEntry, DemoModule, ProseEntry } from '../content'
 import { useLang, useT } from '../i18n/dict'
 import { CodeBlock } from '../components/CodeBlock'
 import { PropsTable } from '../components/PropsTable'
@@ -49,13 +42,18 @@ export function ComponentPage() {
     [entry?.slug],
   )
 
-  // Demo lazy: solo se descarga el módulo de esta vista.
-  const Demo = useMemo(() => {
-    if (!entry) return null
-    const loader = demoModules[`./demos/${entry.slug}.tsx`]
-    if (!loader) return null
-    return lazy(loader as () => Promise<{ default: ComponentType }>)
-  }, [entry])
+  // Demo lazy: solo se descarga el módulo de esta vista. `demoLayout` se lee
+  // del módulo cargado; el componente se envuelve en React.lazy.
+  const loader = entry ? demoModules[`./demos/${entry.slug}.tsx`] : undefined
+  const Demo = useMemo(
+    () => (loader ? lazy(loader as () => Promise<{ default: ComponentType }>) : null),
+    [loader],
+  )
+  const demoMeta = useAsync<DemoModule | undefined>(
+    () => (loader ? (loader() as Promise<DemoModule>) : Promise.resolve(undefined)),
+    [loader],
+  )
+  const demoFlow = demoMeta?.demoLayout === 'flow'
 
   useEffect(() => {
     setTab('usage')
@@ -86,7 +84,10 @@ export function ComponentPage() {
       </header>
 
       {Demo && (
-        <section aria-label={t.demo} className="docs-demo">
+        <section
+          aria-label={t.demo}
+          className={demoFlow ? 'docs-demo docs-demo--flow' : 'docs-demo'}
+        >
           <Suspense fallback={<div className="docs-demo-loading" />}>
             <Demo />
           </Suspense>

@@ -1,0 +1,3 @@
+{
+  "respectReducedMotion": "Si es `false`, el parallax corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, las capas quedan en su posición de layout: el efecto crea movimiento relativo durante el scroll, de lo más sensible para usuarios con sensibilidad vestibular)."
+}

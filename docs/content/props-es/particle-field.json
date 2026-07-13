@@ -1,0 +1,15 @@
+{
+  "count": "Cantidad de partículas del campo.",
+  "speed": "Factor de velocidad inicial: rango de la velocidad random de cada partícula en px/frame.",
+  "radius": "Radio de cada partícula en px. También via `--aui-particle-radius`.",
+  "color": "Color de las partículas (cualquier color CSS). También via `--aui-particle-color`.",
+  "cursorInteraction": "Reacción al cursor dentro del radio de influencia. Default: `'repel'`. `'none'` desactiva la interacción (las partículas solo animan por su cuenta).",
+  "cursorRadius": "Radio de influencia del cursor en px.",
+  "drift": "Modo de deriva del movimiento. Default: `'bounce'` (comportamiento original). Los modos direccionales (`snow`/`embers`/`bubbles`) reingresan las partículas por el borde opuesto (wrap) en vez de rebotar.",
+  "links": "Dibuja líneas de conexión entre partículas cercanas (efecto constelación). Introduce un cómputo pairwise O(N²) opt-in: con `false` no corre ningún loop pairwise y el costo queda O(N).",
+  "linkDistance": "Distancia máxima en px para conectar dos partículas con una línea. También via `--aui-particle-link-distance`.",
+  "linkColor": "Color de las líneas de conexión. Default: derivado del `color` de la partícula con alfa reducido. También via `--aui-particle-link-color`.",
+  "linkWidth": "Ancho de las líneas de conexión en px. También via `--aui-particle-link-width`.",
+  "linkCursor": "Conecta también con líneas las partículas cercanas al cursor hacia él. Default: `true` (solo aplica con `links` activo y cursor presente).",
+  "respectReducedMotion": "Si es `false`, la animación corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el RAF se detiene y el canvas muestra las partículas en su estado inicial estático)."
+}

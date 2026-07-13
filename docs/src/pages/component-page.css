@@ -48,6 +48,15 @@
   min-height: 320px;
 }
 
+/* Demos scroll-driven (position:sticky): sin recorte ni min-height, para que
+   el sticky funcione contra el scroll de la ventana y el contenido alto fluya. */
+.docs-demo--flow {
+  overflow: visible;
+  min-height: 0;
+  background: transparent;
+  border: none;
+}
+
 /* Escenario default de los demos: contenido centrado. */
 .docs-demo-stage {
   min-height: 320px;

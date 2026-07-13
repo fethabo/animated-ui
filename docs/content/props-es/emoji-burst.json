@@ -1,0 +1,11 @@
+{
+  "emojis": "Lista default de la que cada partícula elige su emoji al azar. Default: `['🎉', '✨', '❤️']`. Se renderiza con la fuente de emoji de la plataforma (`fillText`, sin assets): el look varía entre sistemas operativos.",
+  "count": "Emojis por ráfaga. Default: `30` — deliberadamente conservador: `fillText` por partícula es más caro que las formas de confetti.",
+  "size": "Tamaño de fuente base en px (cada emoji varía alrededor de él).",
+  "origin": "Origen default de la ráfaga, relativo al contenedor (`0–1`).",
+  "angle": "Dirección central del abanico en grados; `90` = hacia arriba.",
+  "spread": "Apertura total del cono en grados.",
+  "power": "Velocidad inicial en px/frame.",
+  "gravity": "Gravedad en px/frame².",
+  "respectReducedMotion": "Si es `false`, `fire()` anima aunque el sistema tenga activado `prefers-reduced-motion`. (con la preferencia activa, `fire()` es un no-op: la ráfaga es celebración autónoma sin versión estática útil — el feedback alternativo corre por cuenta del consumer)."
+}

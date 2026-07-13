@@ -1,0 +1,10 @@
+{
+  "children": "El texto a encender progresivamente (texto plano; se divide por palabra).",
+  "as": "Elemento del root a renderizar.",
+  "fromOpacity": "Opacidad de las palabras atenuadas. También via `--aui-text-scroll-from-opacity`.",
+  "toOpacity": "Opacidad de las palabras encendidas. También via `--aui-text-scroll-to-opacity`.",
+  "fromColor": "Color de las palabras atenuadas (opcional; sin colores el texto usa `currentColor`). También via `--aui-text-scroll-from-color`.",
+  "toColor": "Color de las palabras encendidas (opcional). También via `--aui-text-scroll-to-color`.",
+  "offset": "Tramo del recorrido del contenedor por el viewport en el que ocurre el encendido, como `[inicio, fin]` normalizado a [0, 1] (0 = recién asomando desde abajo, 1 = terminando de salir por arriba).",
+  "respectReducedMotion": "Si es `false`, el encendido progresivo opera aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el texto se muestra completo y encendido, estático)."
+}

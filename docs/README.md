@@ -44,33 +44,51 @@ Por cada componente (slug kebab-case, igual al subpath export):
 - `src/demos/<slug>.tsx` — demo curado (`export default`).
 - `examples/<slug>.tsx` (en la raíz del repo) — ejemplo standalone copy-paste.
 
-## Deploy (Hostinger)
+## Deploy (Hostinger — servidor nginx, SSH/SFTP)
 
-La web se publica al **publicar un Release** en GitHub: el workflow
-`.github/workflows/deploy-docs.yml` buildea la librería y la docs desde el tag
-y las sube por FTP. Requiere configurar en el repo (Settings → Secrets and
-variables → Actions):
+La web es un sitio estático (`dist/`). El deploy usa **SSH/SFTP** y el server
+corre **nginx**. Sin dominio todavía: se sirve por IP (o `server_name`
+provisional) y se agrega el dominio + TLS cuando exista.
 
-- **Secrets**: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
-- **Variables** (opcionales): `FTP_SERVER_DIR` (carpeta destino, default `/`),
-  `DOCS_BASE` (default `/`; usar `/docs/` si se sirve desde subcarpeta en vez
-  de un subdominio dedicado).
+### 1. Configurar nginx en el server (una vez)
 
-### Deploy manual (fallback)
+Copiar/adaptar [`deploy/nginx.conf.example`](deploy/nginx.conf.example) como
+server block. Lo esencial es el fallback SPA:
 
-Si el workflow falla, desde un checkout limpio del tag:
+```nginx
+root /home/usuario/htdocs/docs;   # = SSH_TARGET del deploy
+location / {
+  try_files $uri $uri/ /index.html;   # deep links y recarga sin 404
+}
+```
+
+Luego `sudo nginx -t && sudo systemctl reload nginx`.
+
+### 2. Deploy automático al publicar un Release
+
+El workflow `.github/workflows/deploy-docs.yml` buildea la librería y la docs
+desde el tag y sube `docs/dist` por **rsync sobre SSH**. Configurar en el repo
+(Settings → Secrets and variables → Actions):
+
+- **Secrets**: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY` (contenido completo de
+  la clave privada; la pública va en `~/.ssh/authorized_keys` del server).
+- **Variables**: `SSH_TARGET` (carpeta destino, = `root` de nginx),
+  `SSH_PORT` (opcional, default `22`), `DOCS_BASE` (opcional, default `/`;
+  usar `/docs/` solo si se sirve desde subcarpeta en vez de la raíz).
+
+### 3. Deploy manual (fallback)
+
+Desde un checkout limpio del tag, con clave SSH o contraseña:
 
 ```bash
 cd docs
-FTP_HOST=ftp.tudominio.com FTP_USER=usuario FTP_PASSWORD=clave npm run deploy
+SSH_HOST=123.45.67.89 SSH_USER=usuario \
+  SSH_KEY=~/.ssh/id_ed25519 SSH_TARGET=/home/usuario/htdocs/docs \
+  npm run deploy
 ```
 
-Buildea y sube `docs/dist`. Para subcarpeta, exportá además `FTP_DIR` y
-`DOCS_BASE`.
+Buildea y sube `docs/dist` por SFTP. (En vez de `SSH_KEY` se puede usar
+`SSH_PASSWORD`.)
 
-### Routing en el servidor
-
-El build incluye un `.htaccess` que reescribe las rutas de la SPA a
-`index.html` (deep links y recarga de `/es/components/<slug>` sin 404). Si se
-sirve desde una subcarpeta, ajustar `RewriteBase` en `public/.htaccess` a esa
-ruta además de setear `DOCS_BASE`.
+> El build también copia un `public/.htaccess` (fallback SPA para Apache). En
+> nginx no se usa: el routing lo resuelve el `try_files` del paso 1.

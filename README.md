@@ -23,6 +23,8 @@ export default function Hero() {
 
 No hace falta importar ningún CSS: los estilos se inyectan automáticamente al montar cada componente.
 
+📖 **Documentación interactiva**: la web en [`docs/`](docs/) muestra cada componente con demo vivo, props, ejemplos con copiar y limitaciones, en español e inglés.
+
 ## Compatibility
 
 - **React 18+** (`react` y `react-dom` son peer dependencies).

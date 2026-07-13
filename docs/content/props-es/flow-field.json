@@ -1,0 +1,10 @@
+{
+  "count": "Cantidad de partículas que trazan el campo.",
+  "speed": "Velocidad de avance de las partículas en px/frame.",
+  "colors": "Paleta de estelas: cada partícula dibuja su color al azar. Default: `['#22d3ee', '#a78bfa', '#f472b6']`. También via `--aui-flow-color-<i>`.",
+  "fade": "Persistencia de la estela (`0–1`): cuánto tarda en desvanecerse. Más alto ⇒ las estelas quedan visibles más tiempo.",
+  "scale": "Zoom del campo de ruido en px: cuanto mayor el `scale`, más anchas y suaves las curvas.",
+  "background": "Color de fondo que el componente pinta (necesario para el fade de las estelas: el fondo NO es transparente, a diferencia de ParticleField). También via `--aui-flow-background`.",
+  "seed": "Semilla del campo y de las posiciones/respawns: la misma `seed` + dimensiones producen la misma evolución (sin `Math.random`).",
+  "respectReducedMotion": "Si es `false`, la simulación corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, se dibuja una composición estática de estelas pre-simuladas, sin RAF)."
+}

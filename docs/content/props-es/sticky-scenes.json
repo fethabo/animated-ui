@@ -1,0 +1,5 @@
+{
+  "children": "Escenas declaradas con `StickyScenes.Scene`.",
+  "sceneDuration": "Px de scroll dedicados a cada escena antes de transicionar a la siguiente. La altura total del contenedor es `100dvh + nEscenas × sceneDuration`.",
+  "respectReducedMotion": "Si es `false`, las transiciones de escena corren aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el seguimiento de scroll queda activo pero las transiciones se desactivan con `transition: none`, mostrando cada escena de inmediato)."
+}

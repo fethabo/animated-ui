@@ -1,0 +1,9 @@
+{
+  "direction": "Dirección del desplazamiento.",
+  "speed": "Velocidad de la cinta en px/s.",
+  "pauseOnHover": "Pausa la animación mientras el cursor está sobre la cinta y la reanuda al salir, sin saltar.",
+  "scrollVelocity": "Modo opt-in: la velocidad de la cinta y un skew sutil responden a la velocidad de scroll de la página (via el scroll-driver del paquete). Sin esta prop el componente no se suscribe al scroll.",
+  "gap": "Espacio entre ítems y repeticiones en px. También via `--aui-marquee-gap`.",
+  "fadeEdges": "Difumina los bordes de la cinta con una máscara de gradiente.",
+  "respectReducedMotion": "Si es `false`, la cinta se desplaza aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, contenido estático en una sola pasada, sin duplicados)."
+}

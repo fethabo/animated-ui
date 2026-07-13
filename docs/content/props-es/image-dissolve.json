@@ -1,0 +1,6 @@
+{
+  "src": "URL de la imagen a mostrar. Cambiarla dispara la transición dithered.",
+  "alt": "Texto alternativo de la imagen (requerido para accesibilidad).",
+  "duration": "Duración de la transición en milisegundos.",
+  "respectReducedMotion": "Si es `false`, la transición dithered corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el `src` se cambia al instante sin animar el canvas)."
+}

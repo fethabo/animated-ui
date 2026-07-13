@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react'
 import propsJson from './generated/props.json'
 import type { Lang } from './i18n/lang'
 
@@ -67,4 +68,18 @@ export async function proseFor(
 }
 
 // Demos: un módulo por slug con export default (componente React), lazy.
+// Un demo puede exportar `demoLayout: 'flow'` para renderizarse sin recorte ni
+// min-height fijo (necesario para componentes scroll-driven con position:sticky,
+// que se rompen dentro de un ancestro overflow:hidden).
 export const demoModules = import.meta.glob('./demos/*.tsx')
+
+export interface DemoModule {
+  default: ComponentType
+  demoLayout?: 'frame' | 'flow'
+}
+
+export async function demoFor(slug: string): Promise<DemoModule | undefined> {
+  const loader = demoModules[`./demos/${slug}.tsx`]
+  if (!loader) return undefined
+  return (await loader()) as DemoModule
+}

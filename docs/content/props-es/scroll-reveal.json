@@ -1,0 +1,9 @@
+{
+  "direction": "Desde dónde entra el contenido: `'up'` aparece desde abajo subiendo, `'down'` desde arriba, `'left'` desde la derecha, `'right'` desde la izquierda, `'none'` solo fade.",
+  "distance": "Offset inicial en px. También via `--aui-reveal-distance`.",
+  "duration": "Duración de la transición en segundos. También via `--aui-reveal-duration`.",
+  "stagger": "Segundos de delay incremental entre hijos directos. También via `--aui-reveal-stagger`.",
+  "threshold": "Fracción del componente que debe ser visible para disparar el reveal.",
+  "once": "Si es `true` (default), el contenido queda visible tras el primer reveal. Con `false`, se oculta al salir del viewport y se re-revela al entrar.",
+  "respectReducedMotion": "Si es `false`, el reveal anima aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el contenido se muestra directo en su posición final, sin transición)."
+}

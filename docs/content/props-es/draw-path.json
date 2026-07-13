@@ -1,0 +1,10 @@
+{
+  "children": "El SVG del consumer (o markup que contenga SVGs). No se reestructura: solo se miden sus elementos con trazo y se les da la animación de dibujo, respetando `stroke`/`stroke-width` existentes. Los elementos con `data-aui-no-draw` (o dentro de un grupo que lo tenga) quedan visibles sin animar.",
+  "duration": "Duración del dibujo de cada trazo en segundos. También via `--aui-draw-duration`.",
+  "stagger": "Segundos de delay incremental entre trazos (orden de documento). También via `--aui-draw-stagger`.",
+  "delay": "Segundos a esperar antes del primer trazo. También via `--aui-draw-delay`.",
+  "trigger": "Qué dispara el dibujo: `'in-view'` al entrar al viewport (via IntersectionObserver), `'mount'` al montar.",
+  "once": "Si es `true` (default), el SVG queda dibujado tras el primer trigger. Con `false`, los trazos se rebobinan sin transición al salir del viewport y se re-dibujan al reentrar (solo con `trigger='in-view'`).",
+  "threshold": "Fracción visible que dispara el dibujo con `trigger='in-view'`.",
+  "respectReducedMotion": "Si es `false`, el dibujo anima aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el SVG se muestra dibujado completo al instante, sin animación)."
+}

@@ -1,0 +1,12 @@
+{
+  "children": "Hijos keyed de la lista: cada hijo necesita una `key` de React estable (como en cualquier lista). Las keys nuevas animan su entrada, las removidas su salida y las persistentes su reordenamiento (FLIP).",
+  "duration": "Duración de cada animación (FLIP, entrada, salida) en segundos.",
+  "easing": "Easing de las animaciones. También via `--aui-animated-list-easing`.",
+  "enter": "Preset de entrada para keys nuevas.",
+  "exit": "Preset de salida para keys removidas.",
+  "stagger": "Segundos de delay incremental entre entradas simultáneas.",
+  "as": "Elemento del root (`'ul'`, `'div'`, …).",
+  "itemClassName": "Clase extra para el wrapper medible de cada hijo (la \"celda\" en un grid/flex).",
+  "itemStyle": "Estilo inline extra para el wrapper medible de cada hijo.",
+  "respectReducedMotion": "Si es `false`, la lista anima aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, los cambios se aplican de inmediato: sin FLIP, sin entradas/salidas ni clones)."
+}

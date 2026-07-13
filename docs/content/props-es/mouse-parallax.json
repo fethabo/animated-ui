@@ -1,0 +1,4 @@
+{
+  "ease": "Segundos de suavizado con que las capas siguen al mouse. También via `--aui-parallax-ease`.",
+  "respectReducedMotion": "Si es `false`, el parallax corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, las capas quedan estáticas: el efecto mueve contenido real)."
+}

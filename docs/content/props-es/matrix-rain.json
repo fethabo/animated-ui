@@ -1,0 +1,11 @@
+{
+  "seed": "Semilla de la lluvia: la misma `seed` + dimensiones producen siempre el mismo layout de columnas y secuencia (sin `Math.random`).",
+  "charset": "Glifos posibles (un string; cada carácter es un glifo). Default: dígitos + mayúsculas ASCII + katakana simple.",
+  "color": "Color de la lluvia (la estela de glifos). También via `--aui-matrix-color`.",
+  "headColor": "Color de la cabeza brillante de cada columna. También via `--aui-matrix-head-color`.",
+  "background": "Color de fondo. El componente pinta su propio fondo (el overlay de fade de la estela lo requiere). También via `--aui-matrix-background`.",
+  "fontSize": "Tamaño de glifo en px: determina la grilla (más grande = menos columnas, palanca de performance).",
+  "speed": "Velocidad de caída (factor adimensional).",
+  "fixed": "Si es `true`, usa `position: fixed` para cubrir todo el viewport. Default: `false` (`position: absolute`, cubre el padre `relative`).",
+  "respectReducedMotion": "Si es `false`, la animación corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, se pinta un frame estático de columnas pre-dibujadas, sin RAF)."
+}

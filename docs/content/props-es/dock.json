@@ -1,0 +1,8 @@
+{
+  "magnification": "Escala máxima del ítem bajo el cursor.",
+  "radius": "Radio de influencia del cursor en px (a esa distancia la escala vuelve a 1).",
+  "gap": "Espacio entre ítems en px. También via `--aui-dock-gap`.",
+  "orientation": "Orientación de la fila y del eje de magnificación.",
+  "returnDuration": "Duración del retorno a la escala base en segundos. También via `--aui-dock-return`.",
+  "respectReducedMotion": "Si es `false`, la magnificación opera aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, fila estática)."
+}

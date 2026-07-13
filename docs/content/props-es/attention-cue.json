@@ -1,0 +1,15 @@
+{
+  "target": "Elemento hacia el que apunta la pista: un `RefObject`, un `Element` o un selector CSS. Con `target` ⇒ modo dirigido; sin él ⇒ modo ambiente.",
+  "idleDelay": "Ms de inactividad del puntero antes de dibujar la pista.",
+  "color": "Color del trazo de la pista. También via `--aui-cue-color`.",
+  "duration": "Duración en ms del dibujo del trazo. También via `--aui-cue-duration`.",
+  "speed": "Velocidad de avance del trazo en px/segundo. También via `--aui-cue-speed`.",
+  "maxDistance": "Distancia máxima en px que la pista puede alcanzar desde el puntero. También via `--aui-cue-max-distance`.",
+  "lineWidth": "Grosor del trazo en px. También via `--aui-cue-line-width`.",
+  "head": "Estilo de la punta: `'arrow'`, `'dot'` o `'none'`.",
+  "marker": "Qué recorre el camino: `'beam'` (haz de luz, default) o `'footprints'` (huellas que avanzan hacia el destino, alternando izquierda/derecha).",
+  "curve": "Curvatura del trazo (0 = recto, 1 = muy curvo). El trazo arquea hacia un lado en vez de ir derecho. También via `--aui-cue-curve`.",
+  "showGuide": "Si es `true`, dibuja además una línea guía tenue bajo el flash. Por defecto (`false`) se muestra solo la luz (el cometa brillante), que aparece y se desvanece como un flash, sin línea sólida.",
+  "respectReducedMotion": "Si es `true` (default), con `prefers-reduced-motion` la pista (efecto autónomo por timer) NO se dibuja.",
+  "children": "Contenido monitoreado/superpuesto (el overlay no intercepta sus clicks)."
+}

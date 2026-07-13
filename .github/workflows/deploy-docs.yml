@@ -40,22 +40,24 @@ jobs:
           npm install
           npm run build
 
-      # 3. Subir docs/dist por FTP a Hostinger.
+      # 3. Subir docs/dist al servidor Hostinger por SSH (rsync sobre SSH).
       #    Secrets requeridos (Settings → Secrets and variables → Actions):
-      #      FTP_SERVER    host FTP de Hostinger (e.g. ftp.tudominio.com)
-      #      FTP_USERNAME  usuario FTP
-      #      FTP_PASSWORD  contraseña FTP
-      #    Variable opcional:
-      #      FTP_SERVER_DIR  carpeta destino (default: la del subdominio, e.g. /docs/)
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./docs/dist/
-          server-dir: ${{ vars.FTP_SERVER_DIR || '/' }}
-          # No borrar archivos ajenos que no estén en el build (por si el
-          # subdominio comparte carpeta con otra cosa). Ajustable si se quiere
-          # un mirror exacto.
-          dangerous-clean-slate: false
+      #      SSH_HOST         host del servidor (IP o hostname)
+      #      SSH_USER         usuario SSH
+      #      SSH_PRIVATE_KEY  clave privada SSH (contenido completo del archivo)
+      #    Variables:
+      #      SSH_PORT         puerto SSH (opcional, default 22)
+      #      SSH_TARGET       carpeta destino en el server (p. ej. /home/user/htdocs/docs)
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${{ vars.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy via rsync over SSH
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT || 22 }}" \
+            docs/dist/ \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.SSH_TARGET }}/"

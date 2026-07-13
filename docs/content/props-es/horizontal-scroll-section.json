@@ -1,0 +1,5 @@
+{
+  "speed": "Multiplicador del recorrido vertical: cuánto scroll toma completar el movimiento horizontal (altura extra = recorrido horizontal × `speed`). Más alto ⇒ movimiento más lento.",
+  "easing": "Easing del mapeo scroll→movimiento: recibe el progreso lineal (`0–1`) y devuelve el progreso efectivo. Default: identidad (lineal).",
+  "respectReducedMotion": "Si es `false`, el acople scroll→transform opera aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, los paneles se apilan verticalmente como secciones normales)."
+}

@@ -1,0 +1,9 @@
+{
+  "levels": "Cantidad de niveles de contorno distribuidos en el rango del campo.",
+  "color": "Color de las curvas de nivel. También via `--aui-topo-color`.",
+  "lineWidth": "Grosor de las curvas en px. También via `--aui-topo-line-width`.",
+  "scale": "Zoom del terreno en px: cuanto mayor el `scale`, más amplio el relieve y más separadas las curvas.",
+  "speed": "Velocidad de la evolución temporal del terreno (deformación gradual). `0` = terreno fijo, sin RAF corriendo.",
+  "seed": "Semilla del campo: la misma `seed` + dimensiones producen el mismo mapa (sin `Math.random`).",
+  "respectReducedMotion": "Si es `false`, la evolución corre aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el mapa se dibuja una vez, estático)."
+}

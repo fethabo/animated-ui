@@ -1,0 +1,7 @@
+{
+  "children": "Contenido del contenedor; cuando cambia de tamaño, la altura transiciona.",
+  "duration": "Duración de la transición en segundos.",
+  "easing": "Easing de la transición. También via `--aui-autoheight-easing`.",
+  "width": "Anima también el ancho del contenedor.",
+  "respectReducedMotion": "Si es `false`, la transición anima aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el contenedor se ajusta de inmediato manteniendo `height: auto`)."
+}

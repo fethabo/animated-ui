@@ -1,0 +1,12 @@
+{
+  "shape": "Garabato a dibujar: un nombre builtin (`'arrow'`, `'asterisk'`, `'spiral'`, `'underline'`, `'circle'`) o una función custom que cumpla el contrato `ScribbleShape` (`(size, seed, options) => d`).",
+  "color": "Color del trazo. También via `--aui-scribble-color`.",
+  "strokeWidth": "Grosor del trazo en px. También via `--aui-scribble-stroke-width`.",
+  "duration": "Duración del dibujo en segundos. También via `--aui-scribble-duration`.",
+  "delay": "Segundos a esperar antes de dibujar. También via `--aui-scribble-delay`.",
+  "trigger": "Qué dispara el dibujo: `'in-view'` al entrar al viewport (via IntersectionObserver), `'mount'` al montar.",
+  "once": "Si es `true` (default), el garabato queda dibujado tras el primer trigger. Con `false`, se rebobina al salir del viewport y se re-dibuja al reentrar (solo con `trigger='in-view'`).",
+  "repeat": "Con `true`, el garabato se dibuja, se desvanece y se re-dibuja cíclicamente mientras está triggeado.",
+  "seed": "Semilla del jitter a mano alzada: el mismo seed, forma y tamaño producen el mismo garabato.",
+  "respectReducedMotion": "Si es `false`, el dibujo anima aunque el sistema tenga activado `prefers-reduced-motion`. (con reduce, el garabato se muestra completo y estático, sin dibujo ni loop)."
+}

@@ -1,0 +1,17 @@
+{
+  "target": "Opcional. Elemento hacia el que sesgar las ramas: `RefObject`, `Element` o selector CSS. El uso principal es ambiente (sin `target`): las ramas se expanden 360° alrededor del puntero hasta el borde. Con `target`, la rama dominante se sesga hacia él (modo dirigido).",
+  "aesthetic": "Estética del trazo: `'roots'` (orgánico), `'lightning'` (rayo) o `'circuit'` (ortogonal).",
+  "idleDelay": "Ms de inactividad del puntero antes de crecer las ramas.",
+  "color": "Color de las ramas. También via `--aui-branches-color`.",
+  "loop": "Si es `true`, el trazo re-crece en loop: al completarse espera `duration` ms y vuelve a crecer. Si es `false` (default), crece una vez y queda estático hasta que el puntero se mueve (sin loop).",
+  "duration": "Ms que las ramas quedan completas antes de re-crecer, con `loop`. También via `--aui-branches-duration`.",
+  "speed": "Velocidad de dibujo del crecimiento en px/segundo. También via `--aui-branches-speed`.",
+  "maxDistance": "Distancia máxima en px que cualquier rama puede alcanzar desde el puntero. También via `--aui-branches-max-distance`.",
+  "density": "Densidad de ramificación (cantidad de troncos / probabilidad de hijos).",
+  "depth": "Profundidad máxima de sub-ramificación.",
+  "lineWidth": "Grosor del trazo en px. También via `--aui-branches-line-width`.",
+  "curl": "Curvatura del trazo (0 = casi recto, 1 = muy sinuoso). Subilo para que `roots` parezca raíces orgánicas en vez de rayos. También via `--aui-branches-curl`. (Las estéticas ortogonales lo ignoran.)",
+  "jitter": "Jitter del trazo para estéticas tipo rayo, en px. Default: `0` (auto). También via `--aui-branches-jitter`.",
+  "respectReducedMotion": "Si es `true` (default), con `prefers-reduced-motion` las ramas (efecto autónomo por timer) NO se dibujan.",
+  "children": "Contenido monitoreado/superpuesto (el overlay no intercepta sus clicks)."
+}
