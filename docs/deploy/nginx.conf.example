@@ -13,7 +13,7 @@ server {
   server_name _;
 
   # Carpeta donde rsync/sftp sube docs/dist (coincide con SSH_TARGET del deploy).
-  root /home/usuario/htdocs/docs;
+  root /var/www/animated-ui-docs;
   index index.html;
 
   # Routing SPA: rutas profundas → index.html.

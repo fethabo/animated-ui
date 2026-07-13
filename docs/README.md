@@ -56,7 +56,7 @@ Copiar/adaptar [`deploy/nginx.conf.example`](deploy/nginx.conf.example) como
 server block. Lo esencial es el fallback SPA:
 
 ```nginx
-root /home/usuario/htdocs/docs;   # = SSH_TARGET del deploy
+root /var/www/animated-ui-docs;   # = SSH_TARGET del deploy
 location / {
   try_files $uri $uri/ /index.html;   # deep links y recarga sin 404
 }
@@ -83,7 +83,7 @@ Desde un checkout limpio del tag, con clave SSH o contraseña:
 ```bash
 cd docs
 SSH_HOST=123.45.67.89 SSH_USER=usuario \
-  SSH_KEY=~/.ssh/id_ed25519 SSH_TARGET=/home/usuario/htdocs/docs \
+  SSH_KEY=~/.ssh/id_ed25519 SSH_TARGET=/var/www/animated-ui-docs \
   npm run deploy
 ```
 
