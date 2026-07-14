@@ -70,3 +70,8 @@
 * Update npm badge in README.md @fethabo 93e6d75
 * Implemented waves j to M and started docs app @fethabo c4ca9b0
 * archivados changes @fethabo 8ced19e
+
+## [0.7.2](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.7.1...@fethabo/animated-ui@0.7.2) (2026-07-14)
+
+* **fix:** corregida app de documentacion de libreria. actualizada documentacion @fethabo bf00622
+* Update docs deploy path and SFTP support @fethabo 6e91025
