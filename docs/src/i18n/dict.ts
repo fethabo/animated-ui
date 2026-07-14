@@ -15,6 +15,9 @@ interface Dict {
   onGitHub: string
   categories: Record<Category, string>
   demo: string
+  controls: string
+  reset: string
+  currentConfig: string
   examples: string
   usageTab: string
   standaloneTab: string
@@ -52,6 +55,9 @@ const es: Dict = {
     'layout-navigation': 'Layout & Navegación',
   },
   demo: 'Demo',
+  controls: 'Controles',
+  reset: 'Reset',
+  currentConfig: 'Configuración actual',
   examples: 'Ejemplos',
   usageTab: 'Con el paquete',
   standaloneTab: 'Standalone (copy-paste)',
@@ -90,6 +96,9 @@ const en: Dict = {
     'layout-navigation': 'Layout & Navigation',
   },
   demo: 'Demo',
+  controls: 'Controls',
+  reset: 'Reset',
+  currentConfig: 'Current config',
   examples: 'Examples',
   usageTab: 'With the package',
   standaloneTab: 'Standalone (copy-paste)',

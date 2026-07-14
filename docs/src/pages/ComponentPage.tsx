@@ -5,6 +5,7 @@ import { codeFor, demoModules, proseFor, propsFor } from '../content'
 import type { CodeEntry, DemoModule, ProseEntry } from '../content'
 import { useLang, useT } from '../i18n/dict'
 import { CodeBlock } from '../components/CodeBlock'
+import { ControlPanel } from '../components/ControlPanel'
 import { PropsTable } from '../components/PropsTable'
 import './component-page.css'
 
@@ -46,14 +47,20 @@ export function ComponentPage() {
   // del módulo cargado; el componente se envuelve en React.lazy.
   const loader = entry ? demoModules[`./demos/${entry.slug}.tsx`] : undefined
   const Demo = useMemo(
-    () => (loader ? lazy(loader as () => Promise<{ default: ComponentType }>) : null),
+    () =>
+      loader
+        ? lazy(loader as () => Promise<{ default: ComponentType<Record<string, unknown>> }>)
+        : null,
     [loader],
   )
   const demoMeta = useAsync<DemoModule | undefined>(
     () => (loader ? (loader() as Promise<DemoModule>) : Promise.resolve(undefined)),
     [loader],
   )
-  const demoFlow = demoMeta?.demoLayout === 'flow'
+  const layout = demoMeta?.demoLayout
+  const demoFlow = layout === 'flow' || layout === 'full-bleed'
+  const demoBleed = layout === 'full-bleed'
+  const controls = demoMeta?.controls
 
   useEffect(() => {
     setTab('usage')
@@ -74,6 +81,13 @@ export function ComponentPage() {
   const next = components[index + 1]
   const props = propsFor(entry.slug, lang)
   const activeCode = tab === 'usage' ? code?.usage : code?.example
+  const demoClass = [
+    'docs-demo',
+    demoFlow && 'docs-demo--flow',
+    demoBleed && 'docs-demo--bleed',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <main className="docs-component">
@@ -84,14 +98,28 @@ export function ComponentPage() {
       </header>
 
       {Demo && (
-        <section
-          aria-label={t.demo}
-          className={demoFlow ? 'docs-demo docs-demo--flow' : 'docs-demo'}
-        >
-          <Suspense fallback={<div className="docs-demo-loading" />}>
-            <Demo />
-          </Suspense>
-        </section>
+        <Suspense fallback={<div className="docs-demo-loading" />}>
+          {controls && controls.length > 0 ? (
+            // key={slug}: remonta el panel al cambiar de componente para que el
+            // estado se reinicialice a los defaults (no arrastra valores ajenos).
+            <ControlPanel
+              key={entry.slug}
+              controls={controls}
+              componentName={entry.name}
+              anchored={demoFlow}
+            >
+              {(state) => (
+                <section aria-label={t.demo} className={demoClass}>
+                  <Demo {...state} />
+                </section>
+              )}
+            </ControlPanel>
+          ) : (
+            <section aria-label={t.demo} className={demoClass}>
+              <Demo />
+            </section>
+          )}
+        </Suspense>
       )}
 
       {code && (code.usage || code.example) && (

@@ -51,10 +51,45 @@
 /* Demos scroll-driven (position:sticky): sin recorte ni min-height, para que
    el sticky funcione contra el scroll de la ventana y el contenido alto fluya. */
 .docs-demo--flow {
+  display: block;
   overflow: visible;
   min-height: 0;
   background: transparent;
   border: none;
+}
+
+/* Full-bleed: componentes inherentemente full-viewport (paneles 100vw). Rompe
+   el ancho del artículo y ocupa el viewport. El artículo está centrado en el
+   área de contenido [sidebar_w .. 100vw], así que su centro queda a
+   sidebar_w/2 a la derecha del centro del viewport; se compensa ese offset
+   para que el 100vw no genere scroll horizontal. En mobile el sidebar se
+   oculta y el offset es 0. */
+.docs-demo--bleed {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw - var(--docs-bleed-shift, 120px));
+}
+
+@media (max-width: 800px) {
+  .docs-demo--bleed {
+    --docs-bleed-shift: 0px;
+  }
+}
+
+/* Escenas de StickyScenes en docs: el componente apila las escenas
+   (position:absolute; inset:0) y delega la visibilidad al consumer vía
+   [data-aui-active]. Sin esto se ven las tres encimadas. */
+.docs-ss-scene {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.docs-ss-scene[data-aui-active] {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Escenario default de los demos: contenido centrado. */

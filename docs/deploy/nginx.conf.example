@@ -1,16 +1,24 @@
 # Ejemplo de server block nginx para servir la docs (SPA).
-# Copiar/adaptar en el server Hostinger (p. ej. /etc/nginx/sites-available/) y
-# recargar nginx (`sudo nginx -t && sudo systemctl reload nginx`).
+# Copiar/adaptar en el server (p. ej. /etc/nginx/sites-available/animated-ui-docs)
+# y recargar nginx (`sudo nginx -t && sudo systemctl reload nginx`).
 #
 # La clave es `try_files ... /index.html`: cualquier ruta que no sea un archivo
 # real se sirve con index.html, para que el router de la SPA resuelva la vista
 # (deep links y recarga de /es/components/<slug> sin 404).
+#
+# IMPORTANTE: usar un `server_name` propio y explícito (NO `_`/default_server).
+# Si la docs queda como catch-all, cualquier host que pegue en el puerto la
+# muestra "por descarte" y se solapa con otros sitios del mismo server.
+#
+# El bloque de abajo es el de puerto 80. Al correr:
+#   sudo certbot --nginx -d animated-ui-docs.fethabo.cloud
+# certbot agrega automáticamente el bloque `listen 443 ssl` con el certificado
+# y el redirect 80→443. Después de eso, verificar con `sudo nginx -T` que el
+# `location / { try_files ... }` esté también en el bloque 443.
 
 server {
   listen 80;
-  # Sin dominio todavía: usar la IP del server o un server_name provisional.
-  # Cuando haya dominio, poner acá docs.tudominio.com (y sumar TLS con certbot).
-  server_name _;
+  server_name animated-ui-docs.fethabo.cloud;
 
   # Carpeta donde rsync/sftp sube docs/dist (coincide con SSH_TARGET del deploy).
   root /var/www/animated-ui-docs;
@@ -36,3 +44,13 @@ server {
   gzip on;
   gzip_types text/css application/javascript image/svg+xml;
 }
+
+# Opcional: evitar que `server.fethabo.cloud` (solo acceso SSH) sirva ninguna web.
+# Un vhost default explícito que corta la conexión, para que ni la docs ni otro
+# sitio se "cuelen" por descarte en ese nombre.
+#
+# server {
+#   listen 80 default_server;
+#   server_name server.fethabo.cloud;
+#   return 444;   # nginx cierra la conexión sin responder
+# }

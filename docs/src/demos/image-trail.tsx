@@ -1,4 +1,5 @@
 import { ImageTrail } from '@fethabo/animated-ui/image-trail'
+import type { DemoControl } from '../content'
 
 // Pool de imágenes como data-URIs SVG: gradientes generados inline, sin requests externas.
 const tile = (from: string, to: string) =>
@@ -14,11 +15,12 @@ const IMAGES = [
   tile('#a78bfa', '#0ea5e9'),
 ]
 
-export default function ImageTrailDemo() {
+export default function ImageTrailDemo(props: Record<string, unknown>) {
   return (
     <ImageTrail
       images={IMAGES}
       size={150}
+      {...props}
       imageStyle={{ borderRadius: 14, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}
       style={{
         minHeight: 340,
@@ -33,3 +35,10 @@ export default function ImageTrailDemo() {
     </ImageTrail>
   )
 }
+
+export const controls: DemoControl[] = [
+  { prop: 'size', type: 'number', min: 60, max: 300, step: 10, default: 150 },
+  { prop: 'emitEvery', type: 'number', min: 20, max: 200, step: 10, default: 80 },
+  { prop: 'maxConcurrent', type: 'number', min: 2, max: 12, step: 1, default: 6 },
+  { prop: 'duration', type: 'number', min: 300, max: 2000, step: 100, default: 800 },
+]

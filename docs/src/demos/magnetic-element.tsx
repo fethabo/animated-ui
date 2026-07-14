@@ -1,9 +1,10 @@
 import { MagneticElement } from '@fethabo/animated-ui/magnetic-element'
+import type { DemoControl } from '../content'
 
-export default function MagneticElementDemo() {
+export default function MagneticElementDemo(props: Record<string, unknown>) {
   return (
     <div className="docs-demo-stage">
-      <MagneticElement strength={0.45} hitArea={60}>
+      <MagneticElement strength={0.45} hitArea={60} {...props}>
         {({ isActive }) => (
           <div
             style={{
@@ -25,3 +26,8 @@ export default function MagneticElementDemo() {
     </div>
   )
 }
+
+export const controls: DemoControl[] = [
+  { prop: 'strength', type: 'number', min: 0, max: 1, step: 0.05, default: 0.45 },
+  { prop: 'hitArea', type: 'number', min: 0, max: 160, step: 10, default: 60 },
+]

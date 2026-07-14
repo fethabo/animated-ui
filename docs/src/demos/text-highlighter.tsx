@@ -1,25 +1,23 @@
 import { useState } from 'react'
 import { TextHighlighter } from '@fethabo/animated-ui/text-highlighter'
+import type { DemoControl } from '../content'
 
-export default function TextHighlighterDemo() {
-  const [key, setKey] = useState(0)
+export default function TextHighlighterDemo(props: Record<string, unknown>) {
+  const [n, setN] = useState(0)
+  const key = `${n}-${JSON.stringify(props)}`
 
   return (
     <div className="docs-demo-stage">
       <p style={{ fontSize: '1.6rem', lineHeight: 1.7, maxWidth: 420, textAlign: 'center' }}>
         Draw attention to{' '}
-        <TextHighlighter key={`a${key}`} shape="highlight" color="#7c3aed" trigger="mount">
+        <TextHighlighter key={key} shape="highlight" color="#7c3aed" trigger="mount" {...props}>
           key ideas
-        </TextHighlighter>{' '}
-        and{' '}
-        <TextHighlighter key={`b${key}`} shape="circle" color="#0ea5e9" trigger="mount" delay={0.4}>
-          conclusions
         </TextHighlighter>
         .
       </p>
       <button
         type="button"
-        onClick={() => setKey((k) => k + 1)}
+        onClick={() => setN((k) => k + 1)}
         style={{
           font: 'inherit',
           fontWeight: 600,
@@ -36,3 +34,18 @@ export default function TextHighlighterDemo() {
     </div>
   )
 }
+
+export const controls: DemoControl[] = [
+  {
+    prop: 'shape',
+    type: 'enum',
+    options: ['underline', 'wavy-underline', 'circle', 'highlight', 'strike', 'box'],
+    default: 'highlight',
+  },
+  { prop: 'trigger', type: 'enum', options: ['in-view', 'mount', 'hover'], default: 'mount' },
+  { prop: 'color', type: 'color', default: '#7c3aed' },
+  { prop: 'strokeWidth', type: 'number', min: 1, max: 12, step: 1, default: 3 },
+  { prop: 'duration', type: 'number', min: 0.2, max: 2, step: 0.1, default: 0.9 },
+  { prop: 'delay', type: 'number', min: 0, max: 2, step: 0.1, default: 0 },
+  { prop: 'once', type: 'boolean', default: true },
+]

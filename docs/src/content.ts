@@ -2,6 +2,18 @@ import type { ComponentType } from 'react'
 import propsJson from './generated/props.json'
 import type { Lang } from './i18n/lang'
 
+/**
+ * Descriptor declarativo de un control del panel interactivo de un demo.
+ * El demo bindea el valor de cada control a la prop homónima del componente.
+ */
+export type DemoControl =
+  | { prop: string; type: 'number'; min: number; max: number; step?: number; default: number; label?: string }
+  | { prop: string; type: 'boolean'; default: boolean; label?: string }
+  | { prop: string; type: 'enum'; options: string[]; default: string; label?: string }
+  | { prop: string; type: 'color'; default: string; label?: string }
+  | { prop: string; type: 'text'; default: string; label?: string }
+  | { prop: string; type: 'multi'; options: string[]; default: string[]; asColors?: boolean; label?: string }
+
 export interface PropDoc {
   name: string
   type: string
@@ -68,14 +80,22 @@ export async function proseFor(
 }
 
 // Demos: un módulo por slug con export default (componente React), lazy.
-// Un demo puede exportar `demoLayout: 'flow'` para renderizarse sin recorte ni
-// min-height fijo (necesario para componentes scroll-driven con position:sticky,
-// que se rompen dentro de un ancestro overflow:hidden).
+// Un demo puede exportar:
+// - `demoLayout: 'flow'` para renderizarse sin recorte ni min-height fijo
+//   (necesario para componentes scroll-driven con position:sticky, que se
+//   rompen dentro de un ancestro overflow:hidden).
+// - `controls: DemoControl[]` para exponer un panel interactivo; en ese caso
+//   el componente default recibe las props controladas.
 export const demoModules = import.meta.glob('./demos/*.tsx')
 
 export interface DemoModule {
-  default: ComponentType
-  demoLayout?: 'frame' | 'flow'
+  default: ComponentType<Record<string, unknown>>
+  // 'frame' (default): demo recortado en un frame de alto fijo.
+  // 'flow': sin recorte ni min-height (scroll-driven con position:sticky).
+  // 'full-bleed': además rompe el ancho del artículo y ocupa el viewport
+  //   (componentes inherentemente full-viewport: paneles 100vw, etc.).
+  demoLayout?: 'frame' | 'flow' | 'full-bleed'
+  controls?: DemoControl[]
 }
 
 export async function demoFor(slug: string): Promise<DemoModule | undefined> {

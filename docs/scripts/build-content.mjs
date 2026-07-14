@@ -9,6 +9,16 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { GLOBAL_EXCLUDE, isExcludedByType, excludedProps } from './control-exclusions.mjs'
+
+/** Nombres de prop declarados en el array `controls` de un demo (literal). */
+function declaredControlProps(demoSource) {
+  const match = demoSource.match(/export const controls[^=]*=\s*\[([\s\S]*?)\n\]/)
+  if (!match) return null // el demo no declara controls
+  const names = new Set()
+  for (const m of match[1].matchAll(/\bprop:\s*'([^']+)'/g)) names.add(m[1])
+  return names
+}
 
 const docsRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = join(docsRoot, '..')
@@ -129,6 +139,30 @@ for (const { slug, example } of registry.components) {
   for (const name of Object.keys(esEntries)) {
     if (!knownProps.has(name)) {
       console.warn(`[docs] warning: props-es tiene la entrada huérfana "${slug}.${name}"`)
+    }
+  }
+
+  // Cobertura de controles: todo demo declara controls, y toda prop pública
+  // controlable (menos las excluidas) tiene su control. El objeto TiltState/
+  // handles no aparecen en props (son del componente), así que props.json ya
+  // son solo las props del componente.
+  const demoPath = join(docsRoot, 'src', 'demos', `${slug}.tsx`)
+  if (existsSync(demoPath)) {
+    const declared = declaredControlProps(readFileSync(demoPath, 'utf8'))
+    if (declared === null) {
+      contentErrors.push(`${slug}: el demo no declara controles (export const controls)`)
+    } else {
+      const perComp = excludedProps(slug)
+      for (const prop of propsGenerated[slug] ?? []) {
+        if (GLOBAL_EXCLUDE.has(prop.name)) continue
+        if (perComp.has(prop.name)) continue
+        if (isExcludedByType(prop.type)) continue
+        if (!declared.has(prop.name)) {
+          contentErrors.push(
+            `${slug}: la prop controlable "${prop.name}" no tiene control en el panel (agregala a controls o excluila en control-exclusions.mjs)`,
+          )
+        }
+      }
     }
   }
 }

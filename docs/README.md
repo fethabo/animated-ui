@@ -47,8 +47,9 @@ Por cada componente (slug kebab-case, igual al subpath export):
 ## Deploy (Hostinger — servidor nginx, SSH/SFTP)
 
 La web es un sitio estático (`dist/`). El deploy usa **SSH/SFTP** y el server
-corre **nginx**. Sin dominio todavía: se sirve por IP (o `server_name`
-provisional) y se agrega el dominio + TLS cuando exista.
+corre **nginx**. Se sirve en `https://animated-ui-docs.fethabo.cloud`
+(subdominio propio con TLS de Let's Encrypt); el acceso SSH al server es por
+`server.fethabo.cloud` (host distinto, `SSH_HOST`).
 
 ### 1. Configurar nginx en el server (una vez)
 

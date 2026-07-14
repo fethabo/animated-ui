@@ -23,7 +23,7 @@ export default function Hero() {
 
 No hace falta importar ningún CSS: los estilos se inyectan automáticamente al montar cada componente.
 
-📖 **Documentación interactiva**: la web en [`docs/`](docs/) muestra cada componente con demo vivo, props, ejemplos con copiar y limitaciones, en español e inglés.
+📖 **Documentación interactiva**: en **[animated-ui-docs.fethabo.cloud](https://animated-ui-docs.fethabo.cloud)** podés ver la documentación completa y los ejemplos de la última versión —cada componente con demo vivo, props, ejemplos con copiar y limitaciones, en español e inglés. El código de la web vive en [`docs/`](docs/).
 
 ## Compatibility
 

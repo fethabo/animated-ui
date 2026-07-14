@@ -1,11 +1,13 @@
 import { RippleContainer } from '@fethabo/animated-ui/ripple-container'
+import type { DemoControl } from '../content'
 
-export default function RippleContainerDemo() {
+export default function RippleContainerDemo(props: Record<string, unknown>) {
   return (
     <div className="docs-demo-stage">
       <RippleContainer
-        color="rgba(255,255,255,0.55)"
+        color="#ffffff"
         duration={650}
+        {...props}
         style={{
           width: 320,
           height: 180,
@@ -23,3 +25,10 @@ export default function RippleContainerDemo() {
     </div>
   )
 }
+
+export const controls: DemoControl[] = [
+  { prop: 'color', type: 'color', default: '#ffffff' },
+  { prop: 'duration', type: 'number', min: 200, max: 1500, step: 50, default: 650 },
+  { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 0.55 },
+  { prop: 'maxRadius', type: 'number', min: 40, max: 600, step: 20, default: 320 },
+]

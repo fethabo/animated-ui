@@ -9,7 +9,6 @@
   overflow-x: auto;
   max-height: 480px;
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
 .docs-code pre {
