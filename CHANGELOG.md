@@ -75,3 +75,7 @@
 
 * **fix:** corregida app de documentacion de libreria. actualizada documentacion @fethabo bf00622
 * Update docs deploy path and SFTP support @fethabo 6e91025
+
+## [0.7.3](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.7.2...@fethabo/animated-ui@0.7.3) (2026-07-17)
+
+* **fix:** corregido borderBeam. feat: agregado SEO y analitics a docs. fix: corregido encadenamiento de action de despliegue de docs @fethabo bf05666
