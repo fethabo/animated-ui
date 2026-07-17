@@ -1,12 +1,16 @@
 // border-beam.tsx — Cometa de luz que recorre el perímetro del borde en loop.
 //
 // Copy-paste listo: no requiere instalar @fethabo/animated-ui, solo React.
-// CSS casi puro: el cometa es un nodo con `offset-path: border-box` +
-// `offset-distance` animado 0→100% — sigue el perímetro del contenedor,
-// incluyendo el border-radius, sin JS por frame. `offset-rotate: auto`
-// (default) orienta el degradé a lo largo del camino. En browsers sin
-// soporte, @supports oculta el cometa sin romper nada. Con
-// prefers-reduced-motion se muestra solo un realce de borde estático.
+// CSS casi puro: solo la cabeza del cometa sigue el perímetro con precisión
+// (`offset-path: border-box` + `offset-distance` animado 0→100%, sin JS por
+// frame). El nodo es rígido, así que en las esquinas la estela quedaría
+// recta sobre la tangente si no se recortara: la capa se enmascara al
+// anillo del borde (`mask-clip: padding-box, border-box` +
+// `mask-composite: intersect`) para que del cometa solo se vea la
+// intersección con esa curva. En browsers sin soporte de `offset-path:
+// border-box` o del enmascarado compuesto, @supports oculta el cometa sin
+// romper nada. Con prefers-reduced-motion se muestra solo un realce de
+// borde estático.
 // Para usarlo como .jsx: renombrá el archivo y borrá las anotaciones de tipo.
 
 import { useEffect } from 'react'
@@ -24,6 +28,10 @@ const CSS = `
   position: absolute;
   inset: 0;
   border-radius: inherit;
+  padding: 2px;
+  mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
   pointer-events: none; /* los clicks pasan al contenido */
 }
 .beam-comet {
@@ -41,6 +49,9 @@ const CSS = `
   to { offset-distance: 100%; }
 }
 @supports not (offset-path: border-box) {
+  .beam-comet { display: none; }
+}
+@supports not (mask-composite: intersect) {
   .beam-comet { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {

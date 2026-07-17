@@ -4,6 +4,7 @@ import { componentBySlug, components } from '../registry'
 import { codeFor, demoModules, proseFor, propsFor } from '../content'
 import type { CodeEntry, DemoModule, ProseEntry } from '../content'
 import { useLang, useT } from '../i18n/dict'
+import { useSeo } from '../seo'
 import { CodeBlock } from '../components/CodeBlock'
 import { ControlPanel } from '../components/ControlPanel'
 import { PropsTable } from '../components/PropsTable'
@@ -66,6 +67,13 @@ export function ComponentPage() {
     setTab('usage')
     window.scrollTo(0, 0)
   }, [slug])
+
+  useSeo({
+    title: entry ? `${entry.name} — animated-ui` : t.notFoundTitle,
+    description: prose?.description ?? t.homeHeroSubtitle,
+    path: entry ? `/components/${entry.slug}` : '',
+    lang,
+  })
 
   if (!entry) {
     return (

@@ -4,6 +4,7 @@ import { SpotlightCard } from '@fethabo/animated-ui/spotlight-card'
 import { ShinyText } from '@fethabo/animated-ui/shiny-text'
 import { categories, componentsByCategory, components } from '../registry'
 import { useLang, useT } from '../i18n/dict'
+import { useSeo } from '../seo'
 import './home-page.css'
 
 /**
@@ -13,6 +14,13 @@ import './home-page.css'
 export function HomePage() {
   const lang = useLang()
   const t = useT()
+
+  useSeo({
+    title: `animated-ui — ${t.siteTagline}`,
+    description: t.homeHeroSubtitle,
+    path: '',
+    lang,
+  })
 
   return (
     <main className="docs-home">

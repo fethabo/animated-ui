@@ -1,10 +1,14 @@
 name: Deploy Docs to Hostinger
 
-# Se dispara SOLO al publicar un Release (tag). Así la web refleja siempre la
-# última versión publicada del paquete, nunca el estado intermedio de main.
+# Se dispara al completarse "Publish to NPM" (workflow_run), no en paralelo con
+# release: published. Así la web solo se actualiza si el publish a npm terminó
+# en success, nunca cuando el publish falló o desde estados intermedios de
+# main. Si se renombra el workflow "Publish to NPM", hay que actualizar el
+# `workflows:` de abajo o este trigger deja de dispararse silenciosamente.
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["Publish to NPM"]
+    types: [completed]
   # Permite re-deployar manualmente desde la pestaña Actions (fallback).
   workflow_dispatch:
 
@@ -15,9 +19,19 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Corre con workflow_dispatch (manual), o con workflow_run solo si el
+    # publish terminó en success y fue disparado por una release (un publish
+    # manual sobre main no debe deployar docs).
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'release')
     steps:
-      # checkout del tag de la release (github.ref apunta al tag publicado).
+      # checkout del commit del tag publicado (head_sha del run del publish);
+      # con workflow_dispatch, github.ref cubre el comportamiento manual.
       - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -53,11 +67,44 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ vars.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # ssh-keyscan puede fallar por inestabilidad transitoria del server
+          # (ver release 0.7.2: timeout default de 5s sin respuesta). Timeout
+          # explícito más generoso, reintentos con espera incremental, y
+          # stderr visible (sin 2>/dev/null) para que el log muestre la causa.
+          max_attempts=5
+          wait_seconds=10
+          for attempt in $(seq 1 "$max_attempts"); do
+            if ssh-keyscan -T 15 -p "${{ vars.SSH_PORT || 22 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts; then
+              if [ -s ~/.ssh/known_hosts ]; then
+                break
+              fi
+            fi
+            echo "ssh-keyscan intento $attempt/$max_attempts sin resultado, reintentando en ${wait_seconds}s..."
+            sleep "$wait_seconds"
+            wait_seconds=$((wait_seconds + 10))
+          done
+
+          if [ ! -s ~/.ssh/known_hosts ]; then
+            echo "::error::ssh-keyscan no pobló known_hosts tras $max_attempts intentos"
+            exit 1
+          fi
 
       - name: Deploy via rsync over SSH
         run: |
-          rsync -avz --delete \
+          max_attempts=3
+          wait_seconds=10
+          attempt=1
+          until rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT || 22 }}" \
             docs/dist/ \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.SSH_TARGET }}/"
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ vars.SSH_TARGET }}/"; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "::error::rsync falló tras $max_attempts intentos"
+              exit 1
+            fi
+            echo "rsync intento $attempt/$max_attempts falló, reintentando en ${wait_seconds}s..."
+            sleep "$wait_seconds"
+            wait_seconds=$((wait_seconds + 10))
+            attempt=$((attempt + 1))
+          done

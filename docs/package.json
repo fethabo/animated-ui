@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/build-content.mjs --lax",
+    "predev": "node scripts/build-content.mjs --lax && node scripts/build-seo.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/build-content.mjs && tsc --noEmit",
+    "prebuild": "node scripts/build-content.mjs && node scripts/build-seo.mjs && tsc --noEmit",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",

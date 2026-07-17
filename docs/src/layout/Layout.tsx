@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router-dom'
 import pkg from '../../../package.json'
 import { categories, components } from '../registry'
 import { useLang, useT } from '../i18n/dict'
 import { persistLang, LANGS } from '../i18n/lang'
+import { trackPageView } from '../analytics'
 import './layout.css'
 
 const REPO_URL = 'https://github.com/fethabo/animated-ui'
@@ -97,6 +98,24 @@ function Sidebar() {
 }
 
 export function Layout() {
+  const lang = useLang()
+  const location = useLocation()
+  const skippedFirst = useRef(false)
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
+
+  // El page_view inicial ya lo envía el snippet de index.html: este efecto
+  // solo cubre los cambios de ruta posteriores (SPA, sin recarga).
+  useEffect(() => {
+    if (!skippedFirst.current) {
+      skippedFirst.current = true
+      return
+    }
+    trackPageView(location.pathname)
+  }, [location.pathname])
+
   return (
     <div className="docs-shell">
       <Header />

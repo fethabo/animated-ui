@@ -1,4 +1,8 @@
 name: Publish to NPM
+# El nombre de este workflow ("Publish to NPM") es contrato: deploy-docs.yml
+# se dispara sobre `workflow_run` matcheando este nombre exacto. Si se
+# renombra, hay que actualizar el `workflows:` de deploy-docs.yml o el deploy
+# de la docs deja de dispararse (sin error visible).
 on:
   # Te permite ejecutarlo manualmente desde la pestaña "Actions"
   workflow_dispatch:

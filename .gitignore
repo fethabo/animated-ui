@@ -7,3 +7,5 @@ coverage/
 
 # Docs: contenido generado en build time (extract-props), nunca se edita a mano
 docs/src/generated/
+docs/public/sitemap.xml
+docs/public/robots.txt
