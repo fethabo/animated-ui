@@ -1,15 +1,16 @@
 ---
 title: AnimatedBackground
-description: Background animado renderizado con CSS puro (sin JS por frame), con variantes aurora, mesh, noise, beam, lava, grid, rays y dots.
+description: Background animado renderizado con CSS puro (sin JS por frame), con variantes aurora, mesh, noise, beam, lava, grid, rays, dots y bubbles.
 ---
 
 ## Características
 
 - Renderizado con CSS puro, sin JavaScript por frame: se posiciona `absolute, inset: 0` para cubrir su contenedor `position: relative`, o el viewport completo con `fixed`.
-- Ocho variantes visuales con defaults atractivos: `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays` y `dots`.
+- Nueve variantes visuales con defaults atractivos: `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays`, `dots` y `bubbles`.
 - Cada variante expone sus colores, velocidad e intensidad tanto por props (`colors`, `speed`, `intensity`) como por CSS custom properties, pisables en cascada.
 - Variante `lava`: blobs opacos que ascienden y descienden fundiéndose con el truco "gooey" (`filter: blur() + contrast()`), evocando una lámpara de lava.
 - Variantes `grid` / `rays` / `dots`: grilla retro-synthwave en perspectiva (loop por período de celda exacto, sin salto), haces de luz que rotan en vaivén desde un vértice superior, y retícula de puntos con pulso suave de opacidad/escala.
+- Variante `bubbles`: burbujas translúcidas de distintos tamaños que ascienden lentamente con leve deriva horizontal, en dos planos de parallax (loop por altura de tile exacta, sin salto).
 - Acepta cualquier prop HTML válida de `<div>`.
 
 ## CSS Custom Properties
@@ -69,6 +70,12 @@ Todas se pueden pisar desde tu CSS en cascada, e.g. `.mi-bg { --aui-aurora-speed
 | `--aui-dots-cell` | `28px` | Separación de la retícula. |
 | `--aui-dots-speed` | `4s` | Duración de un pulso completo. |
 | `--aui-dots-opacity` | `1` | Intensidad global (pico del pulso). |
+| `--aui-bubbles-base` | `#0b1e33` | Color de fondo opaco detrás de las burbujas. |
+| `--aui-bubbles-color-1` | `#7dd3fc` | Primer tinte de burbuja (se translúcida con `color-mix`). |
+| `--aui-bubbles-color-2` | `#a5b4fc` | Segundo tinte de burbuja. |
+| `--aui-bubbles-speed` | `24s` | Duración de un ciclo de ascenso del plano cercano. |
+| `--aui-bubbles-size` | `56px` | Diámetro base de las burbujas (escala toda la composición). |
+| `--aui-bubbles-opacity` | `1` | Intensidad global del efecto. |
 
 ## Limitaciones
 

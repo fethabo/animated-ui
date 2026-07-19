@@ -34,7 +34,7 @@ export const controls: DemoControl[] = [
   {
     prop: 'variant',
     type: 'enum',
-    options: ['aurora', 'mesh', 'beam', 'noise', 'lava', 'grid', 'rays', 'dots'],
+    options: ['aurora', 'mesh', 'beam', 'noise', 'lava', 'grid', 'rays', 'dots', 'bubbles'],
     default: 'aurora',
   },
   { prop: 'speed', type: 'number', min: 0, max: 40, step: 1, default: 12 },

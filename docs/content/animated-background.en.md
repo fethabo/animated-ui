@@ -1,15 +1,16 @@
 ---
 title: AnimatedBackground
-description: CSS-only animated background (no per-frame JS), with aurora, mesh, noise, beam, lava, grid, rays and dots variants.
+description: CSS-only animated background (no per-frame JS), with aurora, mesh, noise, beam, lava, grid, rays, dots and bubbles variants.
 ---
 
 ## Features
 
 - Rendered with pure CSS, no per-frame JavaScript: positioned `absolute, inset: 0` to cover its `position: relative` container, or the full viewport with `fixed`.
-- Eight visual variants with attractive defaults: `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays` and `dots`.
+- Nine visual variants with attractive defaults: `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays`, `dots` and `bubbles`.
 - Each variant exposes its colors, speed and intensity both via props (`colors`, `speed`, `intensity`) and via CSS custom properties, overridable in the cascade.
 - `lava` variant: opaque blobs that rise and fall, merging with the "gooey" trick (`filter: blur() + contrast()`), evoking a lava lamp.
 - `grid` / `rays` / `dots` variants: retro-synthwave grid in perspective (looped by exact cell period, no jump), light beams that rotate back and forth from a top vertex, and a dot lattice with a soft opacity/scale pulse.
+- `bubbles` variant: translucent bubbles of varying sizes that rise slowly with a gentle horizontal drift, on two parallax planes (looped by exact tile height, no jump).
 - Accepts any valid `<div>` HTML prop.
 
 ## CSS Custom Properties
@@ -69,6 +70,12 @@ All can be overridden from your CSS in the cascade, e.g. `.my-bg { --aui-aurora-
 | `--aui-dots-cell` | `28px` | Lattice spacing. |
 | `--aui-dots-speed` | `4s` | Duration of a full pulse. |
 | `--aui-dots-opacity` | `1` | Global intensity (pulse peak). |
+| `--aui-bubbles-base` | `#0b1e33` | Opaque background color behind the bubbles. |
+| `--aui-bubbles-color-1` | `#7dd3fc` | First bubble tint (made translucent via `color-mix`). |
+| `--aui-bubbles-color-2` | `#a5b4fc` | Second bubble tint. |
+| `--aui-bubbles-speed` | `24s` | Duration of a rise cycle of the near plane. |
+| `--aui-bubbles-size` | `56px` | Base bubble diameter (scales the whole composition). |
+| `--aui-bubbles-opacity` | `1` | Global effect intensity. |
 
 ## Limitations
 

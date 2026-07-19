@@ -9,6 +9,7 @@ export type AnimatedBackgroundVariantName =
   | 'grid'
   | 'rays'
   | 'dots'
+  | 'bubbles'
 
 export interface AnimatedBackgroundProps extends HTMLAttributes<HTMLDivElement> {
   /** Visual variant of the animation. Default: `'aurora'`. */

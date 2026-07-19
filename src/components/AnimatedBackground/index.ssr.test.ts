@@ -18,8 +18,17 @@ describe('AnimatedBackground — selección de variante', () => {
     expect(html).toContain('--aui-lava-color-2:#f59e0b')
   })
 
+  it('la variante bubbles acepta colores custom como CSS custom properties', () => {
+    const html = renderToString(
+      createElement(AnimatedBackground, { variant: 'bubbles', colors: ['#38bdf8', '#c4b5fd', '#082f49'] }),
+    )
+    expect(html).toContain('--aui-bubbles-color-1:#38bdf8')
+    expect(html).toContain('--aui-bubbles-color-2:#c4b5fd')
+    expect(html).toContain('--aui-bubbles-base:#082f49')
+  })
+
   it('cada variante conocida produce su clase aui-<variant>', () => {
-    for (const v of ['aurora', 'mesh', 'noise', 'beam', 'lava'] as const) {
+    for (const v of ['aurora', 'mesh', 'noise', 'beam', 'lava', 'grid', 'rays', 'dots', 'bubbles'] as const) {
       const html = renderToString(createElement(AnimatedBackground, { variant: v }))
       expect(html).toContain(`aui-${v}`)
     }

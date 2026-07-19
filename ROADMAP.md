@@ -169,6 +169,19 @@ No suman entry points nuevos; extienden componentes ya publicados aplicando sus 
 | **AnimatedBackground: variantes `grid` / `rays` / `dots`** ✅ | Grilla retro-synthwave con perspectiva, rayos de luz rotando lentamente, y patrón de dots con pulso. | Hechas en Wave G: CSS puro con keyframes inyectados, mismo contrato de `colors`/`speed`/`intensity` y vars `--aui-*` que las variantes existentes. Change [`dock-beam-marquee-horizontal`](openspec/changes/dock-beam-marquee-horizontal/). |
 | **GuidingBranches: estética `circuit`** ✅ | Ramas ortogonales tipo pista PCB. | Hecha en Wave C como módulo enchufable en `aesthetics/`. |
 
+## Modos de consumo e integración
+
+Track transversal (no suma componentes): abrir modos de consumo adicionales al componente wrapper, para aplicar efectos sobre elementos de otros design systems (MUI, Chakra, Mantine) o sin React, **sin acoplar la librería a ninguna UI library** (cero deps se mantiene; nada de capas específicas por vendor — la integración es genérica via `ref`, clases CSS y CSS vars).
+
+| Modo | Descripción | Estado |
+| --- | --- | --- |
+| **Behavior hooks** | `useTilt` / `useMagnetic` / `useSpotlight` / `useGlowBorder`: callback ref sobre el elemento del consumer, contrato "mejorar y restaurar", motor único compartido con el componente. | 📋 Change [`add-behavior-hooks`](openspec/changes/add-behavior-hooks/) |
+| **Modo clase (Pure CSS)** | Efectos 100% CSS consumibles por clase `aui-*` + vars, via funciones `register*()` o archivos CSS publicados (`dist/css/`) — habilita Astro estático y HTML sin React; reduced-motion baja a `@media` con opt-out. | 📋 Change [`add-css-class-mode`](openspec/changes/add-css-class-mode/) |
+| **Composición sin wrapper (`asChild` / prop `component`)** | Que los componentes que hoy imponen su `<div>` puedan adoptar el elemento del consumer como root: patrón Slot propio (~40 líneas, cero deps, merge de className/style/ref) o prop `component` que renderiza el tipo provisto. Decidir **uno** de los dos tras validar los hooks en uso real; candidatos: BorderBeam, RippleContainer, ClickSpark, ScrollReveal (root). | ⬜ Futuro — depende del feedback de behavior hooks |
+| **Tokens globales de movimiento** | Un punto único de "tono" de movimiento (`configureMotion({ tone })` o similar): tokens de duración/easing compartidos como vars globales `--aui-*` en `:root`, con precedencia *opción por instancia > global > default del efecto*. Hoy cada componente tiene su `speed` aislado; esto permitiría calmar/acelerar toda la UI de una vez y alinear el tempo con el theme del consumer. Requiere design.md propio (fuente única de tokens, SSR, interacción con `respectReducedMotion`). | ⬜ Futuro |
+
+Criterio de la tanda: los efectos **estructurales** (Marquee, SplitReveal, AnimatedList, TypewriterText, etc. — los que poseen contenido o estructura de children) quedan explícitamente fuera de todos estos modos: no son comportamientos aplicables a un elemento ajeno, son transformaciones del contenido.
+
 ## Web de documentación
 
 La web (`docs/`, change [`docs-site`](openspec/changes/docs-site/)) queda como infraestructura viva: cada componente nuevo suma su página como parte del definition-of-done. Mejoras futuras identificadas (no bloqueantes):

@@ -47,7 +47,7 @@ Las releases se manejan con `@fethabo/tagman`, que es la herramienta de release 
 
 | Componente | Descripción |
 | --- | --- |
-| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays` y `dots`. |
+| [AnimatedBackground](#animatedbackground) | Background animado con CSS puro, con variantes `aurora`, `mesh`, `noise`, `beam`, `lava`, `grid`, `rays`, `dots` y `bubbles`. |
 | [PixelBackground](#pixelbackground) | Grilla de píxeles sobre canvas con behaviors combinables: `hover`, `idle` y `reveal`. |
 | [TiltCard](#tiltcard) | Card con efecto 3D tilt via WAAPI, con glare opcional y render prop de estado. |
 | [SpotlightCard](#spotlightcard) | Contenedor con spotlight radial que sigue al cursor, sin re-renders por frame. |
@@ -106,6 +106,8 @@ Background animado renderizado con CSS puro (sin JS por frame). Se posiciona `ab
 
 **Variantes `grid` / `rays` / `dots`:** grilla retro-synthwave en perspectiva cuyas líneas avanzan hacia el horizonte (loop por período de celda exacto, sin salto), haces de luz que rotan lentamente en vaivén desde un vértice superior, y retícula de puntos con pulso suave de opacidad/escala. Mismo contrato de `colors`/`speed`/`intensity` que el resto.
 
+**Variante `bubbles`:** burbujas translúcidas de distintos tamaños que ascienden lentamente con leve deriva horizontal, en dos planos de parallax (loop por altura de tile exacta, sin salto). La translucidez se deriva con `color-mix()`, así `colors` sigue aceptando hex sólidos. Con `prefers-reduced-motion` degrada a las burbujas distribuidas estáticamente.
+
 ```jsx
 import { AnimatedBackground } from '@fethabo/animated-ui'
 
@@ -120,7 +122,7 @@ import { AnimatedBackground } from '@fethabo/animated-ui'
 
 | Prop | Tipo | Default | Descripción |
 | --- | --- | --- | --- |
-| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam' \| 'lava' \| 'grid' \| 'rays' \| 'dots'` | `'aurora'` | Variante visual de la animación. |
+| `variant` | `'aurora' \| 'mesh' \| 'noise' \| 'beam' \| 'lava' \| 'grid' \| 'rays' \| 'dots' \| 'bubbles'` | `'aurora'` | Variante visual de la animación. |
 | `colors` | `string[]` | colores de la variante | Paleta de la animación (hasta 4 colores); los no provistos caen al default de la variante. |
 | `speed` | `number` | según variante | Segundos que tarda un ciclo completo de la animación. |
 | `intensity` | `number` | `1` | Intensidad/opacidad global del efecto, de 0 a 1. |
@@ -188,6 +190,12 @@ Todas se pueden pisar desde tu CSS en cascada, e.g. `.mi-bg { --aui-aurora-speed
 | `--aui-dots-cell` | `28px` | Separación de la retícula. |
 | `--aui-dots-speed` | `4s` | Duración de un pulso completo. |
 | `--aui-dots-opacity` | `1` | Intensidad global (pico del pulso). |
+| `--aui-bubbles-base` | `#0b1e33` | Color de fondo opaco detrás de las burbujas. |
+| `--aui-bubbles-color-1` | `#7dd3fc` | Primer tinte de burbuja (se translúcida con `color-mix`). |
+| `--aui-bubbles-color-2` | `#a5b4fc` | Segundo tinte de burbuja. |
+| `--aui-bubbles-speed` | `24s` | Duración de un ciclo de ascenso del plano cercano. |
+| `--aui-bubbles-size` | `56px` | Diámetro base de las burbujas (escala toda la composición). |
+| `--aui-bubbles-opacity` | `1` | Intensidad global del efecto. |
 
 ## PixelBackground
 

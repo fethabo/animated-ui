@@ -10,6 +10,7 @@ import { lava } from './variants/lava'
 import { grid } from './variants/grid'
 import { rays } from './variants/rays'
 import { dots } from './variants/dots'
+import { bubbles } from './variants/bubbles'
 import type {
   AnimatedBackgroundProps,
   AnimatedBackgroundVariant,
@@ -27,6 +28,7 @@ const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant>
   grid,
   rays,
   dots,
+  bubbles,
 }
 
 // CSS base compartido por todas las variantes. La regla [data-aui-static]
