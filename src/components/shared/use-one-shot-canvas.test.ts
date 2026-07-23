@@ -22,7 +22,7 @@ const fakeCtx = {
 
 let container: HTMLDivElement
 let root: Root
-let getContextMock: Mock<[], CanvasRenderingContext2D | null>
+let getContextMock: Mock<() => CanvasRenderingContext2D | null>
 
 beforeEach(() => {
   rafQueue = []
@@ -31,7 +31,7 @@ beforeEach(() => {
     return rafQueue.length
   })
   vi.stubGlobal('cancelAnimationFrame', vi.fn())
-  getContextMock = vi.fn<[], CanvasRenderingContext2D | null>(() => fakeCtx)
+  getContextMock = vi.fn<() => CanvasRenderingContext2D | null>(() => fakeCtx)
   HTMLCanvasElement.prototype.getContext =
     getContextMock as unknown as typeof HTMLCanvasElement.prototype.getContext
   // jsdom no layoutea: se fija un área para que fire() no aborte por tamaño 0.

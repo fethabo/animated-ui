@@ -299,6 +299,27 @@ Objeto que recibe el render prop en cada actualización del tilt:
 | --- | --- | --- |
 | `--aui-tilt-perspective` | valor de la prop `perspective` (`1000px`) | Profundidad de perspectiva 3D; valores más altos producen un efecto más sutil. |
 
+### Modo hook: `useTilt`
+
+El mismo efecto como behavior hook, para aplicarlo sobre **tu** elemento (una `Card` de tu design system, un `div` propio) sin wrapper: el hook devuelve un callback ref y el elemento del consumer escucha y rota a la vez (la perspectiva entra dentro del propio `transform`). Funciona con cualquier componente que forwardee `ref` a un nodo DOM; al desmontar restaura el elemento a su estado original.
+
+```jsx
+import { useTilt } from '@fethabo/animated-ui'
+
+function MiCard() {
+  const tiltRef = useTilt({ maxAngle: 10 })
+  return <Card ref={tiltRef}>Se inclina hacia el mouse.</Card>
+}
+```
+
+| Opción | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `maxAngle` | `number` | `15` | Ángulo máximo de rotación en grados. |
+| `perspective` | `number` | `1000` | Profundidad de perspectiva en px, aplicada dentro del transform del elemento. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` no rota. |
+
+**Limitación:** `glare` no está disponible en modo hook (requiere un overlay hijo y contexto `preserve-3d`) — usá el componente `TiltCard`. El render prop tampoco: es exclusivo del componente.
+
 ## SpotlightCard
 
 Contenedor con un spotlight radial que sigue al cursor, iluminando la zona bajo el mouse. El tracking escribe CSS custom properties directamente sobre el elemento (sin estado de React): mover el mouse no re-renderiza los children. El overlay tiene `pointer-events: none`, así que links y botones del contenido siguen siendo interactivos. El spotlight permanece activo con `prefers-reduced-motion` porque responde a input directo y no desplaza contenido.
@@ -336,6 +357,26 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-spotlight-opacity` | `1` | Opacidad del overlay en hover. |
 
 `--aui-spotlight-x` / `--aui-spotlight-y` son variables de runtime escritas por el componente; no las setees a mano.
+
+### Modo hook: `useSpotlight`
+
+El mismo efecto sobre **tu** elemento, sin wrapper: el hook inyecta el overlay del spotlight como hijo del elemento (con `border-radius: inherit` y `pointer-events: none`) y lo remueve al desmontar. Como en el componente, el spotlight responde a input directo y permanece activo bajo `prefers-reduced-motion`.
+
+```jsx
+import { useSpotlight } from '@fethabo/animated-ui'
+
+function MiCard() {
+  const spotlightRef = useSpotlight({ radius: 300, color: 'rgba(34, 211, 238, 0.2)' })
+  return <Card ref={spotlightRef}>La luz sigue al cursor.</Card>
+}
+```
+
+| Opción | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `color` | `string` | `rgba(255, 255, 255, 0.15)` | Color del spotlight. |
+| `radius` | `number` | `250` | Radio del spotlight en px. |
+| `opacity` | `number` | `1` | Opacidad máxima del overlay en hover (0 a 1). |
+| `respectReducedMotion` | `boolean` | `true` | Aceptada por consistencia; el spotlight queda activo en ambos casos. |
 
 ## GlowBorder
 
@@ -383,6 +424,39 @@ También acepta cualquier otra prop HTML válida de `<div>`.
 | `--aui-glow-width` | `1px` | Ancho del anillo de borde. |
 | `--aui-glow-radius` | `12px` | Border-radius exterior. |
 | `--aui-glow-opacity` | `1` | Intensidad del glow. |
+
+### Modo hook: `useGlowBorder`
+
+El mismo anillo sobre **tu** elemento: el hook inyecta la capa cónica como hijo del host y aplica la clase `aui-glow` (padding perimetral = ancho del glow, `overflow: hidden`, `isolation`), restaurando todo al desmontar.
+
+**Contrato del host:** su `padding` pasa a ser el ancho del anillo, y el contenido debe aportar su propio background (y border-radius acorde) para tapar el centro del gradiente — el rol que en el componente cumple el wrapper interno. Si tu elemento no puede ceder su padding, usá el componente `GlowBorder`.
+
+```jsx
+import { useGlowBorder } from '@fethabo/animated-ui'
+
+function MiCard() {
+  const glowRef = useGlowBorder({ width: 2, radius: 16, colors: ['#22d3ee', '#a78bfa'] })
+  return (
+    <div ref={glowRef}>
+      <div style={{ background: '#12121f', borderRadius: 14, padding: '2rem' }}>
+        Mi contenido
+      </div>
+    </div>
+  )
+}
+```
+
+| Opción | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `colors` | `string[]` | violeta/cyan/rosa | Colores del gradiente cónico (hasta 3). |
+| `speed` | `number` | `4` | Segundos por rotación completa del loop. |
+| `width` | `number` | `1` | Ancho del anillo en px. |
+| `radius` | `number` | `12` | Border-radius exterior en px. |
+| `opacity` | `number` | `1` | Intensidad del glow (0 a 1). |
+| `followCursor` | `boolean` | `false` | El gradiente apunta hacia el cursor con momentum, en vez del loop. |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` detiene el loop; `followCursor` sigue activo. |
+
+**Limitación:** no existen `contentClassName`/`contentStyle` en modo hook — el contenido del consumer cumple ese rol.
 
 ## MagneticElement
 
@@ -432,6 +506,26 @@ Objeto que recibe el render prop en cada actualización:
 | `offsetX` | `number` | Desplazamiento horizontal actual del contenido en px. |
 | `offsetY` | `number` | Desplazamiento vertical actual del contenido en px. |
 | `isActive` | `boolean` | `true` mientras el cursor está dentro de la zona de atracción. |
+
+### Modo hook: `useMagnetic`
+
+El mismo efecto sobre **tu** elemento, sin wrapper: el propio elemento se atrae hacia el cursor mientras está encima y vuelve con retorno elástico al salir.
+
+```jsx
+import { useMagnetic } from '@fethabo/animated-ui'
+
+function MiBoton() {
+  const magneticRef = useMagnetic({ strength: 0.5 })
+  return <Button ref={magneticRef}>Atrapame</Button>
+}
+```
+
+| Opción | Tipo | Default | Descripción |
+| --- | --- | --- | --- |
+| `strength` | `number` | `0.35` | Intensidad de la atracción (0 a 1). |
+| `respectReducedMotion` | `boolean` | `true` | Con `prefers-reduced-motion` el elemento no se mueve. |
+
+**Limitación:** `hitArea` no está disponible en modo hook — la zona de atracción es el área del propio elemento (la zona extendida requiere el wrapper de padding del componente, que la logra sin listeners globales). El render prop tampoco: es exclusivo del componente.
 
 ## RippleContainer
 

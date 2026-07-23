@@ -20,6 +20,21 @@ description: Contenedor con un spotlight radial que sigue al cursor e ilumina la
 
 `--aui-spotlight-x` / `--aui-spotlight-y` son variables de runtime que escribe el componente; no las setees a mano.
 
+## Modo hook: `useSpotlight`
+
+El mismo efecto sobre **tu** elemento, sin wrapper: el hook devuelve un callback ref, inyecta el overlay del spotlight como hijo del elemento (con `border-radius: inherit` y `pointer-events: none`) y lo remueve al desmontar. Funciona con cualquier componente que forwardee `ref` a un nodo DOM.
+
+```tsx
+import { useSpotlight } from '@fethabo/animated-ui/spotlight-card'
+
+function MiCard() {
+  const spotlightRef = useSpotlight({ radius: 300 })
+  return <Card ref={spotlightRef}>La luz sigue al cursor.</Card>
+}
+```
+
+Opciones: `color`, `radius` (default `250`), `opacity` (default `1`), `respectReducedMotion` (aceptada por consistencia; el spotlight queda activo en ambos casos).
+
 ## Limitaciones
 
 - El spotlight es un efecto de hover: en dispositivos táctiles no hay interacción.

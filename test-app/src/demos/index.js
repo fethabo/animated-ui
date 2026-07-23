@@ -7,6 +7,7 @@ import tiltCard from './TiltCard.jsx'
 import spotlightCard from './SpotlightCard.jsx'
 import glowBorder from './GlowBorder.jsx'
 import magneticElement from './MagneticElement.jsx'
+import behaviorHooks from './BehaviorHooks.jsx'
 import shinyText from './ShinyText.jsx'
 import mouseParallax from './MouseParallax.jsx'
 import parallaxLayers from './ParallaxLayers.jsx'
@@ -59,6 +60,7 @@ export const demos = [
   spotlightCard,
   glowBorder,
   magneticElement,
+  behaviorHooks,
   shinyText,
   mouseParallax,
   parallaxLayers,

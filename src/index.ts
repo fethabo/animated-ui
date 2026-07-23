@@ -14,17 +14,21 @@ export type {
   PixelFrameContext,
 } from './components/PixelBackground'
 
-export { TiltCard } from './components/TiltCard'
-export type { TiltCardProps, TiltState } from './components/TiltCard'
+export { TiltCard, useTilt } from './components/TiltCard'
+export type { TiltCardProps, TiltState, UseTiltOptions } from './components/TiltCard'
 
-export { SpotlightCard } from './components/SpotlightCard'
-export type { SpotlightCardProps } from './components/SpotlightCard'
+export { SpotlightCard, useSpotlight } from './components/SpotlightCard'
+export type { SpotlightCardProps, UseSpotlightOptions } from './components/SpotlightCard'
 
-export { GlowBorder } from './components/GlowBorder'
-export type { GlowBorderProps } from './components/GlowBorder'
+export { GlowBorder, useGlowBorder } from './components/GlowBorder'
+export type { GlowBorderProps, UseGlowBorderOptions } from './components/GlowBorder'
 
-export { MagneticElement } from './components/MagneticElement'
-export type { MagneticElementProps, MagneticState } from './components/MagneticElement'
+export { MagneticElement, useMagnetic } from './components/MagneticElement'
+export type {
+  MagneticElementProps,
+  MagneticState,
+  UseMagneticOptions,
+} from './components/MagneticElement'
 
 export { ShinyText } from './components/ShinyText'
 export type { ShinyTextProps } from './components/ShinyText'

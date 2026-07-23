@@ -13,5 +13,5 @@
 ## 3. Verificación
 
 - [x] 3.1 Validar sintaxis de los workflows (`actionlint` si está disponible; si no, parseo YAML) — repo sin ESLint configurado y sin JS tocado: el paso de ESLint del CLAUDE.md no aplica
-- [ ] 3.2 Probar el fallback manual: correr `deploy-docs` vía `workflow_dispatch` y verificar que deploya OK con la condición nueva
-- [ ] 3.3 Probar el encadenamiento en la próxima release: verificar que deploy-docs se dispara solo al terminar el publish en success, que el checkout es el commit del tag (header de la web muestra la versión nueva) y que el log de `Setup SSH key` muestra los intentos de keyscan
+- [x] 3.2 Probar el fallback manual: correr `deploy-docs` vía `workflow_dispatch` y verificar que deploya OK con la condición nueva
+- [x] 3.3 Probar el encadenamiento en la próxima release: verificar que deploy-docs se dispara solo al terminar el publish en success, que el checkout es el commit del tag (header de la web muestra la versión nueva) y que el log de `Setup SSH key` muestra los intentos de keyscan

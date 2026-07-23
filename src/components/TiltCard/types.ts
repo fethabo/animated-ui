@@ -10,6 +10,26 @@ export interface TiltState {
   isHovering: boolean
 }
 
+/**
+ * Options for the `useTilt` behavior hook. Mirrors `TiltCardProps` minus
+ * `glare` (needs an overlay child and a `preserve-3d` context: use the
+ * `TiltCard` component) and the wrapper-only props.
+ */
+export interface UseTiltOptions {
+  /** Maximum rotation angle in degrees, on either axis. Default: `15`. */
+  maxAngle?: number
+  /**
+   * 3D perspective depth in px, applied inside the element's own transform.
+   * Default: `1000`.
+   */
+  perspective?: number
+  /**
+   * If `false`, the tilt runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true`.
+   */
+  respectReducedMotion?: boolean
+}
+
 export interface TiltCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Maximum rotation angle in degrees, on either axis. Default: `15`. */
   maxAngle?: number

@@ -49,6 +49,16 @@ Este repo usa **OpenSpec** (schema `spec-driven`):
 - Exports en `src/index.ts` (componente + tipos públicos).
 - Nombres de código en inglés. **JSDoc de los tipos públicos (props, tipos exportados) en inglés**: es lo que ve el consumer en el autocomplete y la fuente de las tablas de props de la web de docs (las traducciones al español viven en `docs/content/props-es/`). Comentarios internos de implementación, en español.
 
+## Patrón behavior hook (motor + hook + componente)
+
+Los efectos pointer sobre contenedores (`TiltCard`, `MagneticElement`, `SpotlightCard`, `GlowBorder`) tienen **dos modos de consumo** sobre una sola implementación (ver la capability [behavior-hooks](openspec/specs/behavior-hooks/spec.md)):
+
+- **Motor por efecto** en `src/components/<Nombre>/engine.ts`: `attach(host, options) → { update, destroy }`, DOM puro sin React, testeable con jsdom. El componente y el hook lo comparten; el comportamiento no puede divergir.
+- **Hook público** `use-<efecto>.ts` co-locado (`useTilt`, `useMagnetic`, `useSpotlight`, `useGlowBorder`): devuelve un **callback ref** para el elemento del consumer. El ciclo de vida React (shallow-compare de opciones, update en vivo, StrictMode) vive en `src/components/shared/use-behavior.ts` — reutilizarlo para hooks nuevos.
+- **Contrato "mejorar y restaurar"** (`src/utils/enhance-host.ts`): el hook solo puede setear vars `--aui-*`, clases `aui-`, `position: relative` si el host es `static`, estilos inline puntuales y capas hijas propias — y al destruir restaura todo. Prohibido: `innerHTML`, envolver/reordenar children del consumer, listeners globales.
+- Opciones no disponibles en modo hook (e.g. `glare`, `hitArea`) **se omiten del tipo** del hook (error de compilación, no fallo silencioso).
+- Los efectos **estructurales** (los que poseen contenido o estructura de children: Marquee, SplitReveal, AnimatedList, etc.) no califican para modo hook.
+
 ## Patrón one-shot imperativo (categoría celebración/feedback)
 
 Los efectos **one-shot disparados por eventos de la app** (confetti, y a futuro fireworks, sparkles, emoji burst) siguen la convención fijada por `ConfettiBurst` (ver `openspec/changes/confetti-burst-one-shot/design.md`, luego archivado):

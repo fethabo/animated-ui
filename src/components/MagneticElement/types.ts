@@ -10,6 +10,21 @@ export interface MagneticState {
   isActive: boolean
 }
 
+/**
+ * Options for the `useMagnetic` behavior hook. Mirrors `MagneticElementProps`
+ * minus `hitArea` (the extended attraction zone needs the component's padding
+ * wrapper: use the `MagneticElement` component).
+ */
+export interface UseMagneticOptions {
+  /** Attraction strength (0 to 1): how far the element moves toward the cursor. Default: `0.35`. */
+  strength?: number
+  /**
+   * If `false`, the attraction runs even when the system has
+   * `prefers-reduced-motion` enabled. Default: `true`.
+   */
+  respectReducedMotion?: boolean
+}
+
 export interface MagneticElementProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Attraction strength (0 to 1): how far the content moves toward the cursor. Default: `0.35`. */
   strength?: number

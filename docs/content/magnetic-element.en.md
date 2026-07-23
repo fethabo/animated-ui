@@ -14,7 +14,23 @@ description: Wrapper that pulls its content toward the cursor as it approaches, 
 
 This component exposes no CSS custom properties: everything is configured through props.
 
+## Hook mode: `useMagnetic`
+
+The same effect on **your** element, with no wrapper: the element itself is pulled toward the cursor while hovered and returns with an elastic ease on leave. The hook returns a callback ref and restores the element on unmount.
+
+```tsx
+import { useMagnetic } from '@fethabo/animated-ui/magnetic-element'
+
+function MyButton() {
+  const magneticRef = useMagnetic({ strength: 0.5 })
+  return <Button ref={magneticRef}>Catch me</Button>
+}
+```
+
+Options: `strength` (default `0.35`), `respectReducedMotion` (default `true`).
+
 ## Limitations
 
 - The attraction is a hover effect: on touch devices there is no interaction.
 - With `prefers-reduced-motion` the content does not move (offsets stay at `0`), but `isActive` is still reported.
+- Hook mode has no `hitArea` (the extended zone needs the component's padding wrapper, which achieves it without global listeners) and no render prop: the attraction zone is the element's own area.
