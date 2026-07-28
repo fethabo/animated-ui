@@ -1,5 +1,11 @@
 node_modules/
 dist/
+
+# La raíz se instala con pnpm (ver campo packageManager). El slash inicial
+# ancla el patrón a la raíz: docs/ es subproyecto npm y su package-lock.json
+# debe seguir trackeado.
+/package-lock.json
+
 *.tsbuildinfo
 .DS_Store
 *.log
