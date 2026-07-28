@@ -79,3 +79,10 @@
 ## [0.7.3](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.7.2...@fethabo/animated-ui@0.7.3) (2026-07-17)
 
 * **fix:** corregido borderBeam. feat: agregado SEO y analitics a docs. fix: corregido encadenamiento de action de despliegue de docs @fethabo bf05666
+
+## [0.8.0](https://github.com/fethabo/animated-ui/compare/@fethabo/animated-ui@0.7.3...@fethabo/animated-ui@0.8.0) (2026-07-28)
+
+* **feat:** agregado css-class-mode. actualizada doc @fethabo f0a389d
+* **fix:** corregidos demos de documentacion. @fethabo 4397e5c
+* Add behavior hooks, engines and docs for effects @fethabo 79277d4
+* Add bubbles variant and behavior-hooks specs @fethabo 229d50a
