@@ -33,15 +33,15 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.ref }}
 
+      # Sin `version:` a propósito: la action lee el campo `packageManager` de
+      # package.json, que es la única fuente de verdad de la versión de pnpm.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v5
         with:
           node-version: 24
 
       # 1. Buildear la librería: docs la consume vía file:.. (su dist/).
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm run build
 
       # 2. Buildear la docs contra esa versión (prebuild valida sincronía y
