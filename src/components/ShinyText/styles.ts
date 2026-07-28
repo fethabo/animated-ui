@@ -35,10 +35,14 @@ export function shinyCss(): string {
   background-position: 0 0;
   -webkit-background-clip: text;
   background-clip: text;
+  background-clip: text;
   color: transparent;
-}
-.aui-shiny[data-aui-loop] {
   animation: aui-shiny-sweep var(--aui-shiny-speed, 3s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aui-shiny:not([data-aui-motion]) {
+    animation: none;
+  }
 }
 @keyframes aui-shiny-sweep {
   from { background-position: 100% 0; }

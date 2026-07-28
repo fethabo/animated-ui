@@ -1,4 +1,4 @@
-export { AnimatedBackground } from './components/AnimatedBackground'
+export { AnimatedBackground, registerAnimatedBackground } from './components/AnimatedBackground'
 export type {
   AnimatedBackgroundProps,
   AnimatedBackgroundVariantName,
@@ -30,7 +30,7 @@ export type {
   UseMagneticOptions,
 } from './components/MagneticElement'
 
-export { ShinyText } from './components/ShinyText'
+export { ShinyText, registerShinyText } from './components/ShinyText'
 export type { ShinyTextProps } from './components/ShinyText'
 
 export { ScrambleText } from './components/ScrambleText'
@@ -86,8 +86,8 @@ export type { AestheticName, GuidingBranchesProps } from './components/GuidingBr
 export { RotatingText } from './components/RotatingText'
 export type { RotatingTextProps, RotatingTransition } from './components/RotatingText'
 
-export { GlitchText } from './components/GlitchText'
-export type { GlitchTextProps, GlitchTrigger } from './components/GlitchText'
+export { GlitchText, registerGlitchText } from './components/GlitchText'
+export type { GlitchTextProps, GlitchTrigger, GlitchTextConfig } from './components/GlitchText'
 
 export { WavyText } from './components/WavyText'
 export type { WavyTextProps } from './components/WavyText'
@@ -95,7 +95,7 @@ export type { WavyTextProps } from './components/WavyText'
 export { Dock } from './components/Dock'
 export type { DockItemProps, DockOrientation, DockProps } from './components/Dock'
 
-export { BorderBeam } from './components/BorderBeam'
+export { BorderBeam, registerBorderBeam } from './components/BorderBeam'
 export type { BorderBeamProps } from './components/BorderBeam'
 
 export { Marquee } from './components/Marquee'

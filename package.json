@@ -21,7 +21,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist"
   ],
@@ -280,10 +282,15 @@
       "types": "./dist/auto-height.d.ts",
       "import": "./dist/auto-height.js",
       "require": "./dist/auto-height.cjs"
-    }
+    },
+    "./css/animated-ui.css": "./dist/css/animated-ui.css",
+    "./css/shiny-text.css": "./dist/css/shiny-text.css",
+    "./css/border-beam.css": "./dist/css/border-beam.css",
+    "./css/glitch-text.css": "./dist/css/glitch-text.css",
+    "./css/animated-background.css": "./dist/css/animated-background.css"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node ./scripts/build-css.mjs",
     "dev": "tsup --watch",
     "release": "node ./scripts/release.mjs",
     "release:dry-run": "node ./scripts/release.mjs --dry-run",

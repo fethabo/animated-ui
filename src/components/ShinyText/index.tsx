@@ -1,7 +1,6 @@
 'use client'
 import { useEffect } from 'react'
 import { injectStyles, styleId } from '../../utils/inject-styles'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { shinyCss, shinyVars } from './styles'
 import type { ShinyTextProps } from './types'
 
@@ -25,9 +24,6 @@ export function ShinyText({
   style,
   ...rest
 }: ShinyTextProps) {
-  const reducedMotion = useReducedMotion()
-  const loopActive = !(respectReducedMotion && reducedMotion)
-
   useEffect(() => {
     injectStyles(styleId('shiny-text'), shinyCss())
   }, [])
@@ -35,11 +31,19 @@ export function ShinyText({
   return (
     <span
       className={`aui-shiny${className ? ` ${className}` : ''}`}
-      data-aui-loop={loopActive ? '' : undefined}
+      data-aui-motion={respectReducedMotion ? undefined : ''}
       style={{ ...shinyVars({ color, highlight, speed, angle }), ...style }}
       {...rest}
     >
       {children}
     </span>
   )
+}
+
+/**
+ * Registra el CSS de ShinyText para usarlo en modo clase, sin montar el componente.
+ * Inyecta los estilos una sola vez en el <head> de forma idempotente.
+ */
+export function registerShinyText(): void {
+  injectStyles(styleId('shiny-text'), shinyCss())
 }

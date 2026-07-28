@@ -20,6 +20,29 @@ description: Text with an intermittent RGB-split glitch in pure CSS, designed fo
 | `--aui-glitch-intensity` | `3px` | Channel offset. Overrides `intensity`. |
 | `--aui-glitch-cycle` | `3s` | Duration of the full burst cycle. |
 
+## CSS Class Mode (Zero-JS)
+
+This component can be consumed without React, by directly applying its native CSS classes.
+
+```html
+<link rel="stylesheet" href="node_modules/@fethabo/animated-ui/dist/css/glitch-text.css" />
+
+<h1 class="aui-glitch aui-loop" data-text="Pure CSS Glitch">Pure CSS Glitch</h1>
+```
+
+Or registering the CSS dynamically from JS:
+
+```javascript
+import { registerGlitchText } from '@fethabo/animated-ui'
+// Injects the CSS into the <head> (idempotent)
+registerGlitchText()
+```
+
+**Note on `data-text`:** In CSS mode, duplicating the text in the `data-text` attribute is mandatory for the pseudo-elements to work (the React component does this automatically).
+Trigger variants are controlled with the `aui-loop` (intermittent) or `aui-hover` (on mouse over) modifiers.
+
+**Accessibility (Opt-out):** The native CSS mode applies `prefers-reduced-motion` to stop the animation automatically. You can force its execution by adding `data-aui-motion` to the HTML element: `<h1 class="aui-glitch aui-loop" data-text="..." data-aui-motion>...</h1>`.
+
 ## Limitations
 
 - Accepts plain text only (`children: string`): the layers are duplicated via `content: attr(data-text)`, which does not support markup.

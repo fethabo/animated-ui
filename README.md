@@ -31,7 +31,44 @@ No hace falta importar ningún CSS: los estilos se inyectan automáticamente al 
 - **Vite**, **Next.js App Router** (los componentes incluyen `'use client'`), y **Astro** (como island con `client:load`).
 - **JavaScript y TypeScript**: el paquete publica JavaScript compilado; los tipos `.d.ts` los aprovechan los proyectos TypeScript automáticamente y los proyectos JavaScript los ignoran. No necesitás TypeScript para usarlo.
 - **SSR-safe**: ningún componente accede a `document`/`window` durante el render; las animaciones arrancan tras la hidratación.
-- Todos los componentes respetan `prefers-reduced-motion` por defecto (desactivable con `respectReducedMotion={false}`).
+- **Accesibilidad nativa**: Todos los componentes respetan `@media (prefers-reduced-motion)` por defecto mediante CSS (incluso antes de la hidratación). Desactivable con `respectReducedMotion={false}` o el atributo manual `data-aui-motion`.
+
+## CSS Class Mode (Zero-JS)
+
+Los componentes que son principalmente efectos visuales de CSS puro (`AnimatedBackground`, `ShinyText`, `BorderBeam`, `GlitchText`) pueden consumirse usando solo sus clases de CSS nativo, sin montar el componente de React. Esto es ideal para sitios estáticos o donde el costo del runtime de JS sea crítico.
+
+1. **Importar el CSS publicado**: El paquete exporta los estilos pre-compilados (para importarlos desde tu CSS o bundler).
+   ```css
+   /* Importar un efecto individual */
+   @import '@fethabo/animated-ui/css/animated-background.css';
+   @import '@fethabo/animated-ui/css/shiny-text.css';
+
+   /* O importar todos los efectos CSS-only juntos */
+   @import '@fethabo/animated-ui/css/animated-ui.css';
+   ```
+
+2. **O registrar dinámicamente el CSS (idempotente)**: Alternativamente, podés usar las funciones `register*()` exportadas para inyectar los estilos en el `<head>` programáticamente sin montar el componente de React.
+   ```js
+   import { registerAnimatedBackground, registerShinyText } from '@fethabo/animated-ui'
+
+   registerAnimatedBackground('aurora') // Inyecta la base y el CSS de la variante 'aurora'
+   registerShinyText()
+   ```
+
+3. **Usar las clases en tu HTML**: Aplicá la clase raíz correspondiente y tu marcado nativo tomará vida.
+   ```html
+   <div class="aui-bg aui-aurora"></div>
+   <span class="aui-shiny">Brillo CSS</span>
+   ```
+
+## Accesibilidad y Reduced Motion
+
+La librería respeta las preferencias de reducción de movimiento del sistema operativo como el nuevo comportamiento estándar y fundamental.
+Para los componentes de CSS puro, esto se controla de manera nativa mediante reglas `@media (prefers-reduced-motion: reduce)`, garantizando que el diseño detenga sus animaciones complejas **incluso en el primer frame pintado por el servidor, sin depender de JavaScript**.
+
+Si el diseño requiere que un elemento anime sin importar la preferencia del usuario (opt-out), tenés dos formas de forzar la animación (añadiendo el atributo explícito de escape):
+- **En React**: Usá la prop `respectReducedMotion={false}` en el componente.
+- **En modo Clase / HTML puro**: Agregá el atributo de escape al mismo elemento que tiene la clase: `<div class="aui-shiny" data-aui-motion>`.
 
 ## Release Workflow
 

@@ -26,7 +26,7 @@ const pkg = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8'))
 const registry = JSON.parse(readFileSync(join(docsRoot, 'src', 'registry.json'), 'utf8'))
 
 const exportSlugs = Object.keys(pkg.exports ?? {})
-  .filter((key) => !NON_COMPONENT_EXPORTS.has(key))
+  .filter((key) => !NON_COMPONENT_EXPORTS.has(key) && !key.startsWith('./css/'))
   .map((key) => key.replace(/^\.\//, ''))
 
 const registrySlugs = registry.components.map((c) => c.slug)

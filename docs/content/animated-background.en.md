@@ -77,6 +77,29 @@ All can be overridden from your CSS in the cascade, e.g. `.my-bg { --aui-aurora-
 | `--aui-bubbles-size` | `56px` | Base bubble diameter (scales the whole composition). |
 | `--aui-bubbles-opacity` | `1` | Global effect intensity. |
 
+## CSS Class Mode (Zero-JS)
+
+This component can be used without loading React, by using static HTML classes and its native CSS file. Ideal for static content or when JS bundle size is critical.
+
+```html
+<!-- Import the AnimatedBackground CSS (via bundler or <link> tag) -->
+<link rel="stylesheet" href="node_modules/@fethabo/animated-ui/dist/css/animated-background.css" />
+
+<!-- Apply base and variant classes -->
+<div class="aui-bg aui-aurora"></div>
+<div class="aui-bg aui-grid"></div>
+```
+
+You can also inject the CSS programmatically and safely using the dynamic register function:
+
+```javascript
+import { registerAnimatedBackground } from '@fethabo/animated-ui'
+// Injects the CSS into the <head> (idempotent)
+registerAnimatedBackground('aurora')
+```
+
+**Accessibility (Opt-out):** The CSS mode respects your system settings to reduce animations (`prefers-reduced-motion`) natively, without the need for JavaScript. If you need to force the animation bypassing this accessibility restriction, you can add the `data-aui-motion` attribute to the HTML element: `<div class="aui-bg aui-aurora" data-aui-motion></div>`.
+
 ## Limitations
 
 - The `lava` variant uses `filter` over large areas, which has a paint cost: it performs better in bounded containers than full-screen on low-end devices.

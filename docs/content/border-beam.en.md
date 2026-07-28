@@ -22,6 +22,26 @@ description: Light comet that travels the container's border perimeter in a cont
 | `--aui-beam-delay` | `0s` | Initial offset. |
 | `--aui-beam-border-width` | `2px` | Stroke width. |
 
+## CSS Class Mode (Zero-JS)
+
+BorderBeam can be applied using its native classes and CSS, without the need for the React component.
+
+```html
+<link rel="stylesheet" href="node_modules/@fethabo/animated-ui/dist/css/border-beam.css" />
+
+<div class="aui-border-beam" style="border-radius: 12px;">Content</div>
+```
+
+You can also register its styles programmatically:
+
+```javascript
+import { registerBorderBeam } from '@fethabo/animated-ui'
+// Injects the CSS into the <head> (idempotent)
+registerBorderBeam()
+```
+
+**Accessibility (Opt-out):** BorderBeam's CSS mode natively respects the `prefers-reduced-motion` setting, stopping the animation automatically. If you need to force the animation bypassing this restriction, add the `data-aui-motion` attribute to the HTML node: `<div class="aui-border-beam" data-aui-motion>...</div>`.
+
 ## Limitations
 
 - In browsers without `offset-path: border-box` the comet is hidden with no side effects (`@supports`).

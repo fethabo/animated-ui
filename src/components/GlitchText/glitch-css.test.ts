@@ -60,7 +60,7 @@ describe('buildGlitchCss', () => {
     expect(css).toContain('@keyframes aui-glitch-a-f2-b10')
     expect(css).toContain('@keyframes aui-glitch-b-f2-b10')
     expect(css).toContain("[data-aui-trigger='loop']")
-    expect(css).toContain("[data-aui-trigger='hover']:not([data-aui-static]):hover")
+    expect(css).toContain("[data-aui-trigger='hover']:hover")
     expect(css).toContain('translateX(calc(-1 * var(--aui-glitch-intensity, 3px)))')
     expect(css).toContain('translateX(calc(1 * var(--aui-glitch-intensity, 3px)))')
   })

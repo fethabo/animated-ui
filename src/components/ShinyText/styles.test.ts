@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { injectStyles, styleId } from '../../utils/inject-styles'
+import { styleId } from '../../utils/inject-styles'
+import { registerShinyText } from './index'
 import { shinyCss, shinyVars } from './styles'
 
 describe('shinyCss', () => {
@@ -11,9 +12,9 @@ describe('shinyCss', () => {
     expect(css).toContain('color: transparent')
   })
 
-  it('anima background-position con keyframes propios, solo bajo data-aui-loop', () => {
+  it('anima background-position con keyframes propios y fallback estático para reduced-motion', () => {
     expect(css).toContain('@keyframes aui-shiny-sweep')
-    expect(css).toContain('.aui-shiny[data-aui-loop]')
+    expect(css).toContain('@media (prefers-reduced-motion: reduce)')
     expect(css).toMatch(/from \{ background-position: 100% 0; \}/)
     expect(css).toMatch(/to \{ background-position: -100% 0; \}/)
   })
@@ -59,8 +60,8 @@ describe('inyección del CSS de ShinyText', () => {
   })
 
   it('se inyecta una sola vez aunque se llame múltiples veces (dedupe por id)', () => {
-    injectStyles(styleId('shiny-text'), shinyCss())
-    injectStyles(styleId('shiny-text'), shinyCss())
+    registerShinyText()
+    registerShinyText()
     const tags = document.querySelectorAll(`#${styleId('shiny-text')}`)
     expect(tags).toHaveLength(1)
     expect(tags[0].textContent).toContain('@keyframes aui-shiny-sweep')

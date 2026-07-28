@@ -1,7 +1,6 @@
 'use client'
 import { useEffect } from 'react'
 import { injectStyles, styleId } from '../../utils/inject-styles'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { aurora } from './variants/aurora'
 import { mesh } from './variants/mesh'
 import { noise } from './variants/noise'
@@ -11,6 +10,7 @@ import { grid } from './variants/grid'
 import { rays } from './variants/rays'
 import { dots } from './variants/dots'
 import { bubbles } from './variants/bubbles'
+import { animatedBackgroundCss } from './styles'
 import type {
   AnimatedBackgroundProps,
   AnimatedBackgroundVariant,
@@ -19,7 +19,7 @@ import type {
 
 export type { AnimatedBackgroundProps, AnimatedBackgroundVariantName } from './types'
 
-const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant> = {
+export const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant> = {
   aurora,
   mesh,
   noise,
@@ -34,19 +34,6 @@ const VARIANTS: Record<AnimatedBackgroundVariantName, AnimatedBackgroundVariant>
 // CSS base compartido por todas las variantes. La regla [data-aui-static]
 // apaga las animaciones (incluidas las de pseudo-elementos) cuando el
 // componente decide respetar prefers-reduced-motion.
-const BASE_CSS = `
-.aui-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.aui-bg[data-aui-static],
-.aui-bg[data-aui-static]::before,
-.aui-bg[data-aui-static]::after {
-  animation: none !important;
-}
-`
 
 /**
  * Background animado con CSS puro (sin JS por frame).
@@ -66,21 +53,18 @@ export function AnimatedBackground({
   style,
   ...rest
 }: AnimatedBackgroundProps) {
-  const reducedMotion = useReducedMotion()
   const definition = VARIANTS[variant]
 
   useEffect(() => {
-    injectStyles(styleId('animated-background'), BASE_CSS)
+    injectStyles(styleId('animated-background'), animatedBackgroundCss())
     injectStyles(styleId(`animated-background-${definition.name}`), definition.css)
   }, [definition])
-
-  const isStatic = respectReducedMotion && reducedMotion
 
   return (
     <div
       aria-hidden="true"
       className={`aui-bg aui-${variant}${className ? ` ${className}` : ''}`}
-      data-aui-static={isStatic ? '' : undefined}
+      data-aui-motion={respectReducedMotion ? undefined : ''}
       style={{
         ...(fixed ? { position: 'fixed' as const } : null),
         ...definition.cssVars({ colors, speed, intensity }),
@@ -89,4 +73,14 @@ export function AnimatedBackground({
       {...rest}
     />
   )
+}
+
+/**
+ * Registra el CSS base y el de una variante para usar AnimatedBackground en modo clase,
+ * sin montar el componente. Inyecta los estilos una sola vez de forma idempotente.
+ */
+export function registerAnimatedBackground(variant: AnimatedBackgroundVariantName = 'aurora'): void {
+  const definition = VARIANTS[variant]
+  injectStyles(styleId('animated-background'), animatedBackgroundCss())
+  injectStyles(styleId(`animated-background-${definition.name}`), definition.css)
 }

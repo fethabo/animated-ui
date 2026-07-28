@@ -77,6 +77,29 @@ Todas se pueden pisar desde tu CSS en cascada, e.g. `.mi-bg { --aui-aurora-speed
 | `--aui-bubbles-size` | `56px` | Diámetro base de las burbujas (escala toda la composición). |
 | `--aui-bubbles-opacity` | `1` | Intensidad global del efecto. |
 
+## CSS Class Mode (Zero-JS)
+
+Este componente puede utilizarse sin cargar React, usando clases HTML estáticas y su archivo CSS nativo. Ideal para contenido estático o si el bundle size de JS es crítico.
+
+```html
+<!-- Importar el CSS de AnimatedBackground (vía bundler o tag <link>) -->
+<link rel="stylesheet" href="node_modules/@fethabo/animated-ui/dist/css/animated-background.css" />
+
+<!-- Aplicar la clase base y la de variante -->
+<div class="aui-bg aui-aurora"></div>
+<div class="aui-bg aui-grid"></div>
+```
+
+También podés inyectar el CSS de forma programática y segura con la función de registro dinámico:
+
+```javascript
+import { registerAnimatedBackground } from '@fethabo/animated-ui'
+// Inyecta el CSS en el <head> (idempotente)
+registerAnimatedBackground('aurora')
+```
+
+**Accesibilidad (Opt-out):** El modo CSS respeta tu configuración del sistema para reducir animaciones (`prefers-reduced-motion`) nativamente, sin necesidad de JavaScript. Si necesitás forzar la animación ignorando esta configuración de accesibilidad, podés agregar el atributo `data-aui-motion` al elemento HTML: `<div class="aui-bg aui-aurora" data-aui-motion></div>`.
+
 ## Limitaciones
 
 - La variante `lava` usa `filter` sobre áreas grandes, que tiene costo de pintado: rinde mejor en contenedores acotados que a pantalla completa en gama baja.

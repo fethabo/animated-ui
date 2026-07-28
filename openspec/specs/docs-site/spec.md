@@ -95,6 +95,37 @@ Las animaciones del chrome del sitio y los demos SHALL respetar `prefers-reduced
 - **WHEN** el sistema del usuario tiene activado `prefers-reduced-motion: reduce`
 - **THEN** el chrome del sitio SHALL renderizarse sin animación decorativa y los demos SHALL degradar según su spec de componente
 
+### Requirement: Los defaults y rangos de los controles son fieles a la API de la librería
+
+El descriptor de controles de un demo SHALL ser fiel a la API real del componente, verificado en build contra `src/generated/props.json` (derivado del source de la librería). El build SHALL validar dos invariantes por control:
+
+1. **Default fiel** — el `default` del control SHALL coincidir con el `defaultValue` de la prop en la librería, comparado tras normalizar comillas envolventes, arrays de strings (elemento a elemento), booleanos y números.
+2. **Rango alcanzable** — para controles `number`, el `defaultValue` de la librería SHALL caer dentro de `[min, max]`.
+
+Un control MAY declarar `override: string` con el motivo de una divergencia deliberada, lo que lo exime de la invariante 1. `override` NO SHALL eximir de la invariante 2: un demo puede arrancar en otro valor, pero NO SHALL impedir que el usuario alcance el comportamiento por defecto del componente.
+
+Los controles cuyo `defaultValue` la generación de props no logra resolver (defaults en objetos `DEFAULTS`, paletas constantes) NO SHALL contarse como aprobados: el build SHALL reportarlos como no verificables, con su total, para que el agujero de cobertura sea visible.
+
+#### Scenario: Error de unidad en un control
+
+- **WHEN** un demo declara `{ prop: 'duration', min: 200, max: 1200, default: 500 }` para una prop cuyo default en la librería es `0.4` segundos
+- **THEN** el build de la docs SHALL fallar identificando el componente, la prop, el rango declarado y el default inalcanzable de la librería
+
+#### Scenario: Divergencia deliberada declarada
+
+- **WHEN** un demo enciende una prop booleana que en la librería viene apagada (p. ej. `glare` en TiltCard) y declara `override` con el motivo
+- **THEN** el build SHALL aceptar el control y el demo SHALL seguir renderizándose con el valor elegido por la docs
+
+#### Scenario: Divergencia sin declarar
+
+- **WHEN** el default de un control difiere del de la librería y el control no declara `override`
+- **THEN** el build SHALL fallar mostrando ambos valores
+
+#### Scenario: Default no resoluble
+
+- **WHEN** la prop de un control tiene `defaultValue: null` en el `props.json` generado
+- **THEN** el build SHALL emitir un warning listando esos controles y su total, sin fallar
+
 ### Requirement: Los demos pueden exponer un panel de controles interactivo
 
 Un demo SHALL poder declarar un descriptor de controles (`export const controls`)
@@ -103,6 +134,11 @@ declara controles, la vista SHALL renderizar un panel que varía las props del
 demo en runtime, sin recargar, y SHALL incluir siempre un control para
 `respectReducedMotion`. Un demo sin controles declarados SHALL seguir
 renderizándose sin panel.
+
+El panel SHALL aplicar el `default` de cada control como prop del demo desde el
+mount, sin esperar interacción del usuario. En consecuencia el default declarado
+en el control —y no el de la librería— SHALL ser el que gobierna el render
+inicial, y SHALL cumplir el requisito de fidelidad de controles.
 
 El estado del panel SHALL reinicializarse a los valores por default del demo
 actual al navegar a otra vista de componente: NO SHALL conservar valores del
@@ -126,7 +162,7 @@ salida separada y NO SHALL reemplazar ni modificar los dos tabs de ejemplo
 #### Scenario: Variar una variante en runtime
 
 - **WHEN** el usuario abre un demo con un control `enum` para una prop de variante (p. ej. AnimatedBackground `variant`) y elige otra opción
-- **THEN** el demo SHALL re-renderizarse con esa variante sin recargar, y los tabs de ejemplo (Uso/Standalone) NO SHALL cambiar
+- **THEN** el demo SHALL re-renderizarse con la variante elegida sin recargar la página
 
 #### Scenario: Demo sin controles
 
@@ -157,6 +193,11 @@ salida separada y NO SHALL reemplazar ni modificar los dos tabs de ejemplo
 
 - **WHEN** el usuario cambia una prop respecto de su default y deja el resto en default
 - **THEN** el snippet generado SHALL incluir únicamente la(s) prop(s) modificada(s), y el botón de copiar SHALL colocar ese snippet en el portapapeles con confirmación visual
+
+#### Scenario: El demo arranca con el valor del control
+
+- **WHEN** el usuario abre un demo con controles y no interactúa con el panel
+- **THEN** el componente SHALL haberse montado con el `default` de cada control como prop, no con el default de su propia API
 
 ### Requirement: El scroll es visible sobre el tema dark
 

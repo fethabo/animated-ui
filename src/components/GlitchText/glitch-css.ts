@@ -79,12 +79,12 @@ export function buildGlitchCss(key: string, frequency: number, burstFraction: nu
   return `
 ${glitchLayerKeyframes(nameA, windows, -1)}
 ${glitchLayerKeyframes(nameB, windows, 1)}
-.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='loop']:not([data-aui-static])::before,
-.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='hover']:not([data-aui-static]):hover::before {
+.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='loop']::before,
+.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='hover']:hover::before {
   animation: ${nameA} var(--aui-glitch-cycle, ${GLITCH_CYCLE_S}s) linear infinite;
 }
-.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='loop']:not([data-aui-static])::after,
-.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='hover']:not([data-aui-static]):hover::after {
+.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='loop']::after,
+.aui-glitch[data-aui-glitch='${key}'][data-aui-trigger='hover']:hover::after {
   animation: ${nameB} var(--aui-glitch-cycle, ${GLITCH_CYCLE_S}s) linear infinite;
 }
 `

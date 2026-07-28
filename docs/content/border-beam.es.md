@@ -22,6 +22,26 @@ description: Cometa de luz que recorre el perímetro del borde del contenedor en
 | `--aui-beam-delay` | `0s` | Desfase inicial. |
 | `--aui-beam-border-width` | `2px` | Grosor del trazo. |
 
+## CSS Class Mode (Zero-JS)
+
+BorderBeam se puede aplicar usando sus clases nativas y su CSS, sin necesidad de usar el componente de React.
+
+```html
+<link rel="stylesheet" href="node_modules/@fethabo/animated-ui/dist/css/border-beam.css" />
+
+<div class="aui-border-beam" style="border-radius: 12px;">Contenido</div>
+```
+
+También podés registrar sus estilos de manera programática:
+
+```javascript
+import { registerBorderBeam } from '@fethabo/animated-ui'
+// Inyecta el CSS en el <head> (idempotente)
+registerBorderBeam()
+```
+
+**Accesibilidad (Opt-out):** El modo CSS de BorderBeam respeta de manera nativa la configuración `prefers-reduced-motion`, deteniendo la animación de forma automática. Si requerís forzar la animación saltándote esta restricción, añadí el atributo `data-aui-motion` al nodo HTML: `<div class="aui-border-beam" data-aui-motion>...</div>`.
+
 ## Limitaciones
 
 - En browsers sin `offset-path: border-box` el cometa se oculta sin afectar nada (`@supports`).
