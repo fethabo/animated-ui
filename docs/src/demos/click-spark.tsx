@@ -40,10 +40,12 @@ export default function ClickSparkDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'count', type: 'number', min: 3, max: 24, step: 1, default: 10 },
-  { prop: 'radius', type: 'number', min: 20, max: 120, step: 5, default: 50 },
-  { prop: 'size', type: 'number', min: 1, max: 8, step: 0.5, default: 2 },
-  { prop: 'duration', type: 'number', min: 200, max: 1200, step: 50, default: 500 },
+  { prop: 'count', type: 'number', min: 3, max: 24, step: 1, default: 10, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'radius', type: 'number', min: 20, max: 120, step: 5, default: 50, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'size', type: 'number', min: 1, max: 8, step: 0.5, default: 8 },
+  // `duration` está en SEGUNDOS: ClickSpark lo convierte a frames
+  // (`duration * FRAMES_PER_SECOND`). No es milisegundos.
+  { prop: 'duration', type: 'number', min: 0.1, max: 1.5, step: 0.05, default: 0.4 },
   {
     prop: 'colors',
     type: 'multi',

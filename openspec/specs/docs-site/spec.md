@@ -4,6 +4,23 @@
 
 Definir la web de documentación de `@fethabo/animated-ui`: una SPA en `docs/` (Vite + React) con una vista independiente por componente, layout con header y sidebar indexado por categoría, demos vivos lazy, ejemplos de código resaltados en build time, y una estética dark que hace dogfooding de la propia librería respetando `prefers-reduced-motion`.
 ## Requirements
+
+### Requirement: El frame del demo no participa del render del componente
+
+El frame en que la docs monta un demo (recorte, radio, altura, capas de composición, reset de box model) es chrome del sitio y NO SHALL alterar el render del componente que contiene. En particular NO SHALL introducir artefactos de borde en componentes con transform 3D o capas compositadas, ni recortar geometría que el mismo componente muestra completa en su demo de referencia del test-app.
+
+Cuando un componente transforma su contenido fuera del plano (rotación 3D, escalado, parallax), el frame SHALL darle holgura suficiente para que la geometría transformada quepa sin recorte.
+
+#### Scenario: Componente con transform 3D
+
+- **WHEN** el usuario mueve el puntero sobre un demo cuyo componente rota su contenido en 3D (p. ej. TiltCard)
+- **THEN** los bordes del contenido SHALL renderizarse limpios en toda la rotación, incluido el lado que rota hacia el viewer, con la misma calidad que en el demo de referencia del test-app
+
+#### Scenario: Geometría transformada sin recorte
+
+- **WHEN** un componente transformado alcanza su extensión máxima dentro del frame
+- **THEN** el frame NO SHALL recortar la geometría resultante
+
 ### Requirement: La web de documentación es una SPA con una vista independiente por componente
 
 La app SHALL vivir en `docs/` (Vite + React, dependencia `@fethabo/animated-ui` vía `file:..`) y SHALL exponer una ruta propia por componente (`/:lang/components/:slug`) con history routing (URLs sin hash). Cada vista SHALL ser navegable directamente por URL (deep link) y recargable sin 404 en el hosting.
@@ -166,8 +183,15 @@ el test-app (`test-app/src/demos/*.jsx`): SHALL mostrar el efecto que el
 componente produce y SHALL tener padding/centrado adecuados. Los componentes
 scroll-driven inherentemente full-viewport (sticky contra la ventana o paneles
 `100vw`) SHALL poder declararse en modo full-bleed, rompiendo el ancho del
-artículo y scrolleando contra la ventana, sin desbordar horizontalmente el
-documento.
+artículo, sin desbordar horizontalmente el documento.
+
+Un demo full-bleed SHALL ocupar el área de contenido disponible —el viewport
+menos el chrome lateral del sitio— y NO SHALL superponerse al sidebar ni al
+header ni ocultarlos, en ningún punto de su recorrido de scroll. El ancho
+resultante SHALL estar disponible para el demo como CSS custom property, de modo
+que sus paneles midan contra el área real en vez de asumir `100vw`. En los
+breakpoints donde el sidebar deja de ser lateral, el área disponible SHALL ser
+el viewport completo.
 
 #### Scenario: TiltCard toma como referencia la card
 
@@ -188,6 +212,16 @@ documento.
 
 - **WHEN** el usuario abre un demo full-viewport (p. ej. StickyScenes, HorizontalScrollSection)
 - **THEN** las escenas/paneles SHALL renderizarse correctamente (sin apilarse ni desbordar horizontalmente el documento) y el efecto SHALL responder al scroll de la ventana
+
+#### Scenario: Demo full-bleed y sidebar
+
+- **WHEN** el usuario recorre un demo full-bleed (p. ej. HorizontalScrollSection) de principio a fin
+- **THEN** el sidebar SHALL permanecer visible y operable durante todo el recorrido, y ningún panel del demo SHALL quedar oculto detrás de él
+
+#### Scenario: Full-bleed en mobile
+
+- **WHEN** el viewport está por debajo del breakpoint en que el sidebar deja de ser lateral
+- **THEN** el demo full-bleed SHALL ocupar el viewport completo, sin dejar un hueco del ancho del sidebar
 
 #### Scenario: Demo que muestra el efecto real
 

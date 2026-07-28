@@ -48,6 +48,6 @@ export const controls: DemoControl[] = [
   { prop: 'duration', type: 'number', min: 0.1, max: 1.5, step: 0.1, default: 0.6 },
   { prop: 'distance', type: 'number', min: 0, max: 60, step: 4, default: 16 },
   { prop: 'threshold', type: 'number', min: 0, max: 1, step: 0.05, default: 0.15 },
-  { prop: 'trigger', type: 'enum', options: ['mount', 'in-view'], default: 'mount' },
+  { prop: 'trigger', type: 'enum', options: ['mount', 'in-view'], default: 'mount', override: 'el frame del demo ya está en viewport al abrir la vista; con \'in-view\' el efecto puede dispararse antes de que el usuario lo mire' },
   { prop: 'once', type: 'boolean', default: true },
 ]

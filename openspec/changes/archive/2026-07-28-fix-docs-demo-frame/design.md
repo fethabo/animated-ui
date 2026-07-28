@@ -80,6 +80,7 @@ Quedan cuatro diferencias, en orden de sospecha. El aislamiento es una variable 
 La corrección depende del resultado, y cada rama tiene una salida distinta:
 
 - **(1)** → mover el `border-radius` a un wrapper que no recorte, o quitarlo del frame que contiene demos con transform 3D.
+  **Resultado: El artefacto desapareció al quitar el `border-radius`.** Al quitar el borde redondeado del contenedor con `overflow: hidden`, el navegador deja de rasterizar una máscara sobre la capa 3D (el inner transformado de TiltCard). Esto confirma que el clipping redondeado es el causante del problema.
 - **(2)** → subir el `min-height` del frame para que la card tenga aire al rotar. Hoy `.docs-demo` da 320 px y la card mide ~139 px, así que hay ~90 px de holgura por lado: es la rama menos probable, pero es la más barata de confirmar.
 - **(3)** → el `will-change` vive en la librería (`TiltCard/index.tsx:100`). Si el artefacto es de ahí, **este change se detiene**: pasa a ser un cambio de componente, con su propio proposal sobre la capability `tilt-card`.
 - **(4)** → es cosmética del demo: fondo plano y listo.

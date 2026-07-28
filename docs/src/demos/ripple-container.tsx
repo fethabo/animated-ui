@@ -27,8 +27,8 @@ export default function RippleContainerDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'color', type: 'color', default: '#ffffff' },
-  { prop: 'duration', type: 'number', min: 200, max: 1500, step: 50, default: 650 },
-  { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 0.55 },
+  { prop: 'color', type: 'color', default: '#ffffff', override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'duration', type: 'number', min: 200, max: 1500, step: 50, default: 650, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 0.55, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'maxRadius', type: 'number', min: 40, max: 600, step: 20, default: 320 },
 ]

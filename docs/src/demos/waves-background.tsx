@@ -10,8 +10,8 @@ export default function WavesBackgroundDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'lines', type: 'number', min: 6, max: 60, step: 2, default: 26 },
-  { prop: 'amplitude', type: 'number', min: 0, max: 80, step: 2, default: 28 },
+  { prop: 'lines', type: 'number', min: 6, max: 60, step: 2, default: 26, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'amplitude', type: 'number', min: 0, max: 80, step: 2, default: 28, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'speed', type: 'number', min: 0, max: 4, step: 0.25, default: 1 },
   { prop: 'lineWidth', type: 'number', min: 0.5, max: 6, step: 0.5, default: 1.5 },
   {

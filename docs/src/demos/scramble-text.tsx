@@ -37,7 +37,7 @@ export default function ScrambleTextDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'trigger', type: 'enum', options: ['mount', 'hover', 'both'], default: 'both' },
+  { prop: 'trigger', type: 'enum', options: ['mount', 'hover', 'both'], default: 'both', override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'speed', type: 'number', min: 5, max: 80, step: 5, default: 25 },
-  { prop: 'scrambleColor', type: 'color', default: '#0ea5e9' },
+  { prop: 'scrambleColor', type: 'color', default: '#0ea5e9', override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
 ]

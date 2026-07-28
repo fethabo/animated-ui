@@ -46,10 +46,10 @@ export default function CustomCursorDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'color', type: 'color', default: '#0ea5e9' },
+  { prop: 'color', type: 'color', default: '#0ea5e9', override: 'paleta del sitio: el default de la librería no contrasta sobre el tema dark de la docs' },
   { prop: 'dotSize', type: 'number', min: 2, max: 20, step: 1, default: 8 },
   { prop: 'ringSize', type: 'number', min: 10, max: 80, step: 2, default: 36 },
-  { prop: 'hoverScale', type: 'number', min: 1, max: 4, step: 0.25, default: 2 },
+  { prop: 'hoverScale', type: 'number', min: 1, max: 4, step: 0.25, default: 2, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'lag', type: 'number', min: 0, max: 1, step: 0.05, default: 0.15 },
   { prop: 'hideNativeCursor', type: 'boolean', default: true },
 ]

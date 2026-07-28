@@ -14,7 +14,7 @@ export default function WavyTextDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'amplitude', type: 'number', min: 0, max: 24, step: 1, default: 8 },
+  { prop: 'amplitude', type: 'number', min: 0, max: 24, step: 1, default: 8, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'speed', type: 'number', min: 0.4, max: 4, step: 0.2, default: 1.6 },
   { prop: 'stagger', type: 'number', min: 0, max: 0.3, step: 0.02, default: 0.06 },
 ]

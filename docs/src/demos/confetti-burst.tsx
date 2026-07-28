@@ -31,8 +31,8 @@ export default function ConfettiBurstDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'count', type: 'number', min: 20, max: 300, step: 10, default: 120 },
-  { prop: 'spread', type: 'number', min: 10, max: 180, step: 5, default: 75 },
+  { prop: 'count', type: 'number', min: 20, max: 300, step: 10, default: 120, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'spread', type: 'number', min: 10, max: 180, step: 5, default: 75, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'power', type: 'number', min: 4, max: 24, step: 1, default: 12 },
   { prop: 'gravity', type: 'number', min: 0.05, max: 1, step: 0.05, default: 0.25 },
   { prop: 'angle', type: 'number', min: 0, max: 360, step: 5, default: 90 },

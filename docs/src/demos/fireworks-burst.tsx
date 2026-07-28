@@ -36,10 +36,10 @@ export default function FireworksBurstDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'particleCount', type: 'number', min: 20, max: 200, step: 10, default: 90 },
-  { prop: 'power', type: 'number', min: 2, max: 16, step: 1, default: 6 },
-  { prop: 'gravity', type: 'number', min: 0.02, max: 0.5, step: 0.02, default: 0.12 },
-  { prop: 'rockets', type: 'number', min: 1, max: 8, step: 1, default: 3 },
+  { prop: 'particleCount', type: 'number', min: 20, max: 200, step: 10, default: 90, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'power', type: 'number', min: 2, max: 16, step: 1, default: 6, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'gravity', type: 'number', min: 0.02, max: 0.5, step: 0.02, default: 0.12, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'rockets', type: 'number', min: 1, max: 8, step: 1, default: 3, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   {
     prop: 'colors',
     type: 'multi',

@@ -5,14 +5,19 @@ import type { Lang } from './i18n/lang'
 /**
  * Descriptor declarativo de un control del panel interactivo de un demo.
  * El demo bindea el valor de cada control a la prop homónima del componente.
+ *
+ * `default` es el valor con el que el demo MONTA (el panel lo pasa como prop
+ * desde el primer render), así que gobierna el render inicial por sobre el
+ * default de la librería. Por eso `build-content.mjs` lo valida contra
+ * `generated/props.json`; ver `override` para las divergencias deliberadas.
  */
 export type DemoControl =
-  | { prop: string; type: 'number'; min: number; max: number; step?: number; default: number; label?: string }
-  | { prop: string; type: 'boolean'; default: boolean; label?: string }
-  | { prop: string; type: 'enum'; options: string[]; default: string; label?: string }
-  | { prop: string; type: 'color'; default: string; label?: string }
-  | { prop: string; type: 'text'; default: string; label?: string }
-  | { prop: string; type: 'multi'; options: string[]; default: string[]; asColors?: boolean; label?: string }
+  | { prop: string; type: 'number'; min: number; max: number; step?: number; default: number; label?: string; override?: string }
+  | { prop: string; type: 'boolean'; default: boolean; label?: string; override?: string }
+  | { prop: string; type: 'enum'; options: string[]; default: string; label?: string; override?: string }
+  | { prop: string; type: 'color'; default: string; label?: string; override?: string }
+  | { prop: string; type: 'text'; default: string; label?: string; override?: string }
+  | { prop: string; type: 'multi'; options: string[]; default: string[]; asColors?: boolean; label?: string; override?: string }
 
 export interface PropDoc {
   name: string
@@ -86,6 +91,22 @@ export async function proseFor(
 //   rompen dentro de un ancestro overflow:hidden).
 // - `controls: DemoControl[]` para exponer un panel interactivo; en ese caso
 //   el componente default recibe las props controladas.
+//
+// Fidelidad de los controles (validada en `scripts/build-content.mjs`):
+//
+//   I1  el `default` del control coincide con el default de la librería.
+//   I2  para controles `number`, el default de la librería cae en [min, max].
+//
+// `override: '<motivo>'` exime de I1 y solo de I1. Va cuando el demo elige a
+// propósito un valor distinto del default de la API — típicamente para que el
+// efecto se note (`glare` encendido en TiltCard, `links` en ParticleField).
+// El motivo se escribe concreto, no genérico: explica qué muestra el demo con
+// ese valor que no mostraría con el default.
+//
+// `override` NUNCA va para silenciar I2. Un rango que deja afuera al default
+// de la librería no es una elección estética: es un error de escala o de
+// unidad (fue el caso de `click-spark.duration` y `cursor-trail.life`, ambos
+// en segundos y declarados como si fueran milisegundos). Se corrige el rango.
 export const demoModules = import.meta.glob('./demos/*.tsx')
 
 export interface DemoModule {
@@ -94,7 +115,7 @@ export interface DemoModule {
   // 'flow': sin recorte ni min-height (scroll-driven con position:sticky).
   // 'full-bleed': además rompe el ancho del artículo y ocupa el viewport
   //   (componentes inherentemente full-viewport: paneles 100vw, etc.).
-  demoLayout?: 'frame' | 'flow' | 'full-bleed'
+  demoLayout?: 'frame' | 'flow' | 'full-bleed' | '3d'
   controls?: DemoControl[]
 }
 

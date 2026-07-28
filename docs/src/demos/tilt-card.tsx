@@ -31,8 +31,10 @@ export default function TiltCardDemo(props: Record<string, unknown>) {
   )
 }
 
+export const demoLayout = '3d'
+
 export const controls: DemoControl[] = [
-  { prop: 'glare', type: 'boolean', default: true },
-  { prop: 'maxAngle', type: 'number', min: 0, max: 30, step: 1, default: 14 },
+  { prop: 'glare', type: 'boolean', default: true, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'maxAngle', type: 'number', min: 0, max: 30, step: 1, default: 14, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'perspective', type: 'number', min: 300, max: 2000, step: 50, default: 1000 },
 ]

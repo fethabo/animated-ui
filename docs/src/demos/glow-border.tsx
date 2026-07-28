@@ -23,9 +23,9 @@ export default function GlowBorderDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'width', type: 'number', min: 1, max: 8, step: 1, default: 2 },
-  { prop: 'radius', type: 'number', min: 0, max: 40, step: 2, default: 16 },
-  { prop: 'speed', type: 'number', min: 1, max: 12, step: 0.5, default: 6 },
+  { prop: 'width', type: 'number', min: 1, max: 8, step: 1, default: 2, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'radius', type: 'number', min: 0, max: 40, step: 2, default: 16, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'speed', type: 'number', min: 1, max: 12, step: 0.5, default: 6, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 1 },
   { prop: 'followCursor', type: 'boolean', default: false },
   {

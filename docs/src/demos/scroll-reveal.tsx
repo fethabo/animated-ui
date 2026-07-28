@@ -21,7 +21,7 @@ export const controls: DemoControl[] = [
     default: 'up',
   },
   { prop: 'distance', type: 'number', min: 0, max: 100, step: 4, default: 24 },
-  { prop: 'stagger', type: 'number', min: 0, max: 0.4, step: 0.02, default: 0.12 },
+  { prop: 'stagger', type: 'number', min: 0, max: 0.4, step: 0.02, default: 0.12, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'duration', type: 'number', min: 0.1, max: 1.5, step: 0.1, default: 0.6 },
   { prop: 'threshold', type: 'number', min: 0, max: 1, step: 0.05, default: 0.15 },
   { prop: 'once', type: 'boolean', default: false },

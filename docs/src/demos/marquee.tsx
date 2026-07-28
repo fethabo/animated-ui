@@ -38,8 +38,8 @@ export default function MarqueeDemo(props: Record<string, unknown>) {
 export const controls: DemoControl[] = [
   { prop: 'direction', type: 'enum', options: ['left', 'right', 'up', 'down'], default: 'left' },
   { prop: 'speed', type: 'number', min: 10, max: 200, step: 10, default: 60 },
-  { prop: 'pauseOnHover', type: 'boolean', default: true },
-  { prop: 'fadeEdges', type: 'boolean', default: true },
+  { prop: 'pauseOnHover', type: 'boolean', default: true, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'fadeEdges', type: 'boolean', default: true, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'gap', type: 'number', min: 8, max: 96, step: 4, default: 24 },
   { prop: 'scrollVelocity', type: 'boolean', default: false },
 ]

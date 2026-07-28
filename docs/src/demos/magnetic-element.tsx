@@ -28,6 +28,6 @@ export default function MagneticElementDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'strength', type: 'number', min: 0, max: 1, step: 0.05, default: 0.45 },
-  { prop: 'hitArea', type: 'number', min: 0, max: 160, step: 10, default: 60 },
+  { prop: 'strength', type: 'number', min: 0, max: 1, step: 0.05, default: 0.45, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'hitArea', type: 'number', min: 0, max: 160, step: 10, default: 60, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
 ]

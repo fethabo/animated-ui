@@ -30,7 +30,7 @@ export default function SpotlightCardDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'color', type: 'color', default: '#0ea5e9' },
-  { prop: 'radius', type: 'number', min: 100, max: 600, step: 20, default: 320 },
-  { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 0.15 },
+  { prop: 'color', type: 'color', default: '#0ea5e9', override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'radius', type: 'number', min: 100, max: 600, step: 20, default: 320, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'opacity', type: 'number', min: 0, max: 1, step: 0.05, default: 0.15, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
 ]

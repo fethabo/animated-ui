@@ -41,8 +41,8 @@ export default function DockDemo(props: Record<string, unknown>) {
 
 export const controls: DemoControl[] = [
   { prop: 'orientation', type: 'enum', options: ['horizontal', 'vertical'], default: 'horizontal' },
-  { prop: 'magnification', type: 'number', min: 1, max: 3, step: 0.1, default: 1.6 },
-  { prop: 'radius', type: 'number', min: 40, max: 300, step: 10, default: 130 },
+  { prop: 'magnification', type: 'number', min: 1, max: 3, step: 0.1, default: 1.6, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'radius', type: 'number', min: 40, max: 300, step: 10, default: 130, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'gap', type: 'number', min: 0, max: 32, step: 2, default: 8 },
   { prop: 'returnDuration', type: 'number', min: 0.05, max: 1, step: 0.05, default: 0.25 },
 ]

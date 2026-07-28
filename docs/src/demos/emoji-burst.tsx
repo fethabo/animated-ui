@@ -28,7 +28,7 @@ export default function EmojiBurstDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'count', type: 'number', min: 10, max: 100, step: 5, default: 36 },
+  { prop: 'count', type: 'number', min: 10, max: 100, step: 5, default: 36, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'size', type: 'number', min: 12, max: 48, step: 2, default: 24 },
   { prop: 'spread', type: 'number', min: 20, max: 160, step: 10, default: 70 },
   { prop: 'power', type: 'number', min: 4, max: 20, step: 1, default: 11 },

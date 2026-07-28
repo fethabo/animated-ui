@@ -15,7 +15,7 @@ export default function FlowFieldDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'count', type: 'number', min: 50, max: 1000, step: 50, default: 500 },
+  { prop: 'count', type: 'number', min: 50, max: 1000, step: 50, default: 500, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'speed', type: 'number', min: 0.2, max: 4, step: 0.2, default: 1 },
   { prop: 'scale', type: 'number', min: 50, max: 400, step: 10, default: 200 },
   { prop: 'fade', type: 'number', min: 0.8, max: 0.99, step: 0.01, default: 0.95 },

@@ -37,8 +37,8 @@ export default function ImageTrailDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'size', type: 'number', min: 60, max: 300, step: 10, default: 150 },
+  { prop: 'size', type: 'number', min: 60, max: 300, step: 10, default: 150, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'emitEvery', type: 'number', min: 20, max: 200, step: 10, default: 80 },
-  { prop: 'maxConcurrent', type: 'number', min: 2, max: 12, step: 1, default: 6 },
-  { prop: 'duration', type: 'number', min: 300, max: 2000, step: 100, default: 800 },
+  { prop: 'maxConcurrent', type: 'number', min: 2, max: 12, step: 1, default: 6, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'duration', type: 'number', min: 300, max: 2000, step: 100, default: 800, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
 ]

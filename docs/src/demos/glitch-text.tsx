@@ -20,7 +20,7 @@ export default function GlitchTextDemo(props: Record<string, unknown>) {
 
 export const controls: DemoControl[] = [
   { prop: 'intensity', type: 'number', min: 0, max: 10, step: 1, default: 3 },
-  { prop: 'frequency', type: 'number', min: 0, max: 6, step: 1, default: 2 },
+  { prop: 'frequency', type: 'number', min: 0, max: 6, step: 1, default: 2, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'burstDuration', type: 'number', min: 0.1, max: 1, step: 0.05, default: 0.3 },
   { prop: 'trigger', type: 'enum', options: ['loop', 'hover'], default: 'loop' },
   {

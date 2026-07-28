@@ -16,9 +16,9 @@ export default function ScrollProgressDemo(props: Record<string, unknown>) {
 
 export const controls: DemoControl[] = [
   { prop: 'position', type: 'enum', options: ['top', 'bottom'], default: 'top' },
-  { prop: 'height', type: 'number', min: 2, max: 16, step: 1, default: 4 },
+  { prop: 'height', type: 'number', min: 2, max: 16, step: 1, default: 4, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'zIndex', type: 'number', min: 1, max: 100, step: 1, default: 50 },
   { prop: 'color', type: 'color', default: '#7c3aed' },
-  { prop: 'trackColor', type: 'color', default: '#12121f' },
+  { prop: 'trackColor', type: 'color', default: '#12121f', override: 'paleta del sitio: el default de la librería no contrasta sobre el tema dark de la docs' },
 ]
 

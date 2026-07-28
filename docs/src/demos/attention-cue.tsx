@@ -37,7 +37,7 @@ export default function AttentionCueDemo(props: Record<string, unknown>) {
 export const controls: DemoControl[] = [
   { prop: 'marker', type: 'enum', options: ['beam', 'footprints'], default: 'beam' },
   { prop: 'head', type: 'enum', options: ['arrow', 'dot', 'none'], default: 'arrow' },
-  { prop: 'idleDelay', type: 'number', min: 500, max: 4000, step: 100, default: 1600 },
+  { prop: 'idleDelay', type: 'number', min: 500, max: 4000, step: 100, default: 1600, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'duration', type: 'number', min: 200, max: 2000, step: 100, default: 700 },
   { prop: 'speed', type: 'number', min: 100, max: 900, step: 20, default: 420 },
   { prop: 'maxDistance', type: 'number', min: 80, max: 500, step: 20, default: 220 },

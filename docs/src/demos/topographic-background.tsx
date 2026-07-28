@@ -10,7 +10,7 @@ export default function TopographicBackgroundDemo(props: Record<string, unknown>
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'levels', type: 'number', min: 3, max: 24, step: 1, default: 12 },
+  { prop: 'levels', type: 'number', min: 3, max: 24, step: 1, default: 12, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
   { prop: 'lineWidth', type: 'number', min: 0.5, max: 4, step: 0.5, default: 1 },
   { prop: 'scale', type: 'number', min: 80, max: 400, step: 10, default: 220 },
   { prop: 'speed', type: 'number', min: 0, max: 4, step: 0.25, default: 1 },

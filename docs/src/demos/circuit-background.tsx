@@ -11,7 +11,7 @@ export default function CircuitBackgroundDemo(props: Record<string, unknown>) {
 
 export const controls: DemoControl[] = [
   { prop: 'density', type: 'number', min: 0.5, max: 3, step: 0.25, default: 1 },
-  { prop: 'pulseCount', type: 'number', min: 1, max: 30, step: 1, default: 10 },
+  { prop: 'pulseCount', type: 'number', min: 1, max: 30, step: 1, default: 10, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'pulseSpeed', type: 'number', min: 20, max: 240, step: 10, default: 90 },
   { prop: 'lineWidth', type: 'number', min: 1, max: 6, step: 0.5, default: 2 },
   { prop: 'trackColor', type: 'color', default: '#1e3a5f' },

@@ -65,5 +65,5 @@ export default function ImageDissolveDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'duration', type: 'number', min: 200, max: 2000, step: 100, default: 900 },
+  { prop: 'duration', type: 'number', min: 200, max: 2000, step: 100, default: 900, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
 ]

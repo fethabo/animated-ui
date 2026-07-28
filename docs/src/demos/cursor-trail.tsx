@@ -24,11 +24,13 @@ export default function CursorTrailDemo(props: Record<string, unknown>) {
 
 export const controls: DemoControl[] = [
   { prop: 'mode', type: 'enum', options: ['particles', 'line'], default: 'line' },
-  { prop: 'size', type: 'number', min: 2, max: 30, step: 1, default: 10 },
-  { prop: 'length', type: 'number', min: 4, max: 40, step: 1, default: 15 },
-  { prop: 'life', type: 'number', min: 100, max: 1500, step: 50, default: 500 },
-  { prop: 'emitEvery', type: 'number', min: 1, max: 60, step: 1, default: 16 },
-  { prop: 'color', type: 'color', default: '#0ea5e9' },
+  { prop: 'size', type: 'number', min: 2, max: 30, step: 1, default: 10, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'length', type: 'number', min: 4, max: 40, step: 1, default: 36 },
+  // `life` está en SEGUNDOS: el loop resta `dt` en segundos (`p.life -= dt`).
+  // No es milisegundos.
+  { prop: 'life', type: 'number', min: 0.2, max: 2, step: 0.1, default: 0.6 },
+  { prop: 'emitEvery', type: 'number', min: 1, max: 60, step: 1, default: 12 },
+  { prop: 'color', type: 'color', default: '#0ea5e9', override: 'paleta del sitio: el default de la librería no contrasta sobre el tema dark de la docs' },
   {
     prop: 'colors',
     type: 'multi',

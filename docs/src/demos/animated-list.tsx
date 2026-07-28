@@ -47,6 +47,7 @@ export const controls: DemoControl[] = [
     type: 'enum',
     options: ['fade', 'scale-in', 'slide', 'none'],
     default: 'slide',
+    override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)',
   },
   { prop: 'exit', type: 'enum', options: ['fade', 'scale-out', 'none'], default: 'fade' },
   { prop: 'duration', type: 'number', min: 0.1, max: 1, step: 0.05, default: 0.35 },

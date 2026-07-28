@@ -34,13 +34,15 @@ export default function TeslaCoilDemo(props: Record<string, unknown>) {
 }
 
 export const controls: DemoControl[] = [
-  { prop: 'boltCount', type: 'number', min: 1, max: 20, step: 1, default: 9 },
-  { prop: 'reach', type: 'number', min: 60, max: 320, step: 10, default: 180 },
+  { prop: 'boltCount', type: 'number', min: 1, max: 20, step: 1, default: 9, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
+  { prop: 'reach', type: 'number', min: 60, max: 320, step: 10, default: 180, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'cursorBolts', type: 'number', min: 0, max: 8, step: 1, default: 3 },
   { prop: 'cursorTrigger', type: 'enum', options: ['hover', 'click'], default: 'hover' },
   { prop: 'followCursor', type: 'boolean', default: true },
-  { prop: 'frequency', type: 'number', min: 0.5, max: 8, step: 0.5, default: 3 },
-  { prop: 'jitter', type: 'number', min: 0, max: 20, step: 1, default: 6 },
-  { prop: 'lineWidth', type: 'number', min: 0.5, max: 4, step: 0.5, default: 1.5 },
+  // `frequency` son regeneraciones POR SEGUNDO de los rayos ambientales
+  // (default 12), no un multiplicador. El rango sigue al del test-app.
+  { prop: 'frequency', type: 'number', min: 2, max: 30, step: 1, default: 12 },
+  { prop: 'jitter', type: 'number', min: 0, max: 20, step: 1, default: 18 },
+  { prop: 'lineWidth', type: 'number', min: 0.5, max: 4, step: 0.5, default: 2 },
   { prop: 'color', type: 'color', default: '#7dd3fc' },
 ]

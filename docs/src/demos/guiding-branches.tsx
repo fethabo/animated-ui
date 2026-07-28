@@ -20,7 +20,7 @@ export default function GuidingBranchesDemo(props: Record<string, unknown>) {
 export const controls: DemoControl[] = [
   { prop: 'aesthetic', type: 'enum', options: ['roots', 'lightning', 'circuit'], default: 'roots' },
   { prop: 'color', type: 'color', default: '#34d399' },
-  { prop: 'idleDelay', type: 'number', min: 500, max: 4000, step: 100, default: 1600 },
+  { prop: 'idleDelay', type: 'number', min: 500, max: 4000, step: 100, default: 1600, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'loop', type: 'boolean', default: false },
   { prop: 'density', type: 'number', min: 1, max: 8, step: 1, default: 4 },
   { prop: 'depth', type: 'number', min: 1, max: 6, step: 1, default: 3 },

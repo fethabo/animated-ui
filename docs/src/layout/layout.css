@@ -1,4 +1,5 @@
 .docs-shell {
+  --docs-sidebar-w: 240px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -96,7 +97,7 @@
 }
 
 .docs-sidebar {
-  width: 240px;
+  width: var(--docs-sidebar-w);
   flex-shrink: 0;
   position: sticky;
   top: 56px;
@@ -166,6 +167,10 @@
 /* --- Responsive --------------------------------------------------------------- */
 
 @media (max-width: 800px) {
+  .docs-shell {
+    --docs-sidebar-w: 0px;
+  }
+
   .docs-tagline {
     display: none;
   }

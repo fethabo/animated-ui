@@ -7,7 +7,7 @@ export default function HorizontalScrollSectionDemo(props: Record<string, unknow
   return (
     <HorizontalScrollSection speed={1} {...props}>
       {PANELS.map(([label, bg]) => (
-        <section key={label} style={{ width: '100vw', height: '100dvh', display: 'grid', placeItems: 'center', background: bg, color: '#fff', fontSize: '2.4rem', fontWeight: 700 }}>
+        <section key={label} style={{ width: 'var(--docs-content-w, 100vw)', height: '100dvh', display: 'grid', placeItems: 'center', background: bg, color: '#fff', fontSize: '2.4rem', fontWeight: 700 }}>
           {label}
         </section>
       ))}

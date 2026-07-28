@@ -18,8 +18,8 @@ export default function StackedCardsDemo(props: Record<string, unknown>) {
 export const demoLayout = 'flow'
 
 export const controls: DemoControl[] = [
-  { prop: 'scaleStep', type: 'number', min: 0, max: 0.2, step: 0.01, default: 0.06 },
-  { prop: 'opacityStep', type: 'number', min: 0, max: 0.3, step: 0.02, default: 0.08 },
+  { prop: 'scaleStep', type: 'number', min: 0, max: 0.2, step: 0.01, default: 0.06, override: 'valor propio del demo para que el efecto se lea dentro del frame de la docs (el test-app usa el default de la librería)' },
+  { prop: 'opacityStep', type: 'number', min: 0, max: 0.3, step: 0.02, default: 0.08, override: 'elección del demo para que la prop sea observable; el test-app también diverge del default' },
   { prop: 'cardTravel', type: 'number', min: 200, max: 800, step: 50, default: 400 },
   { prop: 'offsetTop', type: 'number', min: 0, max: 120, step: 10, default: 0 },
 ]

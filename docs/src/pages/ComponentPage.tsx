@@ -61,6 +61,7 @@ export function ComponentPage() {
   const layout = demoMeta?.demoLayout
   const demoFlow = layout === 'flow' || layout === 'full-bleed'
   const demoBleed = layout === 'full-bleed'
+  const demo3d = layout === '3d'
   const controls = demoMeta?.controls
 
   useEffect(() => {
@@ -93,6 +94,7 @@ export function ComponentPage() {
     'docs-demo',
     demoFlow && 'docs-demo--flow',
     demoBleed && 'docs-demo--bleed',
+    demo3d && 'docs-demo--3d',
   ]
     .filter(Boolean)
     .join(' ')

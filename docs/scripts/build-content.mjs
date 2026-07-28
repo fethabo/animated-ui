@@ -10,15 +10,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { GLOBAL_EXCLUDE, isExcludedByType, excludedProps } from './control-exclusions.mjs'
-
-/** Nombres de prop declarados en el array `controls` de un demo (literal). */
-function declaredControlProps(demoSource) {
-  const match = demoSource.match(/export const controls[^=]*=\s*\[([\s\S]*?)\n\]/)
-  if (!match) return null // el demo no declara controls
-  const names = new Set()
-  for (const m of match[1].matchAll(/\bprop:\s*'([^']+)'/g)) names.add(m[1])
-  return names
-}
+import { parseControls, checkControlFidelity } from './control-fidelity.mjs'
 
 const docsRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = join(docsRoot, '..')
@@ -94,6 +86,7 @@ execFileSync(process.execPath, [join(docsRoot, 'scripts', 'extract-props.mjs')],
 
 const lax = process.argv.includes('--lax')
 const contentErrors = []
+const unverifiableControls = []
 
 const propsGenerated = JSON.parse(
   readFileSync(join(docsRoot, 'src', 'generated', 'props.json'), 'utf8'),
@@ -142,16 +135,22 @@ for (const { slug, example } of registry.components) {
     }
   }
 
-  // Cobertura de controles: todo demo declara controls, y toda prop pública
-  // controlable (menos las excluidas) tiene su control. El objeto TiltState/
-  // handles no aparecen en props (son del componente), así que props.json ya
-  // son solo las props del componente.
+  // Controles del panel, dos validaciones sobre el mismo descriptor:
+  //   cobertura — todo demo declara controls, y toda prop pública controlable
+  //     (menos las excluidas) tiene el suyo. El objeto TiltState/handles no
+  //     aparecen en props (son del componente), así que props.json ya son solo
+  //     las props del componente.
+  //   fidelidad — el default y el rango de cada control son coherentes con la
+  //     API real (ver control-fidelity.mjs); el panel pasa esos defaults como
+  //     props desde el mount, así que un descriptor infiel hace que la docs
+  //     muestre un comportamiento que el componente no tiene.
   const demoPath = join(docsRoot, 'src', 'demos', `${slug}.tsx`)
   if (existsSync(demoPath)) {
-    const declared = declaredControlProps(readFileSync(demoPath, 'utf8'))
-    if (declared === null) {
+    const controls = parseControls(readFileSync(demoPath, 'utf8'))
+    if (controls === null) {
       contentErrors.push(`${slug}: el demo no declara controles (export const controls)`)
     } else {
+      const declared = new Set(controls.map((c) => c.prop))
       const perComp = excludedProps(slug)
       for (const prop of propsGenerated[slug] ?? []) {
         if (GLOBAL_EXCLUDE.has(prop.name)) continue
@@ -163,8 +162,24 @@ for (const { slug, example } of registry.components) {
           )
         }
       }
+
+      const fidelity = checkControlFidelity(slug, controls, propsGenerated[slug])
+      contentErrors.push(...fidelity.errors)
+      unverifiableControls.push(...fidelity.unverifiable)
     }
   }
+}
+
+// Controles que la validación de fidelidad no pudo chequear. Se reportan
+// siempre: contarlos como aprobados daría una falsa sensación de cobertura
+// (dos de ellos son `colors` de ClickSpark y CursorTrail — justo los demos
+// donde ya se coló un error de unidad).
+if (unverifiableControls.length > 0) {
+  console.warn(
+    `\n[docs] warning: ${unverifiableControls.length} control(es) sin verificar contra props.json:`,
+  )
+  for (const entry of unverifiableControls) console.warn(`  ? ${entry}`)
+  console.warn('')
 }
 
 for (const slug of Object.keys(propsEs)) {
